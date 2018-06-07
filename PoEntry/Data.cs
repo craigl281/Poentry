@@ -15,7 +15,6 @@ namespace PoEntry
         Ehs.Forms.Util EhsForms;
         public SqlCommand _Com = new SqlCommand();
         SqlConnection _Con = new SqlConnection();
-
         public string SqlUsername;
         public decimal Po_No;
         public bool SameEntityInLoc;
@@ -119,7 +118,7 @@ namespace PoEntry
                         STC.Add("Vendor_Id");
                         STC.Add("Vendor_Name");
 
-                        _Com.CommandText = "SELECT Vendor_ID,Vendor_Name,Address1 FROM Vendor ORDER By Vendor_Name";
+                        _Com.CommandText = "SELECT Vendor_ID, Vendor_Name, Address1 FROM Vendor ORDER BY Vendor_Name";
                         using (Ehs.Forms.Lookup Lookup = new Ehs.Forms.Lookup(STC, _Com))
                         {
                             Lookup.Width = 500;
@@ -1242,12 +1241,16 @@ namespace PoEntry
                     }
                 case "VendorCat":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 ORDER BY Vendor_Catalog";
+                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND "
+                                         + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY Vendor_Catalog";
+                        _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
                 case "MfgCat":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 ORDER BY Mfg_Catalog";
+                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND "
+                                         + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY Mfg_Catalog";
+                        _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
                 case "Mfg_Name":
@@ -1966,15 +1969,6 @@ namespace PoEntry
             _Com.Parameters.AddWithValue("param", param);
             _Com.Parameters.AddWithValue("Vendor_Id", Vendor);
             ret = _Com.ExecuteScalar().ToNonNullString();
-            /*
-            using (SqlDataReader reader = _Com.ExecuteReader())
-            {
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    ret = new ComboBoxString(reader[0].ToNonNullString(), reader[1].ToNonNullString());
-                }
-            }*/
             Close();
             return ret;
         }
@@ -2341,7 +2335,130 @@ namespace PoEntry
             Close();
             return true;
         }
-#endregion
+        #endregion
+
+        public void UpdateDeliveryDate(DateTime date, decimal po_no)
+        {
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "UPDATE PoDetail SET Deliver_Date = @Deliver_Date WHERE PO_NO = @po_no";
+            _Com.Parameters.AddWithValue("Deliver_Date", date);
+            _Com.Parameters.AddWithValue("Po_No", po_no);
+            _Com.ExecuteNonQuery();
+            Close();
+        }
+
+        public DataTable getDetailBreakdown(decimal po)
+        {
+            DataTable dt = new DataTable();
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT Item_Count, Mat_Code, Qty_Order, Unit_Cost, Qty_Order * Unit_Cost AS Sub_Total, Vat_Percentage, Unit_Cost * Qty_Order * (Vat_Percentage / 100) AS Tax_Total, "
+                             +"Unit_Cost * Qty_Order * (1 + Vat_Percentage / 100) AS Total FROM podetail WHERE po_no = @po_no";
+            _Com.Parameters.AddWithValue("po_no", po);
+            using (SqlDataAdapter sa = new SqlDataAdapter(_Com))
+            {
+                sa.Fill(dt);
+            }
+            return dt;
+        }
+
+        public DateTime getLastEdited(decimal po_no)
+        {
+            DateTime ret;
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT MAX(date_edited) AS maxdate FROM podetail WHERE po_no = @po_no";
+            _Com.Parameters.AddWithValue("po_no", po_no);
+            ret = _Com.ExecuteScalar().ToDateTime();
+            Close();
+            return ret;
+        }
+
+        public string getEdiNote(decimal po_no)
+        {
+            string ret;
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT edi855_NOTE FROM poheader WHERE po_no = @po_no";
+            _Com.Parameters.AddWithValue("po_no", po_no);
+            ret = _Com.ExecuteScalar().ToNonNullString();
+            Close();
+            return ret;
+        }
+
+        public string resequenceDetails(decimal po_no)
+        {
+            Open();
+
+            _Com.Parameters.Clear();
+            _Com.Parameters.AddWithValue("po_no", po_no);
+            _Com.CommandText = "SELECT count(po_no) FROM patientpodetail WHERE po_no = @po_no";
+            if (_Com.ExecuteScalar().ToInt32() > 0)
+                return "Can't resequence this po. There are patient memos associated with it.";
+            _Com.CommandText = "SELECT count(po_no) FROM podetailsplit WHERE po_no = @po_no";
+            if (_Com.ExecuteScalar().ToInt32() > 0)
+                return "Can't resequence this po. There are split lines associated with it.";
+            _Com.CommandText = "SELECT count(po_no) FROM podetailchange WHERE po_no = @po_no";
+            if (_Com.ExecuteScalar().ToInt32() > 0)
+                return "Can't resequence this po. There are change records associated with it.";
+            _Com.CommandText = "SELECT count(po_no) FROM returndetail WHERE po_no = @po_no";
+            if (_Com.ExecuteScalar().ToInt32() > 0)
+                return "Can't resequence this po. There are returns associated with it.";
+            _Com.CommandText = "SELECT count(po_no) FROM receiving WHERE po_no = @po_no";
+            if (_Com.ExecuteScalar().ToInt32() > 0)
+                return "Can't resequence this po. There are receipts associated with it.";
+            
+            if (InsertDetailLineMode)
+            {
+                q_Command.Parameters.Clear();
+                q_Command.CommandText = "SELECT * FROM podetail WHERE po_no = @po_no AND item_count >= @item_count ORDER BY item_count desc";
+                q_Command.Parameters.AddWithValue("po_no", CurrPo);
+                q_Command.Parameters.AddWithValue("item_count", lineno);
+                using (SqlDataReader read8 = q_Command.ExecuteReader())
+                {
+                    while (read8.Read())
+                    {
+                        q_Command2.Parameters.Clear();
+                        q_Command2.CommandText = "UPDATE podetail SET item_count = item_count + 1 WHERE po_no = @po_no "
+                            + "AND item_count = @old_line";
+                        q_Command2.Parameters.AddWithValue("po_no", CurrPo);
+                        q_Command2.Parameters.Add("old_line", SqlDbType.Int).Value = read8["item_count"].ToInt32();
+                        q_Command2.ExecuteNonQuery();
+                    }
+                }
+            }
+            else
+            {
+                q_Command.Parameters.Clear();
+                q_Command.CommandText = "SELECT * FROM podetail WHERE po_no = @po_no ORDER BY item_count";
+                q_Command.Parameters.AddWithValue("po_no", CurrPo);
+                using (SqlDataReader read9 = q_Command.ExecuteReader())
+                {
+                    i = 1;
+                    while (read9.Read())
+                    {
+                        temp_i = read9["item_count"].ToInt32();
+                        if (temp_i != i)
+                        {
+                            q_Command2.Parameters.Clear();
+                            q_Command2.CommandText = "UPDATE podetail SET item_count = @i WHERE po_no = @po_no "
+                                + "AND item_count = @old_line";
+                            q_Command2.Parameters.AddWithValue("po_no", CurrPo);
+                            q_Command2.Parameters.Add("old_line", SqlDbType.Int).Value = temp_i;
+                            q_Command2.Parameters.Add("i", SqlDbType.Int).Value = i;
+                            q_Command2.ExecuteNonQuery();
+                        }
+                        i++;
+                    }
+                }
+            }
+            sqlConnection6.Close();
+            sqlConnection6.Dispose();
+            q_Command2.Dispose();
+            return true;
+
+        }
     }
 
 

@@ -58,8 +58,8 @@ namespace PoEntry
             InitializeComponent();
             orig = frm;
             cmb_Mat.Items = orig.data.prefillCombos("Mat", orig.Header.VendorID);
-            cmb_VendorCatalog.Items = orig.data.prefillCombos("VendorCat", "");
-            cmb_MfgCatalog.Items = orig.data.prefillCombos("MfgCat", "");
+            cmb_VendorCatalog.Items = orig.data.prefillCombos("VendorCat", orig.Header.VendorID);
+            cmb_MfgCatalog.Items = orig.data.prefillCombos("MfgCat", orig.Header.VendorID);
             cmb_Mfg_Name.Items = orig.data.prefillCombos("Mfg_Name", "");
 
             cmb_Mfg_Name.AllowTypedIn = orig.data.SystemOptionsDictionary["POENTRY_CAN_FREEFORM_MFG"].ToBoolean();//Allows Freeform
@@ -236,6 +236,8 @@ namespace PoEntry
                     CurMfg = ((PoDetail)orig.bs2[orig.bs2.Position - 1]).MFGName;
                 }
             }
+            cmb_VendorCatalog.AllowTypedIn = true;
+            cmb_MfgCatalog.AllowTypedIn = true;
             SendKeys.Send("{TAB}");
         }
 

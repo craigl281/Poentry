@@ -55,7 +55,7 @@
             this.cueExtender1.SetCueText(this.cmb_Mat, "Material Code");
             this.cmb_Mat.CurrentItem = null;
             this.cmb_Mat.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Mat.Items")));
-            this.cmb_Mat.Location = new System.Drawing.Point(55, 24);
+            this.cmb_Mat.Location = new System.Drawing.Point(56, 24);
             this.cmb_Mat.Name = "cmb_Mat";
             this.cmb_Mat.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Mat.PopupOffset = new System.Drawing.Point(12, 0);
@@ -74,7 +74,7 @@
             this.cueExtender1.SetCueText(this.cmb_VendorCatalog, "Vendor Catalog");
             this.cmb_VendorCatalog.CurrentItem = null;
             this.cmb_VendorCatalog.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_VendorCatalog.Items")));
-            this.cmb_VendorCatalog.Location = new System.Drawing.Point(55, 44);
+            this.cmb_VendorCatalog.Location = new System.Drawing.Point(56, 44);
             this.cmb_VendorCatalog.Name = "cmb_VendorCatalog";
             this.cmb_VendorCatalog.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_VendorCatalog.PopupOffset = new System.Drawing.Point(12, 0);
@@ -92,7 +92,7 @@
             this.cueExtender1.SetCueText(this.cmb_MfgCatalog, "Mfg Catalog");
             this.cmb_MfgCatalog.CurrentItem = null;
             this.cmb_MfgCatalog.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_MfgCatalog.Items")));
-            this.cmb_MfgCatalog.Location = new System.Drawing.Point(55, 64);
+            this.cmb_MfgCatalog.Location = new System.Drawing.Point(56, 64);
             this.cmb_MfgCatalog.Name = "cmb_MfgCatalog";
             this.cmb_MfgCatalog.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_MfgCatalog.PopupOffset = new System.Drawing.Point(12, 0);
@@ -107,7 +107,7 @@
             // eb_Description
             // 
             this.cueExtender1.SetCueText(this.eb_Description, "Description");
-            this.eb_Description.Location = new System.Drawing.Point(455, 24);
+            this.eb_Description.Location = new System.Drawing.Point(456, 24);
             this.eb_Description.Name = "eb_Description";
             this.eb_Description.Size = new System.Drawing.Size(350, 20);
             this.eb_Description.TabIndex = 7;
@@ -119,7 +119,7 @@
             this.cueExtender1.SetCueText(this.cmb_Mfg_Name, "MfgName");
             this.cmb_Mfg_Name.CurrentItem = null;
             this.cmb_Mfg_Name.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Mfg_Name.Items")));
-            this.cmb_Mfg_Name.Location = new System.Drawing.Point(510, 64);
+            this.cmb_Mfg_Name.Location = new System.Drawing.Point(511, 64);
             this.cmb_Mfg_Name.Name = "cmb_Mfg_Name";
             this.cmb_Mfg_Name.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Mfg_Name.PopupOffset = new System.Drawing.Point(12, 0);
@@ -132,7 +132,7 @@
             // 
             // b_MUOP
             // 
-            this.b_MUOP.Location = new System.Drawing.Point(456, 44);
+            this.b_MUOP.Location = new System.Drawing.Point(457, 44);
             this.b_MUOP.Name = "b_MUOP";
             this.b_MUOP.Size = new System.Drawing.Size(13, 19);
             this.b_MUOP.TabIndex = 11;
@@ -203,7 +203,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(452, 71);
+            this.label4.Location = new System.Drawing.Point(453, 71);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 37;

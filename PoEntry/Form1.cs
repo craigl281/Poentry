@@ -418,14 +418,8 @@ namespace PoEntry
         }
         string CurDetailVat
         {
-            get
-            {
-                return (cmb_DetailVatCode.CurrentItem == null) ? null : cmb_DetailVatCode.CurrentItem.Key;
-            }
-            set
-            {
-                cmb_DetailVatCode.CurrentItem = (cmb_DetailVatCode.Items.Exists(r => r.Key == value)) ? cmb_DetailVatCode.Items.Find(r => r.Key == value) : null;
-            }
+            get => cmb_DetailVatCode.CurrentItem?.Key ?? "";
+            set => cmb_DetailVatCode.CurrentItem = (cmb_DetailVatCode.Items.Exists(r => r.Key == value)) ? cmb_DetailVatCode.Items.Find(r => r.Key == value) : null;
         }
         public string CurrentUOPPrime
         {
@@ -758,7 +752,7 @@ namespace PoEntry
         {
             switch (e.Mode)
             {
-                case Ehs.Controls.ViewingMode.Adding:
+                case ViewingMode.Adding:
                     {
                         status.Text = "Adding Record";
                         NewEnabled = false;
@@ -769,9 +763,10 @@ namespace PoEntry
                         TS_Cancel.ToolTipText = "Cancel";
                         ts_nextpo.Enabled = false;
                         ts_previouspo.Enabled = false;
+                        resequenceLineNumbersToolStripMenuItem.Enabled = false;
                         break;
                     }
-                case Ehs.Controls.ViewingMode.Editing:
+                case ViewingMode.Editing:
                     {
                         status.Text = "Editing Record";
                         NewEnabled = false;
@@ -782,9 +777,10 @@ namespace PoEntry
                         TS_Cancel.ToolTipText = "Cancel";
                         ts_nextpo.Enabled = false;
                         ts_previouspo.Enabled = false;
+                        resequenceLineNumbersToolStripMenuItem.Enabled = false;
                         break;
                     }
-                case Ehs.Controls.ViewingMode.Inquiry:
+                case ViewingMode.Inquiry:
                     {
                         status.Text = "Inquiry Mode";
                         NewEnabled = false;
@@ -793,9 +789,10 @@ namespace PoEntry
                         DeleteEnabled = false;
                         ts_nextpo.Enabled = true;
                         ts_previouspo.Enabled = true;
+                        resequenceLineNumbersToolStripMenuItem.Enabled = true;
                         break;
                     }
-                case Ehs.Controls.ViewingMode.Viewing:
+                case ViewingMode.Viewing:
                     {
                         status.Text = "Viewing Record";
                         NewEnabled = true;
@@ -806,6 +803,7 @@ namespace PoEntry
                         TS_Cancel.ToolTipText = "Refresh";
                         ts_nextpo.Enabled = true;
                         ts_previouspo.Enabled = true;
+                        resequenceLineNumbersToolStripMenuItem.Enabled = true;
                         errorProvider1.Clear();
                         break;
                     }
@@ -1304,9 +1302,9 @@ Changing := false;
         }
         private void bs2_CurrentItemChanged(object sender, EventArgs e)
         {
-            DetailBuyerMemoColor = Detail.BuyerMemo.Length > 0;
+            DetailBuyerMemoColor = Detail?.BuyerMemo.Length > 0;
             //DetailPatientMemoColor = 
-            DetailVendorMemoColor = Detail.VendorMemo.Length > 0;
+            DetailVendorMemoColor = Detail?.VendorMemo.Length > 0;
         }
         void prefillDetailCombos()
         {
@@ -1861,7 +1859,7 @@ Changing := false;
         {
             ////////////////////////////////test shit
             cmb_Entity.KeyLabel = "ID";
-            cmb_Entity.EditMode = true;
+            cmb_Entity.EditMode = false;//true for test
             ///////////////////////////////test shit
             Already_Save_Header = false;
             MainVendor = DialogResult.No;
@@ -2530,8 +2528,8 @@ end;
             if (SaveHeader() == false)
                 return false;
             Header.CreationCode = "PoEntry9";
-            if (data.SystemOptionsDictionary["AUTO_FILL_BUYER"].ToBoolean() && (Header.BuyerMemo == ""))
-                Header.BuyerMemo = SqlUsername;
+            Header.BuyerUsername = SqlUsername;
+            Header.OriginalUsername = SqlUsername;
             Header.SystemDate = DateTime.Today;
             
             try
@@ -2639,7 +2637,7 @@ end;
             SaveDetail();
 
             Detail.CERId = data.GetCerId(Header.ProjectNo);
-            Detail.Description2 = _IMF.Description2;
+            Detail.Description2 = _IMF?.Description2 ?? "";
 
             if (!InsertDetailLineMode)
             {
@@ -3266,12 +3264,17 @@ WHERE PoHeader.PO_No = */
 
         private void addItemToRSLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (tabControl1.SelectedTab == p_Header)
+                return;
+            Ehs.Forms.AddToRSL AddItemToRsl = new Ehs.Forms.AddToRSL(data._Com.Connection, Detail.MatCode, CurrEntity, Detail.Location, cmb_Act.Text);
+            AddItemToRsl.ShowDialog();
         }
         private void viewPOInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Form FrmPoInfo = new POInfo(this);
+            FrmPoInfo.ShowDialog();
         }
+
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
 
@@ -3279,12 +3282,18 @@ WHERE PoHeader.PO_No = */
 
         private void resequenceLineNumbersToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Header.OriginalReleaseDate != null)
+            {
+                MessageBox.Show("Can't resequence this po.  It was previously release.", "warning", MessageBoxButtons.OK);
+                return;
+            }
 
         }
 
         private void viewBreakdownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            DetailBreakdown detailBreakdown = new DetailBreakdown(data.getDetailBreakdown(CurrPo));
+            detailBreakdown.ShowDialog();
         }
 
         private void m_addFreight_Click(object sender, EventArgs e)
@@ -3299,7 +3308,15 @@ WHERE PoHeader.PO_No = */
 
         private void changeDeliverDateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            CngDeliverDate FrmCngDeliver = new CngDeliverDate(data, CurrPo);
+            try
+            {
+                if (FrmCngDeliver.ShowDialog() == DialogResult.OK)
+                {
+                    DeliverDate = FrmCngDeliver.DeliverDate;
+                }
+            }
+            finally { FrmCngDeliver.Close(); }
         }
 
         private void changeEntityToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4209,7 +4226,7 @@ WHERE PoHeader.PO_No = */
             var dialogResult = vendorFrm.ShowDialog();
             cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             cmb_vendor.Text = vendorFrm.cmb_vendor.Text;
-            if (vendorFrm.Updated && dialogResult == DialogResult.OK)
+            if (dialogResult == DialogResult.OK && (vendorFrm.Updated || viewMode1.Mode == ViewingMode.Adding))
             {
                 Header.VendorAddress1 = vendorFrm.Vendor.Address1;
                 Header.VendorAddress2 = vendorFrm.Vendor.Address2;
@@ -4252,6 +4269,8 @@ WHERE PoHeader.PO_No = */
                     var returnvalue = _Is.ShowDialog();
                     if (returnvalue != null && returnvalue == DialogResult.OK)
                     {
+                        if (Detail.NonFile)
+                            cmb_Mat.Items.Add(new ComboBoxString(_Is.CurMat));
                         CurMat = _Is.CurMat;
                         Detail.VendorCatalog = _Is.CurVendorCat;
                         Detail.MFGCatalog = _Is.CurMfgCat;
@@ -4282,7 +4301,7 @@ WHERE PoHeader.PO_No = */
             }
             else
             {
-                if (data.SystemOptionsDictionary["ENTER_DEPT_USE_LOC_SUB"].ToBoolean() && (m_addItems.Checked == false) && (_CurLocationDetail.Type == "N"))
+                if (data.SystemOptionsDictionary["ENTER_DEPT_USE_LOC_SUB"].ToBoolean() && (m_addItems.Checked == false) && (_CurLocationDetail?.Type == "N"))
                 {
                     b_Dept.Visible = true;
                     if (cmb_Act.Text.Trim() == "")
@@ -4308,8 +4327,7 @@ WHERE PoHeader.PO_No = */
                 }
                 if (Detail.NonFile == false)
                     CurAct = _CurLocationDetail.AccountNo;
-
-                if (_CurLocationDetail.Type == "N")
+                if (_CurLocationDetail?.Type != "S")
                 {
                     if (data.SystemOptionsDictionary["USE_LAST_ACCT_FOR_EVERYTHING_BUT_STOCK"].ToBoolean() && bs2.Count > 1)
                     {
@@ -4665,7 +4683,7 @@ WHERE PoHeader.PO_No = */
 
             //Batch_No = sys.Read2("EOD_BATCH_NUMBER");
 
-            if (_IMF.UseContract.Trim().Length > 0)
+            if (_IMF?.UseContract.Trim().Length > 0)
             {
                 if (CD.Purchase_Cost < eb_Unit_Cost2.Text.ToDecimal())
                 {
@@ -4676,8 +4694,8 @@ WHERE PoHeader.PO_No = */
             }
 
             Default_UOP = false;
-            var temp = List_Uop.Find(r => r.Vendor_Catalog == Detail.VendorCatalog && r.Unit_Purchase == CurrentUOPPrime);
-            if (temp.PO_Cost != eb_Unit_Cost2.Text.ToDecimal())
+            var temp = List_Uop?.Find(r => r.Vendor_Catalog == Detail.VendorCatalog && r.Unit_Purchase == CurrentUOPPrime);
+            if (temp != null &&  temp.PO_Cost != eb_Unit_Cost2.Text.ToDecimal())
             {
                 Price_Changed = true;
                 if (Allow_Update_Master)
@@ -4863,7 +4881,7 @@ WHERE PoHeader.PO_No = */
 
             //if (_CurLocationDetail == null)
             //    return; Fix ME
-            if (_CurLocationDetail.MatCode.Trim() == "")
+            if (_CurLocationDetail?.MatCode == null)
             {
                 cmb_Act.Text = "";
                 return;
@@ -5518,29 +5536,12 @@ WHERE PoHeader.PO_No = */
 
         private void bs2_PositionChanged(object sender, EventArgs e)
         {
-            if (bs2.Position >= 0)
+            if (dbgrid1.Rows.Count > 0 && bs2.Position >= 0)
             {
                 FillDetails();
                 // GetItemMemo();
 
                 dbgrid1.Rows[bs2.Position].Selected = true;
-            }
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedIndex == 1)
-            {
-                if (list_Mat == null || list_Mat.Count < 1)
-                    list_Mat = data.prefillCombos("Mat", Header.VendorID);
-                cmb_Act.Items = data.GetAct(CurrEntity);
-                cmb_Deliver.Items = data.prefillCombos("Deliver", CurrEntity);
-                cmb_PoClass.Items = data.GetPoClass();
-                this.Height = 550;
-            }
-            else
-            {
-                this.Height = 380;
             }
         }
 
@@ -5550,6 +5551,7 @@ WHERE PoHeader.PO_No = */
             try
             {
                 this.ActiveControl = p_Header;
+                this.Height = 380;
                 eb_Po_No.SelectAll();
             }
             catch { }
@@ -5569,6 +5571,15 @@ WHERE PoHeader.PO_No = */
                     cmb_PoClass.Items = data.GetPoClass();
                     if (viewMode1.Mode == ViewingMode.Adding)
                         New1();
+                    else
+                    {
+                        FillDetailQuery();
+                        FillDetails();
+                        lbl49.Text = "Contract: " + ((Detail == null) ? "" : Detail.Contract);
+                        //GetMemoData();
+                        GetItemMemo();
+                    }
+                    this.Height = 550;
                     this.ActiveControl = p_Detail;
                 }
                 cmb_Mat.SelectAll();
@@ -5610,11 +5621,6 @@ WHERE PoHeader.PO_No = */
             Changing = true;
             eb_PO_Number.Text = CurrPo.ToString();
             Changing = false;
-            FillDetailQuery();
-            FillDetails();
-            lbl49.Text = "Contract: " + ((Detail == null) ? "" : Detail.Contract);
-            //GetMemoData();
-            GetItemMemo();
         }
         #endregion
 
@@ -5714,7 +5720,7 @@ WHERE PoHeader.PO_No = */
             if (cmb_DetailVatCode.HasValidated == false)
             {
                 cmb_DetailVatCode.Focus();
-                if (CurDetailVat != null)
+                if (CurDetailVat != "" || Detail.NonFile)
                     SendKeys.Send("{TAB}");
                 return;
             }

@@ -20,7 +20,7 @@ namespace PoEntry
         public Ehs.Models.Vendor Vendor { get => (Ehs.Models.Vendor)bindingSource1.Current; }
         public string CurrTermsCode
         {
-            get
+            get 
             {
                 return (cmb_Terms_Code.CurrentItem == null) ? null : cmb_Terms_Code.CurrentItem.Key;
             }
