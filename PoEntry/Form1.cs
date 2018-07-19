@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -988,7 +988,6 @@ namespace PoEntry
             }
             CurHeaderVat = Header.VatCode;
             FillVendor();
-            vendorFrm.cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             CurVendor = Header.VendorID;
             cmb_vendor.Text = vendorFrm.cmb_vendor.Text;
@@ -1938,7 +1937,7 @@ Changing := false;
                     this.cmb_Entity.Focus();
             }
             //Pnl_Vendor.ReadOnly = false;
-            //cmb_vendor.Readonly = true;
+            cmb_vendor.ReadOnly = true;
             dbgrid1.Enabled = false;
         }
         private void NewDetail()
@@ -2011,6 +2010,7 @@ Changing := false;
                 if (bs2.Count > 0)
                 {
                     cmb_Entity.ReadOnly = true;
+                    vendorFrm.ReadOnly = true;
                     if (PoReleasedActiveOrSent()
                         && (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Frequency
                         || (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Prepay
@@ -3562,6 +3562,21 @@ WHERE PoHeader.PO_No = */
                             { result = false; return result; }
                         }
                     }
+                    if (cmb_vendor.HasValidated == false)
+                    {
+                        errorProvider1.SetError(cmb_vendor, "Pick a vendor");
+                        return false;
+                    }
+                    if (cmb_Po_Type.HasValidated == false)
+                    {
+                        errorProvider1.SetError(cmb_Po_Type, "Pick a PoType");
+                        return false;
+                    }
+                    if (cmb_Ship_To.HasValidated == false)
+                    {
+                        errorProvider1.SetError(cmb_Ship_To, "Pick a ShipTo");
+                        return false;
+                    }
 
                     result = true;
                 }
@@ -4210,7 +4225,8 @@ WHERE PoHeader.PO_No = */
                 cmb_Ship_To.SelectAll();
                 return;
             }
-            SendKeys.Send("{TAB}");
+            ismanualrun = true;
+                SendKeys.Send("{TAB}");
         }
 
         private void cmb_vendor_Enter(object sender, EventArgs e)
@@ -4223,6 +4239,8 @@ WHERE PoHeader.PO_No = */
         }
         void NewVendorFrm()
         {
+            if (cmb_vendor.ReadOnly)
+                return;
             var dialogResult = vendorFrm.ShowDialog();
             cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             cmb_vendor.Text = vendorFrm.cmb_vendor.Text;
@@ -4239,6 +4257,7 @@ WHERE PoHeader.PO_No = */
                 Header.VendorAccount = vendorFrm.Vendor.VendorAccount;
                 Header.VMShipVendorAccount = vendorFrm.eb_VMShip_Account.Text;
                 Header.FOB = vendorFrm.Vendor.FOB;
+                cmb_vendor.HasValidated = true;
             }
         }
 
@@ -4387,6 +4406,14 @@ WHERE PoHeader.PO_No = */
         #region Validating
 
         #region Header
+        private void cmb_Entity_Validating(object sender, CancelEventArgs e)
+        {
+            if (CurrEntity==null)
+            {
+                errorProvider1.SetError(cmb_Entity, "You Must choose an Entity");
+                e.Cancel = true;
+            }
+        }
         private void cmb_POGroup_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             errorProvider1.Clear();
@@ -4799,6 +4826,7 @@ WHERE PoHeader.PO_No = */
             Default_NonStock_Location = ((ComboBoxEntity)cmb_Entity.CurrentItem.Value).DefaultNonStockLocation;
             splitacct = data.GetSplit(CurrEntity);
             FillVendor();
+            cmb_vendor.ReadOnly = false;
         }
         private void cmb_Po_Type_Validated(object sender, EventArgs e)
         {
@@ -4826,7 +4854,7 @@ WHERE PoHeader.PO_No = */
             Header.ShipToCity = ((ComboBoxShipTo)cmb_Ship_To.CurrentItem.Value).City;
             Header.ShipToState = ((ComboBoxShipTo)cmb_Ship_To.CurrentItem.Value).State;
             Header.ShipToZip = ((ComboBoxShipTo)cmb_Ship_To.CurrentItem.Value).Zip;
-            ismanualrun = false;
+            ismanualrun = true;
         }
         private void cmb_Project_Validated(object sender, EventArgs e)
         {
@@ -4835,6 +4863,10 @@ WHERE PoHeader.PO_No = */
         private void dt_Po_Date_Validated(object sender, EventArgs e)
         {
             //Header.PODate = PoDate;
+        }
+        private void cmb_vendor_Validated(object sender, EventArgs e)
+        {
+            cmb_vendor.HasValidated = true;
         }
 
         #endregion header
@@ -4871,6 +4903,8 @@ WHERE PoHeader.PO_No = */
             }
             List_Uop = data.GetUop(CurMat, CurVendor);
         }
+
+
 
         private void cmb_Loc_Validated(object sender, EventArgs e)
         {

@@ -2408,7 +2408,7 @@ namespace PoEntry
             _Com.CommandText = "SELECT count(po_no) FROM receiving WHERE po_no = @po_no";
             if (_Com.ExecuteScalar().ToInt32() > 0)
                 return "Can't resequence this po. There are receipts associated with it.";
-            
+            /*
             if (InsertDetailLineMode)
             {
                 q_Command.Parameters.Clear();
@@ -2457,7 +2457,8 @@ namespace PoEntry
             sqlConnection6.Dispose();
             q_Command2.Dispose();
             return true;
-
+            */
+            return "Complete";
         }
     }
 

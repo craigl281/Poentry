@@ -665,7 +665,7 @@
             // TS_New
             // 
             this.TS_New.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TS_New.Image = global::PoEntry.Properties.Resources.document_new_61;
+            this.TS_New.Image = ((System.Drawing.Image)(resources.GetObject("TS_New.Image")));
             this.TS_New.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_New.Name = "TS_New";
             this.TS_New.Size = new System.Drawing.Size(23, 20);
@@ -685,7 +685,7 @@
             // TS_Save
             // 
             this.TS_Save.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TS_Save.Image = global::PoEntry.Properties.Resources.document_save_51;
+            this.TS_Save.Image = ((System.Drawing.Image)(resources.GetObject("TS_Save.Image")));
             this.TS_Save.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Save.Name = "TS_Save";
             this.TS_Save.Size = new System.Drawing.Size(23, 20);
@@ -700,7 +700,7 @@
             // TS_Delete
             // 
             this.TS_Delete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TS_Delete.Image = global::PoEntry.Properties.Resources.edit_delete_91;
+            this.TS_Delete.Image = ((System.Drawing.Image)(resources.GetObject("TS_Delete.Image")));
             this.TS_Delete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Delete.Name = "TS_Delete";
             this.TS_Delete.Size = new System.Drawing.Size(23, 20);
@@ -710,7 +710,7 @@
             // TS_Cancel
             // 
             this.TS_Cancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TS_Cancel.Image = global::PoEntry.Properties.Resources.edit_delete1;
+            this.TS_Cancel.Image = ((System.Drawing.Image)(resources.GetObject("TS_Cancel.Image")));
             this.TS_Cancel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Cancel.Name = "TS_Cancel";
             this.TS_Cancel.Size = new System.Drawing.Size(23, 20);
@@ -725,7 +725,7 @@
             // ts_previouspo
             // 
             this.ts_previouspo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ts_previouspo.Image = global::PoEntry.Properties.Resources.go_previous_3;
+            this.ts_previouspo.Image = ((System.Drawing.Image)(resources.GetObject("ts_previouspo.Image")));
             this.ts_previouspo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ts_previouspo.Name = "ts_previouspo";
             this.ts_previouspo.Size = new System.Drawing.Size(23, 20);
@@ -735,7 +735,7 @@
             // ts_nextpo
             // 
             this.ts_nextpo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ts_nextpo.Image = global::PoEntry.Properties.Resources.go_next_3;
+            this.ts_nextpo.Image = ((System.Drawing.Image)(resources.GetObject("ts_nextpo.Image")));
             this.ts_nextpo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ts_nextpo.Name = "ts_nextpo";
             this.ts_nextpo.Size = new System.Drawing.Size(23, 20);
@@ -750,7 +750,7 @@
             // toolStripButton3
             // 
             this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = global::PoEntry.Properties.Resources.application_x_ms_dos_executable;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(23, 20);
@@ -950,6 +950,7 @@
             this.cmb_Entity.Size = new System.Drawing.Size(325, 20);
             this.cmb_Entity.TabIndex = 4;
             this.cmb_Entity.Enter += new System.EventHandler(this.cmb_Entity_Enter);
+            this.cmb_Entity.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Entity_Validating);
             this.cmb_Entity.Validated += new System.EventHandler(this.cmb_Entity_Validated);
             // 
             // cmb_Project

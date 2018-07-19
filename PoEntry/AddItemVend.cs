@@ -113,8 +113,7 @@ namespace PoEntry
             int i = 0;
 
             q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT * FROM UnitOfMeasure ";
-            q_Command.CommandText += "WHERE Active = 1 ORDER BY UOM ";
+            q_Command.CommandText = "SELECT * FROM UnitOfMeasure WHERE Active = 1 ORDER BY UOM ";
             cmb_uop.Items.Clear();
             IVUOPSize = 9;
             using (SqlDataReader read = q_Command.ExecuteReader())

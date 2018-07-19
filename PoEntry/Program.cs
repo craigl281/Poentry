@@ -14,9 +14,9 @@ namespace PoEntry
             args = new string[6];
             args[0] = "vmpersei";
             args[1] = "pinnacle";
-            args[2] = "DDD564DDADB2";//"1084DD"; 
+            args[2] = "1084DD"; 
             args[3] = "POENTRY9.vshost.exe";
-            args[4] = "EHSMGR";// "CRAIG";
+            args[4] = "Paul";
             args[5] = "Purchase Order Entry9";
             /*
             args = new string[6];
