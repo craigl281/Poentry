@@ -149,11 +149,12 @@ namespace PoEntry
 
         private void FrmVendor_Load(object sender, EventArgs e)
         {
-            Pnl_Vendor.ReadOnly = ReadOnly;
+            if (mainfrm.viewMode1.Mode == ViewingMode.Editing && ReadOnly)
+                cmb_vendor.ReadOnly = true;
+            else
+                Pnl_Vendor.ReadOnly = ReadOnly;
             if (ReadOnly == false)
                 eb_Vendor_Account.ReadOnly = !data.SystemOptionsDictionary["CAN_EDIT_VENDOR_ACCOUNT"].ToBoolean();
-            if (mainfrm.viewMode1.Mode == ViewingMode.Editing)
-                cmb_vendor.ReadOnly = true;
         }
 
         private void button1_Click(object sender, EventArgs e)

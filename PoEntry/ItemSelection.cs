@@ -18,38 +18,23 @@ namespace PoEntry
 
         public string CurMat
         {
-            get { return cmb_Mat.CurrentItem.Key; }
-            set
-            {
-                cmb_Mat.CurrentItem = (cmb_Mat.Items.Exists(r => r.Key == value)) ? cmb_Mat.Items.Find(r => r.Key == value) : null;
-            }
+            get => cmb_Mat.CurrentItem.Key;
+            set => cmb_Mat.CurrentItem = (cmb_Mat.Items.Exists(r => r.Key == value)) ? cmb_Mat.Items.Find(r => r.Key == value) : null;
         }
         public string CurVendorCat
         {
-            get { return cmb_VendorCatalog.CurrentItem.Key; }
-            set
-            {
-                cmb_VendorCatalog.CurrentItem = (cmb_VendorCatalog.Items.Exists(r => r.Key == value)) ? cmb_VendorCatalog.Items.Find(r => r.Key == value) : null;
-            }
+            get => cmb_VendorCatalog.CurrentItem.Key;
+            set => cmb_VendorCatalog.CurrentItem = (cmb_VendorCatalog.Items.Exists(r => r.Key == value)) ? cmb_VendorCatalog.Items.Find(r => r.Key == value) : null;
         }
         public string CurMfgCat
         {
-            get { return cmb_MfgCatalog.CurrentItem.Key; }
-            set
-            {
-                cmb_MfgCatalog.CurrentItem = (cmb_MfgCatalog.Items.Exists(r => r.Key == value)) ? cmb_MfgCatalog.Items.Find(r => r.Key == value) : null;
-            }
+            get => cmb_MfgCatalog.CurrentItem.Key;
+            set => cmb_MfgCatalog.CurrentItem = (cmb_MfgCatalog.Items.Exists(r => r.Key == value)) ? cmb_MfgCatalog.Items.Find(r => r.Key == value) : null;
         }
         public string CurMfg
         {
-            get
-            {
-                return (cmb_Mfg_Name.CurrentItem == null) ? null : cmb_Mfg_Name.CurrentItem.Key;
-            }
-            set
-            {
-                cmb_Mfg_Name.CurrentItem = (cmb_Mfg_Name.Items.Exists(r => r.Key == value)) ? cmb_Mfg_Name.Items.Find(r => r.Key == value) : null;
-            }
+            get => (cmb_Mfg_Name.CurrentItem == null) ? null : cmb_Mfg_Name.CurrentItem.Key;
+            set => cmb_Mfg_Name.CurrentItem = (cmb_Mfg_Name.Items.Exists(r => r.Key == value)) ? cmb_Mfg_Name.Items.Find(r => r.Key == value) : null;
         }
 
 
@@ -58,6 +43,14 @@ namespace PoEntry
             InitializeComponent();
             orig = frm;
             cmb_Mat.Items = orig.data.prefillCombos("Mat", orig.Header.VendorID);
+            if (cmb_Mat.Items.Count < 1)
+            {
+                cmb_Mat.AllowTypedIn = true;
+                var mat = "No File Items Available for this Entity/Vendor, must select Nonfile";
+                cmb_Mat.Items.Add(new ComboBoxString(mat));
+                CurMat = mat;
+                toolsToolStripMenuItem.ForeColor = Color.Red;
+            }
             cmb_VendorCatalog.Items = orig.data.prefillCombos("VendorCat", orig.Header.VendorID);
             cmb_MfgCatalog.Items = orig.data.prefillCombos("MfgCat", orig.Header.VendorID);
             cmb_Mfg_Name.Items = orig.data.prefillCombos("Mfg_Name", "");
@@ -78,6 +71,10 @@ namespace PoEntry
         }
         private void cmb_VendorCatalog_Validating(object sender, CancelEventArgs e)
         {
+            if (cmb_VendorCatalog.AllowTypedIn && cmb_VendorCatalog.CurrentItem == null)
+            {
+                cmb_VendorCatalog.CurrentItem = new ComboBoxString(cmb_VendorCatalog.Text);
+            }
             if (orig.Detail.NonFile && orig.viewMode1.Mode == ViewingMode.Adding)
             {
                 var temp = orig.data.MatchNonFile(orig.Detail.VendorID, "Vendor_Catalog", CurVendorCat);//data.MatchNonFile(orig.Detail.VendorID, CurVendorCat);
@@ -92,6 +89,10 @@ namespace PoEntry
         }
         private void cmb_MfgCatalog_Validating(object sender, CancelEventArgs e)
         {
+            if (cmb_MfgCatalog.AllowTypedIn && cmb_MfgCatalog.CurrentItem == null)
+            {
+                cmb_MfgCatalog.CurrentItem = new ComboBoxString(cmb_MfgCatalog.Text);
+            }
             if (orig.Detail.NonFile && orig.viewMode1.Mode == ViewingMode.Adding)
             {
                 var temp = orig.data.MatchNonFile(orig.Detail.VendorID, "Mfg_Catalog", CurMfgCat);//data.MatchNonFile(orig.Detail.VendorID, CurVendorCat);
@@ -238,6 +239,17 @@ namespace PoEntry
             }
             cmb_VendorCatalog.AllowTypedIn = true;
             cmb_MfgCatalog.AllowTypedIn = true;
+
+
+            //cmb_MfgCatalog.EditMode = true;
+            cmb_MfgCatalog.KeyLabel = "ID";
+            cmb_MfgCatalog.ValueLabel = "Name";
+
+            //cmb_VendorCatalog.EditMode = true;
+            cmb_VendorCatalog.KeyLabel = "Id";
+            cmb_VendorCatalog.ValueLabel = "Name";
+
+
             SendKeys.Send("{TAB}");
         }
 

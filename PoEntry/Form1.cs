@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -26,9 +26,7 @@ namespace PoEntry
         List<string> STC = new List<string>();
         public LocationDetail _CurLocationDetail;
         public List<UnitOfPurchase> ListUop;
-
-        bool skipme = false, skipvalidating = false, modifiedpress = false;
-
+        
         #region Objects
         PoHeader List_Header;
         FilteredBindingList<PoDetail> List_Detail = new FilteredBindingList<PoDetail>();
@@ -67,8 +65,8 @@ namespace PoEntry
         public bool Use_Project_Spend_Amount, ENABLE_ADD_ITEMS, Enable_Add_ItemVend, Allow_Update_Master, ALLOW_UPDATE_CONTRACT, rsl, SameEntityInLoc;
         public bool USER_MUST_CHOOSE_LOC, GOTO_NEXT_LINE_EDIT, Can_Insert_MFG, USE_SUBLEDGER_AMOUNT;
         public bool Changing, CanSwitch, AddItemsStockChecked;
-        bool closing = false;//firstload = true, 
-        bool hasmatrows = false;
+        bool closing = false;
+        bool skipme = false;
 
         bool _UsePoGroups;
         bool USE_PO_GROUPS
@@ -421,6 +419,8 @@ namespace PoEntry
             get => cmb_DetailVatCode.CurrentItem?.Key ?? "";
             set => cmb_DetailVatCode.CurrentItem = (cmb_DetailVatCode.Items.Exists(r => r.Key == value)) ? cmb_DetailVatCode.Items.Find(r => r.Key == value) : null;
         }
+        public bool Is_Frequency=>((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency; 
+
         public string CurrentUOPPrime
         {
             get
@@ -988,7 +988,6 @@ namespace PoEntry
             }
             CurHeaderVat = Header.VatCode;
             FillVendor();
-            vendorFrm.cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             CurVendor = Header.VendorID;
             cmb_vendor.Text = vendorFrm.cmb_vendor.Text;
@@ -1274,14 +1273,6 @@ Changing := false;
             this.cmb_Deliver.Text = "";
             CurProfile = "";
             this.eb_Doctor_Id.Text = "";
-            /*
-            for (int i = 0; i < this.cmb_Purchase.Items.Count; i++)
-            {
-                this.cmb_Purchase.Items.RemoveAt(i);
-                i--;
-            }
-            this.cmb_Purchase.Items.Clear();
-            */
             this.eb_Conversion.Text = "1";
             this.cb_Substitute_Item.Checked = false;
             if (viewMode1.Mode == ViewingMode.Adding || viewMode1.Mode == ViewingMode.Editing)
@@ -1297,7 +1288,7 @@ Changing := false;
             Patient_Name = "";
             Serial_No = "";
             Surgery_Date = DateTime.Today;
-            cb_Accrue.Checked = (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).DontAccrual;
+            //cb_Accrue.Checked = (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).DontAccrual; check on this.
             btn_olr.Enabled = false;
         }
         private void bs2_CurrentItemChanged(object sender, EventArgs e)
@@ -1352,7 +1343,7 @@ Changing := false;
                     catch { }
                 }
             }
-            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).ReturnRepair)
+            if ((cmb_Po_Type.CurrentItem?.Value as ComboBoxPoType)?.ReturnRepair??false)
                 eb_Unit_Cost2.Text = "0";
             else
             {
@@ -1436,40 +1427,6 @@ Changing := false;
 
 
         /*
-        private void FillDetailsWithUnitPurchase()
-        {
-            if (NonFile_Item)
-                return;
-            if (cb_Substitute_Item.Checked)
-                return;
-            q_Command.Parameters.Clear();
-            q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
-                                  + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
-                                  + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE imf.Mat_Code = "
-                                  + "@Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Vendor_Id = @Vendor_Id AND "
-                                  + "uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id AND uop.Unit_Purchase = "
-                                  + "@uop and uop.vendor_Catalog = @Vendor_Catalog";
-
-            q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
-            q_Command.Parameters.AddWithValue("Vendor_Id", _WVendor.Vendor.VendorID);
-            q_Command.Parameters.AddWithValue("uop", CurrentUOPPrime);
-            q_Command.Parameters.Add("Vendor_Catalog", SqlDbType.VarChar).Value = eb_Vendor_Catalog.Text;
-            using (SqlDataReader read = q_Command.ExecuteReader())
-            {
-                if (read.HasRows)
-                {
-                    read.Read();
-                    _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
-                                   read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
-                                   read[8].ToString(), read[9].ToInt64(), read[10].ToString());
-                }
-                else
-                    _IMF = null;
-            }
-            if (_IMF != null)
-                GetImf();
-        }
 
         private void FillFrequencyQuery()
         {
@@ -1492,89 +1449,6 @@ Changing := false;
                 else
                     _Freq = null;
             }
-        }
-
-        private void FillDetailsWithMatCode(string UOP)
-        {
-            string holdIMF;
-            //holdCur = eb_Mat_Code.SelectionStart;
-            if ((AddingRecord == false) && (EditingRecord == false))
-            {
-                skipme = true;
-                Changing = true;
-                //bs2.SuspendBinding();
-                bs2.Position = bs2.Find("MatCode", Detail.MatCode);
-                //bs2.ResumeBinding();
-                //eb_Mat_Code.SelectionStart = holdCur;
-                skipme = false;
-                return;
-            }
-            else if (NonFile_Item)
-                return;
-
-            q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
-                                  + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
-                                  + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE imf.Mat_Code = "
-                                  + "@Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Vendor_Id = @Vendor_Id AND "
-                                  + "uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id ";
-            if (UOP.Trim() == "")
-                q_Command.CommandText += "AND uop.Default_UOP = 1 ";
-            else
-            {
-                q_Command.CommandText += "AND uop.Unit_Purchase = @uop";
-                q_Command.Parameters.AddWithValue("uop", UOP);
-            }
-            q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
-            q_Command.Parameters.AddWithValue("Vendor_Id", _WVendor.Vendor.VendorID);
-            using (SqlDataReader read = q_Command.ExecuteReader())
-            {
-                if (read.HasRows)
-                {
-                    read.Read();
-                    _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
-                                   read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
-                                   read[8].ToString(), read[9].ToInt64(), read[10].ToString());
-                }
-                else
-                    _IMF = null;
-            }
-            if (_IMF == null)
-            {
-                q_Command.Parameters.Clear();
-                q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
-                                      + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
-                                      + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE "
-                                      + "imf.Mat_Code = @Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Main_Vendor = "
-                                      + "1 AND uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id AND "
-                                      + "uop.Default_UOP = 1";
-                q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
-                using (SqlDataReader read = q_Command.ExecuteReader())
-                {
-                    if (read.HasRows)
-                    {
-                        read.Read();
-                        _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
-                                       read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
-                                       read[8].ToString(), read[9].ToInt64(), read[10].ToString());
-                    }
-                    else
-                        _IMF = new IMF("", "", "", "", "", "", "", "", "", 1, "");
-                }
-
-            }
-            ///should be okay here. test it. could be wrong
-            //Detail.MatCode = cmb_Mat.Text.Substring(0, cmb_Mat.Text.IndexOf("     "));
-
-            GetImf();
-            GetLoc();
-
-            //eb_Mat_Code.SelectionStart = holdCur;
-            ChangedLocation();
-        }
-        
-        private void FillDetailsWithMfgCat()
-        {
         }
         */
 
@@ -1938,7 +1812,7 @@ Changing := false;
                     this.cmb_Entity.Focus();
             }
             //Pnl_Vendor.ReadOnly = false;
-            //cmb_vendor.Readonly = true;
+            cmb_vendor.ReadOnly = true;
             dbgrid1.Enabled = false;
         }
         private void NewDetail()
@@ -2011,6 +1885,7 @@ Changing := false;
                 if (bs2.Count > 0)
                 {
                     cmb_Entity.ReadOnly = true;
+                    vendorFrm.ReadOnly = true;
                     if (PoReleasedActiveOrSent()
                         && (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Frequency
                         || (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Prepay
@@ -3562,6 +3437,21 @@ WHERE PoHeader.PO_No = */
                             { result = false; return result; }
                         }
                     }
+                    if (cmb_vendor.HasValidated == false)
+                    {
+                        errorProvider1.SetError(cmb_vendor, "Pick a vendor");
+                        return false;
+                    }
+                    if (cmb_Po_Type.HasValidated == false)
+                    {
+                        errorProvider1.SetError(cmb_Po_Type, "Pick a PoType");
+                        return false;
+                    }
+                    if (cmb_Ship_To.HasValidated == false)
+                    {
+                        errorProvider1.SetError(cmb_Ship_To, "Pick a ShipTo");
+                        return false;
+                    }
 
                     result = true;
                 }
@@ -4210,7 +4100,8 @@ WHERE PoHeader.PO_No = */
                 cmb_Ship_To.SelectAll();
                 return;
             }
-            SendKeys.Send("{TAB}");
+            ismanualrun = true;
+                SendKeys.Send("{TAB}");
         }
 
         private void cmb_vendor_Enter(object sender, EventArgs e)
@@ -4223,6 +4114,8 @@ WHERE PoHeader.PO_No = */
         }
         void NewVendorFrm()
         {
+            if (cmb_vendor.ReadOnly)
+                return;
             var dialogResult = vendorFrm.ShowDialog();
             cmb_vendor.Items = new List<ComboBoxString>(1) { new ComboBoxString(Header.VendorID, Header.VendorName) };
             cmb_vendor.Text = vendorFrm.cmb_vendor.Text;
@@ -4239,6 +4132,7 @@ WHERE PoHeader.PO_No = */
                 Header.VendorAccount = vendorFrm.Vendor.VendorAccount;
                 Header.VMShipVendorAccount = vendorFrm.eb_VMShip_Account.Text;
                 Header.FOB = vendorFrm.Vendor.FOB;
+                cmb_vendor.HasValidated = true;
             }
         }
 
@@ -4275,6 +4169,7 @@ WHERE PoHeader.PO_No = */
                         Detail.VendorCatalog = _Is.CurVendorCat;
                         Detail.MFGCatalog = _Is.CurMfgCat;
                         Detail.MFGName = _Is.CurMfg;
+                        SendKeys.Send("{TAB}");
                         SetDetailFocus();
                         return;
                     }
@@ -4290,6 +4185,12 @@ WHERE PoHeader.PO_No = */
             if (cmb_Loc.Items.Count == 0)
             {
                 errorProvider1.SetError(cmb_Loc, "No available locations for this mat");
+            }
+            if (cmb_Loc.Items.Count == 1)
+            {
+                CurLoc = cmb_Loc.Items[0].Key;
+                SendKeys.Send("{TAB}");
+                return;
             }
         }
         private void cmb_Act_Enter(object sender, EventArgs e)
@@ -4336,8 +4237,8 @@ WHERE PoHeader.PO_No = */
                 }
                 if (CurAct != null)
                 {
-                    Detail.Department = (cmb_Act.CurrentItem.Value as AccountNo).Department;
-                    Detail.SubAccount = (cmb_Act.CurrentItem.Value as AccountNo).SubAccount;
+                    //Detail.Department = (cmb_Act.CurrentItem.Value as AccountNo).Department;
+                    //Detail.SubAccount = (cmb_Act.CurrentItem.Value as AccountNo).SubAccount;
                     SetDetailFocus();
                 }
             }
@@ -4387,6 +4288,14 @@ WHERE PoHeader.PO_No = */
         #region Validating
 
         #region Header
+        private void cmb_Entity_Validating(object sender, CancelEventArgs e)
+        {
+            if (CurrEntity==null)
+            {
+                errorProvider1.SetError(cmb_Entity, "You Must choose an Entity");
+                e.Cancel = true;
+            }
+        }
         private void cmb_POGroup_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             errorProvider1.Clear();
@@ -4671,7 +4580,7 @@ WHERE PoHeader.PO_No = */
             Price_Changed = false;
             if (Changing)
                 return;
-            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).ReturnRepair)
+            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType)?.ReturnRepair??false)
                 return;
             if (viewMode1.Mode == ViewingMode.Editing)
             {
@@ -4799,6 +4708,7 @@ WHERE PoHeader.PO_No = */
             Default_NonStock_Location = ((ComboBoxEntity)cmb_Entity.CurrentItem.Value).DefaultNonStockLocation;
             splitacct = data.GetSplit(CurrEntity);
             FillVendor();
+            cmb_vendor.ReadOnly = false;
         }
         private void cmb_Po_Type_Validated(object sender, EventArgs e)
         {
@@ -4826,7 +4736,7 @@ WHERE PoHeader.PO_No = */
             Header.ShipToCity = ((ComboBoxShipTo)cmb_Ship_To.CurrentItem.Value).City;
             Header.ShipToState = ((ComboBoxShipTo)cmb_Ship_To.CurrentItem.Value).State;
             Header.ShipToZip = ((ComboBoxShipTo)cmb_Ship_To.CurrentItem.Value).Zip;
-            ismanualrun = false;
+            ismanualrun = true;
         }
         private void cmb_Project_Validated(object sender, EventArgs e)
         {
@@ -4835,6 +4745,10 @@ WHERE PoHeader.PO_No = */
         private void dt_Po_Date_Validated(object sender, EventArgs e)
         {
             //Header.PODate = PoDate;
+        }
+        private void cmb_vendor_Validated(object sender, EventArgs e)
+        {
+            cmb_vendor.HasValidated = true;
         }
 
         #endregion header
@@ -4871,6 +4785,8 @@ WHERE PoHeader.PO_No = */
             }
             List_Uop = data.GetUop(CurMat, CurVendor);
         }
+
+
 
         private void cmb_Loc_Validated(object sender, EventArgs e)
         {
@@ -4930,6 +4846,8 @@ WHERE PoHeader.PO_No = */
         private void cmb_Act_Validated(object sender, EventArgs e)
         {
             Detail.AccountNo = CurAct;
+            Detail.Department = (cmb_Act.CurrentItem.Value as AccountNo).Department;
+            Detail.SubAccount = (cmb_Act.CurrentItem.Value as AccountNo).SubAccount;
             ismanualrun = false;
             SetDetailFocus();
         }
@@ -5401,6 +5319,7 @@ WHERE PoHeader.PO_No = */
             }*/
         }
         #endregion save
+
         /*
         public void UpdateFilesForSingleItem(int posneg)
         {
@@ -5408,9 +5327,9 @@ WHERE PoHeader.PO_No = */
             DataTable Hold = new DataTable();
             int i = 0;
 
-            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * (decimal)posneg;
+            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * posneg;
             QuantityTimesCost += (QuantityTimesCost * Detail.VatPercentage / 100m);
-            Quantity = Detail.QtyOrder * Detail.Conversion * (decimal)posneg;
+            Quantity = Detail.QtyOrder * Detail.Conversion * posneg;
 
             this.q_Command.Parameters.Clear();
             this.q_Command.CommandText = "SELECT entity, account_no, profile_id, extended_amount, vat_amount "
@@ -5527,9 +5446,6 @@ WHERE PoHeader.PO_No = */
                 {
                     EhsUtil.Change_ContractUsage(ref q_Command, Detail.Contract, Detail.Location,
                            Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-
-                    //EhsUtil.Change_ContractUsage(Detail.Contract, Detail.Location,
-                    //      Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
                 }
             }
         }*/
@@ -5659,7 +5575,7 @@ WHERE PoHeader.PO_No = */
                     SendKeys.Send("{TAB}");
                 return;
             }
-            if (cmb_Loc.HasValidated == false)
+            if (cmb_Loc.HasValidated == false && Detail.NonFile == false)
             {
                 cmb_Loc.Focus();
                 if (CurLoc != null)
