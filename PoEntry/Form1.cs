@@ -419,8 +419,6 @@ namespace PoEntry
             get => cmb_DetailVatCode.CurrentItem?.Key ?? "";
             set => cmb_DetailVatCode.CurrentItem = (cmb_DetailVatCode.Items.Exists(r => r.Key == value)) ? cmb_DetailVatCode.Items.Find(r => r.Key == value) : null;
         }
-        public bool Is_Frequency=>((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency; 
-
         public string CurrentUOPPrime
         {
             get
@@ -517,6 +515,7 @@ namespace PoEntry
 
         #endregion
 
+        bool gettingitem;
         ControlController FormController;
 
         public Form1(string[] parameters)
@@ -930,9 +929,7 @@ namespace PoEntry
             FillDetailQuery();
 
             if (tabControl1.SelectedTab == p_Detail)
-            {
                 FillDetails();
-            }
             else
                 bs2.Position = -1;
             SetViewing();
@@ -1251,6 +1248,8 @@ Changing := false;
 
         public void ClearDetails()
         {
+            if (bs2.Count < 1)
+                return;
             this.Changing = true;
             /*try
             {
@@ -1265,14 +1264,28 @@ Changing := false;
             CurPoClass = "";
             this.eb_Quantity2.Text = "0";
 
-            DeliverDate = DateTime.Today.AddDays((double)vendorFrm.Vendor.LeadDays);
-
+            try
+            {
+                DeliverDate = DateTime.Today.AddDays((double)vendorFrm.Vendor.LeadDays);
+            }
+            catch
+            {
+                DeliverDate = DateTime.Today;
+            }
             if (cb_overnight.Checked) { DeliverDate = DateTime.Today.AddDays(1); }
             else if (cb_2ndDay.Checked) { DeliverDate = DateTime.Today.AddDays(2); }
 
             this.cmb_Deliver.Text = "";
             CurProfile = "";
             this.eb_Doctor_Id.Text = "";
+            /*
+            for (int i = 0; i < this.cmb_Purchase.Items.Count; i++)
+            {
+                this.cmb_Purchase.Items.RemoveAt(i);
+                i--;
+            }
+            this.cmb_Purchase.Items.Clear();
+            */
             this.eb_Conversion.Text = "1";
             this.cb_Substitute_Item.Checked = false;
             if (viewMode1.Mode == ViewingMode.Adding || viewMode1.Mode == ViewingMode.Editing)
@@ -1427,6 +1440,40 @@ Changing := false;
 
 
         /*
+        private void FillDetailsWithUnitPurchase()
+        {
+            if (NonFile_Item)
+                return;
+            if (cb_Substitute_Item.Checked)
+                return;
+            q_Command.Parameters.Clear();
+            q_Command.Parameters.Clear();
+            q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
+                                  + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
+                                  + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE imf.Mat_Code = "
+                                  + "@Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Vendor_Id = @Vendor_Id AND "
+                                  + "uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id AND uop.Unit_Purchase = "
+                                  + "@uop and uop.vendor_Catalog = @Vendor_Catalog";
+
+            q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
+            q_Command.Parameters.AddWithValue("Vendor_Id", _WVendor.Vendor.VendorID);
+            q_Command.Parameters.AddWithValue("uop", CurrentUOPPrime);
+            q_Command.Parameters.Add("Vendor_Catalog", SqlDbType.VarChar).Value = eb_Vendor_Catalog.Text;
+            using (SqlDataReader read = q_Command.ExecuteReader())
+            {
+                if (read.HasRows)
+                {
+                    read.Read();
+                    _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
+                                   read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
+                                   read[8].ToString(), read[9].ToInt64(), read[10].ToString());
+                }
+                else
+                    _IMF = null;
+            }
+            if (_IMF != null)
+                GetImf();
+        }
 
         private void FillFrequencyQuery()
         {
@@ -1449,6 +1496,89 @@ Changing := false;
                 else
                     _Freq = null;
             }
+        }
+
+        private void FillDetailsWithMatCode(string UOP)
+        {
+            string holdIMF;
+            //holdCur = eb_Mat_Code.SelectionStart;
+            if ((AddingRecord == false) && (EditingRecord == false))
+            {
+                skipme = true;
+                Changing = true;
+                //bs2.SuspendBinding();
+                bs2.Position = bs2.Find("MatCode", Detail.MatCode);
+                //bs2.ResumeBinding();
+                //eb_Mat_Code.SelectionStart = holdCur;
+                skipme = false;
+                return;
+            }
+            else if (NonFile_Item)
+                return;
+
+            q_Command.Parameters.Clear();
+            q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
+                                  + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
+                                  + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE imf.Mat_Code = "
+                                  + "@Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Vendor_Id = @Vendor_Id AND "
+                                  + "uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id ";
+            if (UOP.Trim() == "")
+                q_Command.CommandText += "AND uop.Default_UOP = 1 ";
+            else
+            {
+                q_Command.CommandText += "AND uop.Unit_Purchase = @uop";
+                q_Command.Parameters.AddWithValue("uop", UOP);
+            }
+            q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
+            q_Command.Parameters.AddWithValue("Vendor_Id", _WVendor.Vendor.VendorID);
+            using (SqlDataReader read = q_Command.ExecuteReader())
+            {
+                if (read.HasRows)
+                {
+                    read.Read();
+                    _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
+                                   read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
+                                   read[8].ToString(), read[9].ToInt64(), read[10].ToString());
+                }
+                else
+                    _IMF = null;
+            }
+            if (_IMF == null)
+            {
+                q_Command.Parameters.Clear();
+                q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
+                                      + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
+                                      + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE "
+                                      + "imf.Mat_Code = @Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Main_Vendor = "
+                                      + "1 AND uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id AND "
+                                      + "uop.Default_UOP = 1";
+                q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
+                using (SqlDataReader read = q_Command.ExecuteReader())
+                {
+                    if (read.HasRows)
+                    {
+                        read.Read();
+                        _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
+                                       read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
+                                       read[8].ToString(), read[9].ToInt64(), read[10].ToString());
+                    }
+                    else
+                        _IMF = new IMF("", "", "", "", "", "", "", "", "", 1, "");
+                }
+
+            }
+            ///should be okay here. test it. could be wrong
+            //Detail.MatCode = cmb_Mat.Text.Substring(0, cmb_Mat.Text.IndexOf("     "));
+
+            GetImf();
+            GetLoc();
+
+            //eb_Mat_Code.SelectionStart = holdCur;
+            ChangedLocation();
+        }
+        
+        private void FillDetailsWithMfgCat()
+        {
         }
         */
 
@@ -1615,6 +1745,11 @@ Changing := false;
                     bs2.Position = bs2.Find("ItemCount", holdItem_Count);
                     this.Changing = false;
                 }
+            }
+            else
+            {
+                List_Detail = _PDC.GetList(CurrPo);
+                bs2.DataSource = List_Detail;
             }
             if (this.viewMode1.Mode != ViewingMode.Inquiry)
             {
@@ -1805,6 +1940,8 @@ Changing := false;
                 //this.fillcmbPoType();
                 //m_General_Vendor.enabled := true;
                 this.ClearHeader();
+                vendorFrm = new FrmVendor();
+                ClearDetails();
 
                 if (data.SystemOptionsDictionary["USE_VAT_CODE_POHEADER"].ToBoolean())
                     cmb_Vat_Code.Items = data.prefillCombos("Vat", "");
@@ -4155,21 +4292,25 @@ WHERE PoHeader.PO_No = */
         }
         void Mat_Enter()
         {
+            DialogResult returnvalue = new DialogResult();
+
             if (viewMode1.Mode == ViewingMode.Adding)
             {
-                ItemSelection _Is = new ItemSelection(this);
+                if (gettingitem == false)
+                {
+                    ItemSelection _Is = new ItemSelection(this);
+                    returnvalue = _Is.ShowDialog();
+                }
+
                 try
                 {
-                    var returnvalue = _Is.ShowDialog();
                     if (returnvalue != null && returnvalue == DialogResult.OK)
                     {
                         if (Detail.NonFile)
-                            cmb_Mat.Items.Add(new ComboBoxString(_Is.CurMat));
-                        CurMat = _Is.CurMat;
-                        Detail.VendorCatalog = _Is.CurVendorCat;
-                        Detail.MFGCatalog = _Is.CurMfgCat;
-                        Detail.MFGName = _Is.CurMfg;
-                        SendKeys.Send("{TAB}");
+                        {
+                            cmb_Mat.Items.Add(new ComboBoxString(Detail.MatCode));
+                            CurMat = Detail.MatCode;
+                        }
                         SetDetailFocus();
                         return;
                     }
@@ -5327,9 +5468,9 @@ WHERE PoHeader.PO_No = */
             DataTable Hold = new DataTable();
             int i = 0;
 
-            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * posneg;
+            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * (decimal)posneg;
             QuantityTimesCost += (QuantityTimesCost * Detail.VatPercentage / 100m);
-            Quantity = Detail.QtyOrder * Detail.Conversion * posneg;
+            Quantity = Detail.QtyOrder * Detail.Conversion * (decimal)posneg;
 
             this.q_Command.Parameters.Clear();
             this.q_Command.CommandText = "SELECT entity, account_no, profile_id, extended_amount, vat_amount "
@@ -5446,6 +5587,9 @@ WHERE PoHeader.PO_No = */
                 {
                     EhsUtil.Change_ContractUsage(ref q_Command, Detail.Contract, Detail.Location,
                            Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
+
+                    //EhsUtil.Change_ContractUsage(Detail.Contract, Detail.Location,
+                    //      Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
                 }
             }
         }*/
@@ -5571,6 +5715,7 @@ WHERE PoHeader.PO_No = */
             if (cmb_Mat.HasValidated == false)
             {
                 cmb_Mat.Focus();
+                //SendKeys.Send("{TAB}");
                 if (CurMat != null)
                     SendKeys.Send("{TAB}");
                 return;
@@ -5633,13 +5778,15 @@ WHERE PoHeader.PO_No = */
                     SendKeys.Send("{TAB}");
                 return;
             }
+            /*
             if (cmb_DetailVatCode.HasValidated == false)
             {
                 cmb_DetailVatCode.Focus();
                 if (CurDetailVat != "" || Detail.NonFile)
                     SendKeys.Send("{TAB}");
                 return;
-            }
+            }*/
+
             eb_Quantity2.Focus();
         }
 

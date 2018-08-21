@@ -30,9 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.MS_New = new System.Windows.Forms.ToolStripMenuItem();
@@ -310,6 +307,7 @@
             // menuStrip1
             // 
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(0, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem1,
             this.toolsToolStripMenuItem,
@@ -319,8 +317,8 @@
             this.helpToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(884, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1326, 35);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -336,14 +334,14 @@
             this.toolStripSeparator4,
             this.exToolStripMenuItem});
             this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
-            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(50, 29);
             this.fileToolStripMenuItem1.Text = "File";
             // 
             // MS_New
             // 
             this.MS_New.Name = "MS_New";
             this.MS_New.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MS_New.Size = new System.Drawing.Size(198, 22);
+            this.MS_New.Size = new System.Drawing.Size(283, 30);
             this.MS_New.Text = "New Record";
             this.MS_New.Click += new System.EventHandler(this.MS_New_Click);
             // 
@@ -351,7 +349,7 @@
             // 
             this.MS_Edit.Name = "MS_Edit";
             this.MS_Edit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.MS_Edit.Size = new System.Drawing.Size(198, 22);
+            this.MS_Edit.Size = new System.Drawing.Size(283, 30);
             this.MS_Edit.Text = "Edit Record";
             this.MS_Edit.Click += new System.EventHandler(this.MS_Edit_Click);
             // 
@@ -359,39 +357,39 @@
             // 
             this.MS_Save.Name = "MS_Save";
             this.MS_Save.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.MS_Save.Size = new System.Drawing.Size(198, 22);
+            this.MS_Save.Size = new System.Drawing.Size(283, 30);
             this.MS_Save.Text = "Save Record";
             this.MS_Save.Click += new System.EventHandler(this.MS_Save_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(280, 6);
             // 
             // MS_Delete
             // 
             this.MS_Delete.Name = "MS_Delete";
             this.MS_Delete.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
-            this.MS_Delete.Size = new System.Drawing.Size(198, 22);
+            this.MS_Delete.Size = new System.Drawing.Size(283, 30);
             this.MS_Delete.Text = "Delete Record";
             this.MS_Delete.Click += new System.EventHandler(this.MS_Delete_Click);
             // 
             // MS_Cancel
             // 
             this.MS_Cancel.Name = "MS_Cancel";
-            this.MS_Cancel.Size = new System.Drawing.Size(198, 22);
+            this.MS_Cancel.Size = new System.Drawing.Size(283, 30);
             this.MS_Cancel.Text = "Cancel";
             this.MS_Cancel.Click += new System.EventHandler(this.MS_Cancel_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(280, 6);
             // 
             // exToolStripMenuItem
             // 
             this.exToolStripMenuItem.Name = "exToolStripMenuItem";
-            this.exToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.exToolStripMenuItem.Size = new System.Drawing.Size(283, 30);
             this.exToolStripMenuItem.Text = "Exit";
             this.exToolStripMenuItem.Click += new System.EventHandler(this.exToolStripMenuItem_Click);
             // 
@@ -417,14 +415,14 @@
             this.returnCancelledItemToolStripMenuItem,
             this.splitDetailLineToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // reopenPurchaseOrderToolStripMenuItem
             // 
             this.reopenPurchaseOrderToolStripMenuItem.Name = "reopenPurchaseOrderToolStripMenuItem";
             this.reopenPurchaseOrderToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.reopenPurchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.reopenPurchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.reopenPurchaseOrderToolStripMenuItem.Text = "ReOpen Purchase Order";
             this.reopenPurchaseOrderToolStripMenuItem.Click += new System.EventHandler(this.reopenPurchaseOrderToolStripMenuItem_Click);
             // 
@@ -432,7 +430,7 @@
             // 
             this.releasePurchaseOrderToolStripMenuItem.Name = "releasePurchaseOrderToolStripMenuItem";
             this.releasePurchaseOrderToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.releasePurchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.releasePurchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.releasePurchaseOrderToolStripMenuItem.Text = "Release Purchase Order";
             this.releasePurchaseOrderToolStripMenuItem.Click += new System.EventHandler(this.releasePurchaseOrderToolStripMenuItem_Click);
             // 
@@ -440,7 +438,7 @@
             // 
             this.togglePagesToolStripMenuItem.Name = "togglePagesToolStripMenuItem";
             this.togglePagesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.togglePagesToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.togglePagesToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.togglePagesToolStripMenuItem.Text = "Toggle Pages";
             this.togglePagesToolStripMenuItem.Click += new System.EventHandler(this.togglePagesToolStripMenuItem_Click);
             // 
@@ -448,7 +446,7 @@
             // 
             this.m_addItems.Name = "m_addItems";
             this.m_addItems.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.m_addItems.Size = new System.Drawing.Size(255, 22);
+            this.m_addItems.Size = new System.Drawing.Size(365, 30);
             this.m_addItems.Text = "Add Items";
             this.m_addItems.Click += new System.EventHandler(this.m_addItems_Click);
             // 
@@ -456,7 +454,7 @@
             // 
             this.addItemToRSLToolStripMenuItem.Name = "addItemToRSLToolStripMenuItem";
             this.addItemToRSLToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.addItemToRSLToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.addItemToRSLToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.addItemToRSLToolStripMenuItem.Text = "Add Item to RSL";
             this.addItemToRSLToolStripMenuItem.Click += new System.EventHandler(this.addItemToRSLToolStripMenuItem_Click);
             // 
@@ -464,7 +462,7 @@
             // 
             this.viewPOInformationToolStripMenuItem.Name = "viewPOInformationToolStripMenuItem";
             this.viewPOInformationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.viewPOInformationToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.viewPOInformationToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.viewPOInformationToolStripMenuItem.Text = "View PO Information";
             this.viewPOInformationToolStripMenuItem.Click += new System.EventHandler(this.viewPOInformationToolStripMenuItem_Click);
             // 
@@ -472,7 +470,7 @@
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(255, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(365, 30);
             this.toolStripMenuItem3.Text = "Print PO";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
@@ -480,7 +478,7 @@
             // 
             this.resequenceLineNumbersToolStripMenuItem.Name = "resequenceLineNumbersToolStripMenuItem";
             this.resequenceLineNumbersToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.resequenceLineNumbersToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.resequenceLineNumbersToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.resequenceLineNumbersToolStripMenuItem.Text = "Resequence Line Numbers";
             this.resequenceLineNumbersToolStripMenuItem.Click += new System.EventHandler(this.resequenceLineNumbersToolStripMenuItem_Click);
             // 
@@ -488,7 +486,7 @@
             // 
             this.viewBreakdownToolStripMenuItem.Name = "viewBreakdownToolStripMenuItem";
             this.viewBreakdownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.viewBreakdownToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.viewBreakdownToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.viewBreakdownToolStripMenuItem.Text = "View Breakdown";
             this.viewBreakdownToolStripMenuItem.Click += new System.EventHandler(this.viewBreakdownToolStripMenuItem_Click);
             // 
@@ -496,70 +494,70 @@
             // 
             this.m_addFreight.Name = "m_addFreight";
             this.m_addFreight.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.m_addFreight.Size = new System.Drawing.Size(255, 22);
+            this.m_addFreight.Size = new System.Drawing.Size(365, 30);
             this.m_addFreight.Text = "Add Freight";
             this.m_addFreight.Click += new System.EventHandler(this.m_addFreight_Click);
             // 
             // addItemToToolStripMenuItem
             // 
             this.addItemToToolStripMenuItem.Name = "addItemToToolStripMenuItem";
-            this.addItemToToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.addItemToToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.addItemToToolStripMenuItem.Text = "Add Item To Contract";
             this.addItemToToolStripMenuItem.Click += new System.EventHandler(this.addItemToToolStripMenuItem_Click);
             // 
             // changeDeliverDateToolStripMenuItem
             // 
             this.changeDeliverDateToolStripMenuItem.Name = "changeDeliverDateToolStripMenuItem";
-            this.changeDeliverDateToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.changeDeliverDateToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.changeDeliverDateToolStripMenuItem.Text = "Change Deliver Date";
             this.changeDeliverDateToolStripMenuItem.Click += new System.EventHandler(this.changeDeliverDateToolStripMenuItem_Click);
             // 
             // changeEntityToolStripMenuItem
             // 
             this.changeEntityToolStripMenuItem.Name = "changeEntityToolStripMenuItem";
-            this.changeEntityToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.changeEntityToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.changeEntityToolStripMenuItem.Text = "Change Entity";
             this.changeEntityToolStripMenuItem.Click += new System.EventHandler(this.changeEntityToolStripMenuItem_Click);
             // 
             // editPOInformationToolStripMenuItem
             // 
             this.editPOInformationToolStripMenuItem.Name = "editPOInformationToolStripMenuItem";
-            this.editPOInformationToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.editPOInformationToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.editPOInformationToolStripMenuItem.Text = "Edit PO Information";
             this.editPOInformationToolStripMenuItem.Click += new System.EventHandler(this.editPOInformationToolStripMenuItem_Click);
             // 
             // poReportOnScreenToolStripMenuItem
             // 
             this.poReportOnScreenToolStripMenuItem.Name = "poReportOnScreenToolStripMenuItem";
-            this.poReportOnScreenToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.poReportOnScreenToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.poReportOnScreenToolStripMenuItem.Text = "Po Report on screen";
             this.poReportOnScreenToolStripMenuItem.Click += new System.EventHandler(this.poReportOnScreenToolStripMenuItem_Click);
             // 
             // Ts_Putonhold
             // 
             this.Ts_Putonhold.Name = "Ts_Putonhold";
-            this.Ts_Putonhold.Size = new System.Drawing.Size(255, 22);
+            this.Ts_Putonhold.Size = new System.Drawing.Size(365, 30);
             this.Ts_Putonhold.Text = "Put on/off Hold to not pay";
             this.Ts_Putonhold.Click += new System.EventHandler(this.Ts_Putonhold_Click);
             // 
             // returnCancelledItemToolStripMenuItem
             // 
             this.returnCancelledItemToolStripMenuItem.Name = "returnCancelledItemToolStripMenuItem";
-            this.returnCancelledItemToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.returnCancelledItemToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.returnCancelledItemToolStripMenuItem.Text = "Return Cancelled Item";
             this.returnCancelledItemToolStripMenuItem.Click += new System.EventHandler(this.returnCancelledItemToolStripMenuItem_Click);
             // 
             // splitDetailLineToolStripMenuItem
             // 
             this.splitDetailLineToolStripMenuItem.Name = "splitDetailLineToolStripMenuItem";
-            this.splitDetailLineToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.splitDetailLineToolStripMenuItem.Size = new System.Drawing.Size(365, 30);
             this.splitDetailLineToolStripMenuItem.Text = "Split Detail Line";
             this.splitDetailLineToolStripMenuItem.Click += new System.EventHandler(this.splitDetailLineToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(61, 29);
             this.toolStripMenuItem1.Text = "View";
             // 
             // Quicklinks_TS
@@ -568,19 +566,19 @@
             this.inquiries_TS,
             this.reports_TS});
             this.Quicklinks_TS.Name = "Quicklinks_TS";
-            this.Quicklinks_TS.Size = new System.Drawing.Size(74, 20);
+            this.Quicklinks_TS.Size = new System.Drawing.Size(104, 29);
             this.Quicklinks_TS.Text = "Quicklinks";
             // 
             // inquiries_TS
             // 
             this.inquiries_TS.Name = "inquiries_TS";
-            this.inquiries_TS.Size = new System.Drawing.Size(119, 22);
+            this.inquiries_TS.Size = new System.Drawing.Size(163, 30);
             this.inquiries_TS.Text = "Inquiries";
             // 
             // reports_TS
             // 
             this.reports_TS.Name = "reports_TS";
-            this.reports_TS.Size = new System.Drawing.Size(119, 22);
+            this.reports_TS.Size = new System.Drawing.Size(163, 30);
             this.reports_TS.Text = "Reports";
             // 
             // desktopToolStripMenuItem1
@@ -590,25 +588,25 @@
             this.restoreSettingsToolStripMenuItem1,
             this.restoreDefaultsToolStripMenuItem1});
             this.desktopToolStripMenuItem1.Name = "desktopToolStripMenuItem1";
-            this.desktopToolStripMenuItem1.Size = new System.Drawing.Size(62, 20);
+            this.desktopToolStripMenuItem1.Size = new System.Drawing.Size(91, 29);
             this.desktopToolStripMenuItem1.Text = "Desktop";
             // 
             // saveSettingsToolStripMenuItem1
             // 
             this.saveSettingsToolStripMenuItem1.Name = "saveSettingsToolStripMenuItem1";
-            this.saveSettingsToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.saveSettingsToolStripMenuItem1.Size = new System.Drawing.Size(225, 30);
             this.saveSettingsToolStripMenuItem1.Text = "Save Settings";
             // 
             // restoreSettingsToolStripMenuItem1
             // 
             this.restoreSettingsToolStripMenuItem1.Name = "restoreSettingsToolStripMenuItem1";
-            this.restoreSettingsToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.restoreSettingsToolStripMenuItem1.Size = new System.Drawing.Size(225, 30);
             this.restoreSettingsToolStripMenuItem1.Text = "Restore Settings";
             // 
             // restoreDefaultsToolStripMenuItem1
             // 
             this.restoreDefaultsToolStripMenuItem1.Name = "restoreDefaultsToolStripMenuItem1";
-            this.restoreDefaultsToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.restoreDefaultsToolStripMenuItem1.Size = new System.Drawing.Size(225, 30);
             this.restoreDefaultsToolStripMenuItem1.Text = "Restore Defaults";
             // 
             // helpToolStripMenuItem1
@@ -617,25 +615,26 @@
             this.toolStripMenuItem2,
             this.about1});
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(61, 29);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(164, 30);
             this.toolStripMenuItem2.Text = "Help";
             // 
             // about1
             // 
             this.about1.Name = "about1";
-            this.about1.Size = new System.Drawing.Size(118, 22);
+            this.about1.Size = new System.Drawing.Size(164, 30);
             this.about1.Text = "About";
             // 
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TS_New,
             this.TS_Edit,
@@ -655,10 +654,10 @@
             this.toolStripSeparator8,
             this.btn_rcv,
             this.btn_olr});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 35);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(1);
-            this.toolStrip1.Size = new System.Drawing.Size(884, 25);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.toolStrip1.Size = new System.Drawing.Size(1326, 36);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -668,7 +667,7 @@
             this.TS_New.Image = ((System.Drawing.Image)(resources.GetObject("TS_New.Image")));
             this.TS_New.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_New.Name = "TS_New";
-            this.TS_New.Size = new System.Drawing.Size(23, 20);
+            this.TS_New.Size = new System.Drawing.Size(28, 29);
             this.TS_New.Text = "New Record";
             this.TS_New.Click += new System.EventHandler(this.TS_New_Click);
             // 
@@ -678,7 +677,7 @@
             this.TS_Edit.Image = ((System.Drawing.Image)(resources.GetObject("TS_Edit.Image")));
             this.TS_Edit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Edit.Name = "TS_Edit";
-            this.TS_Edit.Size = new System.Drawing.Size(23, 20);
+            this.TS_Edit.Size = new System.Drawing.Size(28, 29);
             this.TS_Edit.Text = "Edit Record";
             this.TS_Edit.Click += new System.EventHandler(this.TS_Edit_Click);
             // 
@@ -688,14 +687,14 @@
             this.TS_Save.Image = ((System.Drawing.Image)(resources.GetObject("TS_Save.Image")));
             this.TS_Save.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Save.Name = "TS_Save";
-            this.TS_Save.Size = new System.Drawing.Size(23, 20);
+            this.TS_Save.Size = new System.Drawing.Size(28, 29);
             this.TS_Save.Text = "Save";
             this.TS_Save.Click += new System.EventHandler(this.TS_Save_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
             // 
             // TS_Delete
             // 
@@ -703,7 +702,7 @@
             this.TS_Delete.Image = ((System.Drawing.Image)(resources.GetObject("TS_Delete.Image")));
             this.TS_Delete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Delete.Name = "TS_Delete";
-            this.TS_Delete.Size = new System.Drawing.Size(23, 20);
+            this.TS_Delete.Size = new System.Drawing.Size(28, 29);
             this.TS_Delete.Text = "Delete";
             this.TS_Delete.Click += new System.EventHandler(this.TS_Delete_Click);
             // 
@@ -713,14 +712,14 @@
             this.TS_Cancel.Image = ((System.Drawing.Image)(resources.GetObject("TS_Cancel.Image")));
             this.TS_Cancel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TS_Cancel.Name = "TS_Cancel";
-            this.TS_Cancel.Size = new System.Drawing.Size(23, 20);
+            this.TS_Cancel.Size = new System.Drawing.Size(28, 29);
             this.TS_Cancel.Text = "Cancel";
             this.TS_Cancel.Click += new System.EventHandler(this.TS_Cancel_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
             // 
             // ts_previouspo
             // 
@@ -728,7 +727,7 @@
             this.ts_previouspo.Image = ((System.Drawing.Image)(resources.GetObject("ts_previouspo.Image")));
             this.ts_previouspo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ts_previouspo.Name = "ts_previouspo";
-            this.ts_previouspo.Size = new System.Drawing.Size(23, 20);
+            this.ts_previouspo.Size = new System.Drawing.Size(28, 29);
             this.ts_previouspo.Text = "Previous";
             this.ts_previouspo.Click += new System.EventHandler(this.ts_previouspo_Click);
             // 
@@ -738,14 +737,14 @@
             this.ts_nextpo.Image = ((System.Drawing.Image)(resources.GetObject("ts_nextpo.Image")));
             this.ts_nextpo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ts_nextpo.Name = "ts_nextpo";
-            this.ts_nextpo.Size = new System.Drawing.Size(23, 20);
+            this.ts_nextpo.Size = new System.Drawing.Size(28, 29);
             this.ts_nextpo.Text = "Next";
             this.ts_nextpo.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 32);
             // 
             // toolStripButton3
             // 
@@ -753,13 +752,13 @@
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButton3.Size = new System.Drawing.Size(28, 29);
             this.toolStripButton3.Text = "Multi";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 32);
             // 
             // cb_Has_Image
             // 
@@ -770,32 +769,32 @@
             this.cb_Has_Image.Image = ((System.Drawing.Image)(resources.GetObject("cb_Has_Image.Image")));
             this.cb_Has_Image.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cb_Has_Image.Name = "cb_Has_Image";
-            this.cb_Has_Image.Size = new System.Drawing.Size(67, 20);
+            this.cb_Has_Image.Size = new System.Drawing.Size(101, 29);
             this.cb_Has_Image.Text = "Has Image";
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 32);
             // 
             // btn_scan
             // 
             this.btn_scan.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_scan.Name = "btn_scan";
-            this.btn_scan.Size = new System.Drawing.Size(66, 20);
+            this.btn_scan.Size = new System.Drawing.Size(97, 29);
             this.btn_scan.Text = "View/Scan";
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 32);
             // 
             // btn_rcv
             // 
             this.btn_rcv.Enabled = false;
             this.btn_rcv.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_rcv.Name = "btn_rcv";
-            this.btn_rcv.Size = new System.Drawing.Size(33, 20);
+            this.btn_rcv.Size = new System.Drawing.Size(49, 29);
             this.btn_rcv.Text = "RCV";
             // 
             // btn_olr
@@ -803,7 +802,7 @@
             this.btn_olr.Enabled = false;
             this.btn_olr.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_olr.Name = "btn_olr";
-            this.btn_olr.Size = new System.Drawing.Size(33, 20);
+            this.btn_olr.Size = new System.Drawing.Size(49, 29);
             this.btn_olr.Text = "OLR";
             // 
             // tabControl1
@@ -812,10 +811,11 @@
             this.tabControl1.Controls.Add(this.p_Detail);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl1.Location = new System.Drawing.Point(0, 49);
+            this.tabControl1.Location = new System.Drawing.Point(0, 71);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(884, 292);
+            this.tabControl1.Size = new System.Drawing.Size(1326, 454);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 89;
             this.tabControl1.TabStop = false;
@@ -877,10 +877,11 @@
             this.p_Header.Controls.Add(this.lbl_PO_Date);
             this.p_Header.Controls.Add(this.cmb_POGroup);
             this.p_Header.Controls.Add(this.lbl_PoGroup);
-            this.p_Header.Location = new System.Drawing.Point(4, 22);
+            this.p_Header.Location = new System.Drawing.Point(4, 29);
+            this.p_Header.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.p_Header.Name = "p_Header";
-            this.p_Header.Padding = new System.Windows.Forms.Padding(3);
-            this.p_Header.Size = new System.Drawing.Size(876, 266);
+            this.p_Header.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.p_Header.Size = new System.Drawing.Size(1318, 421);
             this.p_Header.TabIndex = 0;
             this.p_Header.Text = "Header";
             this.p_Header.UseVisualStyleBackColor = true;
@@ -891,15 +892,15 @@
             this.cmb_vendor.BackColor = System.Drawing.SystemColors.Window;
             this.cueExtender1.SetCueText(this.cmb_vendor, "Vendor");
             this.cmb_vendor.CurrentItem = null;
-            this.cmb_vendor.Items = null;
-            this.cmb_vendor.Location = new System.Drawing.Point(52, 145);
+            this.cmb_vendor.Location = new System.Drawing.Point(78, 223);
+            this.cmb_vendor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_vendor.Name = "cmb_vendor";
             this.cmb_vendor.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_vendor.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_vendor.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_vendor.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_vendor.PopupWidth = 300;
-            this.cmb_vendor.Size = new System.Drawing.Size(689, 20);
+            this.cmb_vendor.Size = new System.Drawing.Size(1032, 29);
             this.cmb_vendor.TabIndex = 20;
             this.cmb_vendor.Click += new System.EventHandler(this.cmb_vendor_Click);
             this.cmb_vendor.DoubleClick += new System.EventHandler(this.cmb_vendor_DoubleClick);
@@ -907,9 +908,10 @@
             // 
             // btn_Notify
             // 
-            this.btn_Notify.Location = new System.Drawing.Point(355, 44);
+            this.btn_Notify.Location = new System.Drawing.Point(532, 68);
+            this.btn_Notify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btn_Notify.Name = "btn_Notify";
-            this.btn_Notify.Size = new System.Drawing.Size(75, 23);
+            this.btn_Notify.Size = new System.Drawing.Size(112, 35);
             this.btn_Notify.TabIndex = 95;
             this.btn_Notify.Text = "Notify";
             this.btn_Notify.UseVisualStyleBackColor = true;
@@ -920,15 +922,15 @@
             this.cmb_Po_Type.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Po_Type, "PoType");
             this.cmb_Po_Type.CurrentItem = null;
-            this.cmb_Po_Type.Items = null;
-            this.cmb_Po_Type.Location = new System.Drawing.Point(80, 45);
+            this.cmb_Po_Type.Location = new System.Drawing.Point(120, 69);
+            this.cmb_Po_Type.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Po_Type.Name = "cmb_Po_Type";
             this.cmb_Po_Type.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Po_Type.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Po_Type.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Po_Type.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Po_Type.PopupWidth = 300;
-            this.cmb_Po_Type.Size = new System.Drawing.Size(278, 20);
+            this.cmb_Po_Type.Size = new System.Drawing.Size(415, 29);
             this.cmb_Po_Type.TabIndex = 5;
             this.cmb_Po_Type.Enter += new System.EventHandler(this.cmb_Po_Type_Enter);
             this.cmb_Po_Type.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Po_Type_Validating);
@@ -939,15 +941,15 @@
             this.cmb_Entity.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Entity, "Entity");
             this.cmb_Entity.CurrentItem = null;
-            this.cmb_Entity.Items = null;
-            this.cmb_Entity.Location = new System.Drawing.Point(80, 25);
+            this.cmb_Entity.Location = new System.Drawing.Point(120, 38);
+            this.cmb_Entity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Entity.Name = "cmb_Entity";
             this.cmb_Entity.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Entity.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Entity.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Entity.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Entity.PopupWidth = 300;
-            this.cmb_Entity.Size = new System.Drawing.Size(325, 20);
+            this.cmb_Entity.Size = new System.Drawing.Size(486, 29);
             this.cmb_Entity.TabIndex = 4;
             this.cmb_Entity.Enter += new System.EventHandler(this.cmb_Entity_Enter);
             this.cmb_Entity.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Entity_Validating);
@@ -957,15 +959,15 @@
             // 
             this.cmb_Project.AllowTypedIn = false;
             this.cmb_Project.CurrentItem = null;
-            this.cmb_Project.Items = null;
-            this.cmb_Project.Location = new System.Drawing.Point(244, 85);
+            this.cmb_Project.Location = new System.Drawing.Point(366, 131);
+            this.cmb_Project.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Project.Name = "cmb_Project";
             this.cmb_Project.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Project.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Project.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Project.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Project.PopupWidth = 300;
-            this.cmb_Project.Size = new System.Drawing.Size(175, 20);
+            this.cmb_Project.Size = new System.Drawing.Size(260, 29);
             this.cmb_Project.TabIndex = 8;
             this.cmb_Project.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Project_Validating);
             this.cmb_Project.Validated += new System.EventHandler(this.cmb_Project_Validated);
@@ -975,11 +977,12 @@
             this.b_pat_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "PatientMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.b_pat_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_pat_memo.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.b_pat_memo.Location = new System.Drawing.Point(602, 102);
+            this.b_pat_memo.Location = new System.Drawing.Point(903, 157);
+            this.b_pat_memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_pat_memo.MemoValue = "";
             this.b_pat_memo.Name = "b_pat_memo";
             this.b_pat_memo.ReadOnly = false;
-            this.b_pat_memo.Size = new System.Drawing.Size(59, 23);
+            this.b_pat_memo.Size = new System.Drawing.Size(88, 35);
             this.b_pat_memo.TabIndex = 16;
             this.b_pat_memo.Text = "Patient";
             this.b_pat_memo.UseVisualStyleBackColor = true;
@@ -996,11 +999,12 @@
             this.b_vendor_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "VendorMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.b_vendor_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_vendor_memo.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.b_vendor_memo.Location = new System.Drawing.Point(543, 102);
+            this.b_vendor_memo.Location = new System.Drawing.Point(814, 157);
+            this.b_vendor_memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_vendor_memo.MemoValue = "";
             this.b_vendor_memo.Name = "b_vendor_memo";
             this.b_vendor_memo.ReadOnly = false;
-            this.b_vendor_memo.Size = new System.Drawing.Size(60, 23);
+            this.b_vendor_memo.Size = new System.Drawing.Size(90, 35);
             this.b_vendor_memo.TabIndex = 15;
             this.b_vendor_memo.Text = "Vendor";
             this.b_vendor_memo.UseVisualStyleBackColor = true;
@@ -1011,11 +1015,12 @@
             this.b_rec_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "ReceiverMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.b_rec_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_rec_memo.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.b_rec_memo.Location = new System.Drawing.Point(602, 82);
+            this.b_rec_memo.Location = new System.Drawing.Point(903, 126);
+            this.b_rec_memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_rec_memo.MemoValue = "";
             this.b_rec_memo.Name = "b_rec_memo";
             this.b_rec_memo.ReadOnly = false;
-            this.b_rec_memo.Size = new System.Drawing.Size(59, 23);
+            this.b_rec_memo.Size = new System.Drawing.Size(88, 35);
             this.b_rec_memo.TabIndex = 13;
             this.b_rec_memo.Text = "Receiver";
             this.b_rec_memo.UseVisualStyleBackColor = true;
@@ -1026,11 +1031,12 @@
             this.b_buyer_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "BuyerMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.b_buyer_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_buyer_memo.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.b_buyer_memo.Location = new System.Drawing.Point(543, 82);
+            this.b_buyer_memo.Location = new System.Drawing.Point(814, 126);
+            this.b_buyer_memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_buyer_memo.MemoValue = "";
             this.b_buyer_memo.Name = "b_buyer_memo";
             this.b_buyer_memo.ReadOnly = false;
-            this.b_buyer_memo.Size = new System.Drawing.Size(60, 23);
+            this.b_buyer_memo.Size = new System.Drawing.Size(90, 35);
             this.b_buyer_memo.TabIndex = 12;
             this.b_buyer_memo.Text = "Buyer";
             this.b_buyer_memo.UseVisualStyleBackColor = true;
@@ -1040,19 +1046,21 @@
             // 
             this.dt_PO_Date.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bs1, "PODate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.dt_PO_Date.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dt_PO_Date.Location = new System.Drawing.Point(544, 45);
+            this.dt_PO_Date.Location = new System.Drawing.Point(816, 69);
+            this.dt_PO_Date.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dt_PO_Date.Name = "dt_PO_Date";
             this.dt_PO_Date.ShowCheckBox = true;
-            this.dt_PO_Date.Size = new System.Drawing.Size(147, 20);
+            this.dt_PO_Date.Size = new System.Drawing.Size(218, 26);
             this.dt_PO_Date.TabIndex = 10;
             this.dt_PO_Date.Value = new System.DateTime(2017, 8, 11, 0, 0, 0, 0);
             this.dt_PO_Date.Validated += new System.EventHandler(this.dt_Po_Date_Validated);
             // 
             // speedbutton1
             // 
-            this.speedbutton1.Location = new System.Drawing.Point(642, 224);
+            this.speedbutton1.Location = new System.Drawing.Point(963, 345);
+            this.speedbutton1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.speedbutton1.Name = "speedbutton1";
-            this.speedbutton1.Size = new System.Drawing.Size(75, 23);
+            this.speedbutton1.Size = new System.Drawing.Size(112, 35);
             this.speedbutton1.TabIndex = 43;
             this.speedbutton1.Text = "button1";
             this.speedbutton1.UseVisualStyleBackColor = true;
@@ -1060,9 +1068,10 @@
             // eb_Not_Total
             // 
             this.eb_Not_Total.Enabled = false;
-            this.eb_Not_Total.Location = new System.Drawing.Point(544, 25);
+            this.eb_Not_Total.Location = new System.Drawing.Point(816, 38);
+            this.eb_Not_Total.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Not_Total.Name = "eb_Not_Total";
-            this.eb_Not_Total.Size = new System.Drawing.Size(100, 20);
+            this.eb_Not_Total.Size = new System.Drawing.Size(148, 29);
             this.eb_Not_Total.TabIndex = 42;
             this.eb_Not_Total.TabStop = false;
             this.eb_Not_Total.Visible = false;
@@ -1070,9 +1079,10 @@
             // eb_Nonfile_Contract
             // 
             this.eb_Nonfile_Contract.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "ServiceContract", true));
-            this.eb_Nonfile_Contract.Location = new System.Drawing.Point(550, 205);
+            this.eb_Nonfile_Contract.Location = new System.Drawing.Point(825, 315);
+            this.eb_Nonfile_Contract.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Nonfile_Contract.Name = "eb_Nonfile_Contract";
-            this.eb_Nonfile_Contract.Size = new System.Drawing.Size(230, 20);
+            this.eb_Nonfile_Contract.Size = new System.Drawing.Size(343, 29);
             this.eb_Nonfile_Contract.TabIndex = 41;
             this.eb_Nonfile_Contract.Visible = false;
             this.eb_Nonfile_Contract.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Nonfile_Contract_Validating);
@@ -1080,48 +1090,54 @@
             // eb_UD2
             // 
             this.eb_UD2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined2", true));
-            this.eb_UD2.Location = new System.Drawing.Point(570, 165);
+            this.eb_UD2.Location = new System.Drawing.Point(855, 254);
+            this.eb_UD2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_UD2.Name = "eb_UD2";
-            this.eb_UD2.Size = new System.Drawing.Size(210, 20);
+            this.eb_UD2.Size = new System.Drawing.Size(313, 29);
             this.eb_UD2.TabIndex = 38;
             // 
             // eb_UD1
             // 
             this.eb_UD1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined1", true));
-            this.eb_UD1.Location = new System.Drawing.Point(134, 165);
+            this.eb_UD1.Location = new System.Drawing.Point(201, 254);
+            this.eb_UD1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_UD1.Name = "eb_UD1";
-            this.eb_UD1.Size = new System.Drawing.Size(206, 20);
+            this.eb_UD1.Size = new System.Drawing.Size(307, 29);
             this.eb_UD1.TabIndex = 37;
             // 
             // eb_UD3
             // 
             this.eb_UD3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined3", true));
-            this.eb_UD3.Location = new System.Drawing.Point(134, 185);
+            this.eb_UD3.Location = new System.Drawing.Point(201, 285);
+            this.eb_UD3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_UD3.Name = "eb_UD3";
-            this.eb_UD3.Size = new System.Drawing.Size(206, 20);
+            this.eb_UD3.Size = new System.Drawing.Size(307, 29);
             this.eb_UD3.TabIndex = 39;
             // 
             // eb_MM_Path
             // 
             this.eb_MM_Path.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "MultiMediaPath", true));
-            this.eb_MM_Path.Location = new System.Drawing.Point(90, 225);
+            this.eb_MM_Path.Location = new System.Drawing.Point(135, 346);
+            this.eb_MM_Path.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_MM_Path.Name = "eb_MM_Path";
-            this.eb_MM_Path.Size = new System.Drawing.Size(550, 20);
+            this.eb_MM_Path.Size = new System.Drawing.Size(823, 29);
             this.eb_MM_Path.TabIndex = 42;
             // 
             // eb_Man_Req_User
             // 
             this.eb_Man_Req_User.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "ManualReqUser", true));
-            this.eb_Man_Req_User.Location = new System.Drawing.Point(90, 205);
+            this.eb_Man_Req_User.Location = new System.Drawing.Point(135, 315);
+            this.eb_Man_Req_User.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Man_Req_User.Name = "eb_Man_Req_User";
-            this.eb_Man_Req_User.Size = new System.Drawing.Size(250, 20);
+            this.eb_Man_Req_User.Size = new System.Drawing.Size(373, 29);
             this.eb_Man_Req_User.TabIndex = 40;
             // 
             // eb_Po_No
             // 
-            this.eb_Po_No.Location = new System.Drawing.Point(80, 5);
+            this.eb_Po_No.Location = new System.Drawing.Point(120, 8);
+            this.eb_Po_No.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Po_No.Name = "eb_Po_No";
-            this.eb_Po_No.Size = new System.Drawing.Size(60, 20);
+            this.eb_Po_No.Size = new System.Drawing.Size(88, 29);
             this.eb_Po_No.TabIndex = 1;
             this.eb_Po_No.DoubleClick += new System.EventHandler(this.eb_Po_No_DoubleClick);
             this.eb_Po_No.KeyDown += new System.Windows.Forms.KeyEventHandler(this.eb_Po_No_KeyDown);
@@ -1129,88 +1145,99 @@
             // eb_Total
             // 
             this.eb_Total.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "Total", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Total.Location = new System.Drawing.Point(544, 5);
+            this.eb_Total.Location = new System.Drawing.Point(816, 8);
+            this.eb_Total.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Total.Name = "eb_Total";
-            this.eb_Total.Size = new System.Drawing.Size(100, 20);
+            this.eb_Total.Size = new System.Drawing.Size(148, 29);
             this.eb_Total.TabIndex = 41;
             this.eb_Total.TabStop = false;
             // 
             // eb_Patient_Memo
             // 
-            this.eb_Patient_Memo.Location = new System.Drawing.Point(611, 101);
+            this.eb_Patient_Memo.Location = new System.Drawing.Point(916, 155);
+            this.eb_Patient_Memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Patient_Memo.Name = "eb_Patient_Memo";
-            this.eb_Patient_Memo.Size = new System.Drawing.Size(50, 20);
+            this.eb_Patient_Memo.Size = new System.Drawing.Size(73, 29);
             this.eb_Patient_Memo.TabIndex = 15;
             // 
             // Receiver_Memo
             // 
-            this.Receiver_Memo.Location = new System.Drawing.Point(611, 83);
+            this.Receiver_Memo.Location = new System.Drawing.Point(916, 128);
+            this.Receiver_Memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Receiver_Memo.Name = "Receiver_Memo";
-            this.Receiver_Memo.Size = new System.Drawing.Size(50, 20);
+            this.Receiver_Memo.Size = new System.Drawing.Size(73, 29);
             this.Receiver_Memo.TabIndex = 13;
             // 
             // eb_Req_No
             // 
             this.eb_Req_No.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "ReqNo", true));
-            this.eb_Req_No.Location = new System.Drawing.Point(80, 85);
+            this.eb_Req_No.Location = new System.Drawing.Point(120, 131);
+            this.eb_Req_No.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Req_No.Name = "eb_Req_No";
-            this.eb_Req_No.Size = new System.Drawing.Size(101, 20);
+            this.eb_Req_No.Size = new System.Drawing.Size(150, 29);
             this.eb_Req_No.TabIndex = 7;
             this.eb_Req_No.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Req_No_Validating);
             // 
             // eb_Confirmation
             // 
             this.eb_Confirmation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "ConfirmationNo", true));
-            this.eb_Confirmation.Location = new System.Drawing.Point(544, 125);
+            this.eb_Confirmation.Location = new System.Drawing.Point(816, 192);
+            this.eb_Confirmation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Confirmation.Name = "eb_Confirmation";
-            this.eb_Confirmation.Size = new System.Drawing.Size(148, 20);
+            this.eb_Confirmation.Size = new System.Drawing.Size(220, 29);
             this.eb_Confirmation.TabIndex = 19;
             // 
             // eb_Status
             // 
-            this.eb_Status.Location = new System.Drawing.Point(181, 5);
+            this.eb_Status.Location = new System.Drawing.Point(272, 8);
+            this.eb_Status.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Status.Name = "eb_Status";
-            this.eb_Status.Size = new System.Drawing.Size(240, 20);
+            this.eb_Status.Size = new System.Drawing.Size(358, 29);
             this.eb_Status.TabIndex = 17;
             this.eb_Status.TabStop = false;
             // 
             // Vendor_Memo
             // 
-            this.Vendor_Memo.Location = new System.Drawing.Point(544, 104);
+            this.Vendor_Memo.Location = new System.Drawing.Point(816, 160);
+            this.Vendor_Memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Vendor_Memo.Name = "Vendor_Memo";
-            this.Vendor_Memo.Size = new System.Drawing.Size(50, 20);
+            this.Vendor_Memo.Size = new System.Drawing.Size(73, 29);
             this.Vendor_Memo.TabIndex = 14;
             // 
             // Buyer_Memo
             // 
-            this.Buyer_Memo.Location = new System.Drawing.Point(544, 83);
+            this.Buyer_Memo.Location = new System.Drawing.Point(816, 128);
+            this.Buyer_Memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Buyer_Memo.Name = "Buyer_Memo";
-            this.Buyer_Memo.Size = new System.Drawing.Size(50, 20);
+            this.Buyer_Memo.Size = new System.Drawing.Size(73, 29);
             this.Buyer_Memo.TabIndex = 12;
             // 
             // eb_Placed_With
             // 
             this.eb_Placed_With.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "PlacedWith", true));
-            this.eb_Placed_With.Location = new System.Drawing.Point(544, 63);
+            this.eb_Placed_With.Location = new System.Drawing.Point(816, 97);
+            this.eb_Placed_With.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Placed_With.Name = "eb_Placed_With";
-            this.eb_Placed_With.Size = new System.Drawing.Size(148, 20);
+            this.eb_Placed_With.Size = new System.Drawing.Size(220, 29);
             this.eb_Placed_With.TabIndex = 11;
             // 
             // eb_Special_Instructions
             // 
             this.eb_Special_Instructions.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "SpecialInstructions", true));
-            this.eb_Special_Instructions.Location = new System.Drawing.Point(80, 125);
+            this.eb_Special_Instructions.Location = new System.Drawing.Point(120, 192);
+            this.eb_Special_Instructions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Special_Instructions.MaxLength = 40;
             this.eb_Special_Instructions.Name = "eb_Special_Instructions";
-            this.eb_Special_Instructions.Size = new System.Drawing.Size(341, 20);
+            this.eb_Special_Instructions.Size = new System.Drawing.Size(510, 29);
             this.eb_Special_Instructions.TabIndex = 18;
             // 
             // lbl_Nonfile_Contract
             // 
             this.lbl_Nonfile_Contract.AutoSize = true;
-            this.lbl_Nonfile_Contract.Location = new System.Drawing.Point(463, 208);
+            this.lbl_Nonfile_Contract.Location = new System.Drawing.Point(694, 320);
+            this.lbl_Nonfile_Contract.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Nonfile_Contract.Name = "lbl_Nonfile_Contract";
-            this.lbl_Nonfile_Contract.Size = new System.Drawing.Size(83, 13);
+            this.lbl_Nonfile_Contract.Size = new System.Drawing.Size(130, 20);
             this.lbl_Nonfile_Contract.TabIndex = 85;
             this.lbl_Nonfile_Contract.Text = "Nonfile Contract";
             this.lbl_Nonfile_Contract.Visible = false;
@@ -1218,9 +1245,10 @@
             // lbl_L_UD2
             // 
             this.lbl_L_UD2.AutoSize = true;
-            this.lbl_L_UD2.Location = new System.Drawing.Point(505, 168);
+            this.lbl_L_UD2.Location = new System.Drawing.Point(758, 258);
+            this.lbl_L_UD2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_L_UD2.Name = "lbl_L_UD2";
-            this.lbl_L_UD2.Size = new System.Drawing.Size(41, 13);
+            this.lbl_L_UD2.Size = new System.Drawing.Size(62, 20);
             this.lbl_L_UD2.TabIndex = 84;
             this.lbl_L_UD2.Text = "L_UD2";
             // 
@@ -1228,9 +1256,10 @@
             // 
             this.cb_2ndDay.AutoSize = true;
             this.cb_2ndDay.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bs1, "SecondDayDelivery", true));
-            this.cb_2ndDay.Location = new System.Drawing.Point(662, 107);
+            this.cb_2ndDay.Location = new System.Drawing.Point(993, 165);
+            this.cb_2ndDay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cb_2ndDay.Name = "cb_2ndDay";
-            this.cb_2ndDay.Size = new System.Drawing.Size(66, 17);
+            this.cb_2ndDay.Size = new System.Drawing.Size(97, 24);
             this.cb_2ndDay.TabIndex = 17;
             this.cb_2ndDay.Text = "2nd Day";
             this.cb_2ndDay.UseVisualStyleBackColor = true;
@@ -1238,9 +1267,10 @@
             // lbl_L_UD1
             // 
             this.lbl_L_UD1.AutoSize = true;
-            this.lbl_L_UD1.Location = new System.Drawing.Point(49, 168);
+            this.lbl_L_UD1.Location = new System.Drawing.Point(74, 258);
+            this.lbl_L_UD1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_L_UD1.Name = "lbl_L_UD1";
-            this.lbl_L_UD1.Size = new System.Drawing.Size(41, 13);
+            this.lbl_L_UD1.Size = new System.Drawing.Size(62, 20);
             this.lbl_L_UD1.TabIndex = 76;
             this.lbl_L_UD1.Text = "L_UD1";
             // 
@@ -1248,9 +1278,10 @@
             // 
             this.cb_overnight.AutoSize = true;
             this.cb_overnight.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bs1, "Overnight", true));
-            this.cb_overnight.Location = new System.Drawing.Point(662, 86);
+            this.cb_overnight.Location = new System.Drawing.Point(993, 132);
+            this.cb_overnight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cb_overnight.Name = "cb_overnight";
-            this.cb_overnight.Size = new System.Drawing.Size(72, 17);
+            this.cb_overnight.Size = new System.Drawing.Size(107, 24);
             this.cb_overnight.TabIndex = 14;
             this.cb_overnight.Text = "Overnight";
             this.cb_overnight.UseVisualStyleBackColor = true;
@@ -1258,72 +1289,80 @@
             // lbl_L_UD3
             // 
             this.lbl_L_UD3.AutoSize = true;
-            this.lbl_L_UD3.Location = new System.Drawing.Point(49, 188);
+            this.lbl_L_UD3.Location = new System.Drawing.Point(74, 289);
+            this.lbl_L_UD3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_L_UD3.Name = "lbl_L_UD3";
-            this.lbl_L_UD3.Size = new System.Drawing.Size(41, 13);
+            this.lbl_L_UD3.Size = new System.Drawing.Size(62, 20);
             this.lbl_L_UD3.TabIndex = 77;
             this.lbl_L_UD3.Text = "L_UD3";
             // 
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(0, 208);
+            this.label27.Location = new System.Drawing.Point(0, 320);
+            this.label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(90, 13);
+            this.label27.Size = new System.Drawing.Size(139, 20);
             this.label27.TabIndex = 78;
             this.label27.Text = "Manual Req User";
             // 
             // lbl_MM_Path
             // 
             this.lbl_MM_Path.AutoSize = true;
-            this.lbl_MM_Path.Location = new System.Drawing.Point(7, 228);
+            this.lbl_MM_Path.Location = new System.Drawing.Point(10, 351);
+            this.lbl_MM_Path.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_MM_Path.Name = "lbl_MM_Path";
-            this.lbl_MM_Path.Size = new System.Drawing.Size(83, 13);
+            this.lbl_MM_Path.Size = new System.Drawing.Size(129, 20);
             this.lbl_MM_Path.TabIndex = 79;
             this.lbl_MM_Path.Text = "MultiMedia Path";
             // 
             // lbl_PONo
             // 
             this.lbl_PONo.AutoSize = true;
-            this.lbl_PONo.Location = new System.Drawing.Point(41, 8);
+            this.lbl_PONo.Location = new System.Drawing.Point(62, 12);
+            this.lbl_PONo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_PONo.Name = "lbl_PONo";
-            this.lbl_PONo.Size = new System.Drawing.Size(39, 13);
+            this.lbl_PONo.Size = new System.Drawing.Size(59, 20);
             this.lbl_PONo.TabIndex = 5;
             this.lbl_PONo.Text = "PO No";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(47, 28);
+            this.label2.Location = new System.Drawing.Point(70, 43);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.Size = new System.Drawing.Size(51, 20);
             this.label2.TabIndex = 6;
             this.label2.Text = "Entity";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(25, 49);
+            this.label3.Location = new System.Drawing.Point(38, 75);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.Size = new System.Drawing.Size(82, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "P.O. Type";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(36, 68);
+            this.label4.Location = new System.Drawing.Point(54, 105);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 13);
+            this.label4.Size = new System.Drawing.Size(66, 20);
             this.label4.TabIndex = 8;
             this.label4.Text = "Ship To";
             // 
             // lbl_Ma
             // 
             this.lbl_Ma.AutoSize = true;
-            this.lbl_Ma.Location = new System.Drawing.Point(10, 88);
+            this.lbl_Ma.Location = new System.Drawing.Point(15, 135);
+            this.lbl_Ma.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Ma.Name = "lbl_Ma";
-            this.lbl_Ma.Size = new System.Drawing.Size(70, 13);
+            this.lbl_Ma.Size = new System.Drawing.Size(107, 20);
             this.lbl_Ma.TabIndex = 9;
             this.lbl_Ma.Text = "Manual Reqs";
             // 
@@ -1332,15 +1371,15 @@
             this.cmb_Ship_To.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Ship_To, "Ship To");
             this.cmb_Ship_To.CurrentItem = null;
-            this.cmb_Ship_To.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Ship_To.Items")));
-            this.cmb_Ship_To.Location = new System.Drawing.Point(80, 65);
+            this.cmb_Ship_To.Location = new System.Drawing.Point(120, 100);
+            this.cmb_Ship_To.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Ship_To.Name = "cmb_Ship_To";
             this.cmb_Ship_To.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Ship_To.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Ship_To.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Ship_To.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Ship_To.PopupWidth = 300;
-            this.cmb_Ship_To.Size = new System.Drawing.Size(325, 20);
+            this.cmb_Ship_To.Size = new System.Drawing.Size(486, 29);
             this.cmb_Ship_To.TabIndex = 6;
             this.cmb_Ship_To.Enter += new System.EventHandler(this.cmb_Ship_To_Enter);
             this.cmb_Ship_To.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Ship_To_Validating);
@@ -1349,36 +1388,40 @@
             // lbl_Status
             // 
             this.lbl_Status.AutoSize = true;
-            this.lbl_Status.Location = new System.Drawing.Point(144, 8);
+            this.lbl_Status.Location = new System.Drawing.Point(216, 12);
+            this.lbl_Status.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Status.Name = "lbl_Status";
-            this.lbl_Status.Size = new System.Drawing.Size(37, 13);
+            this.lbl_Status.Size = new System.Drawing.Size(57, 20);
             this.lbl_Status.TabIndex = 14;
             this.lbl_Status.Text = "Status";
             // 
             // lbl_Project_No
             // 
             this.lbl_Project_No.AutoSize = true;
-            this.lbl_Project_No.Location = new System.Drawing.Point(184, 88);
+            this.lbl_Project_No.Location = new System.Drawing.Point(276, 135);
+            this.lbl_Project_No.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Project_No.Name = "lbl_Project_No";
-            this.lbl_Project_No.Size = new System.Drawing.Size(57, 13);
+            this.lbl_Project_No.Size = new System.Drawing.Size(88, 20);
             this.lbl_Project_No.TabIndex = 15;
             this.lbl_Project_No.Text = "Project No";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 128);
+            this.label1.Location = new System.Drawing.Point(27, 197);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 13);
+            this.label1.Size = new System.Drawing.Size(96, 20);
             this.label1.TabIndex = 21;
             this.label1.Text = "Special Inst";
             // 
             // lbl_Vat
             // 
             this.lbl_Vat.AutoSize = true;
-            this.lbl_Vat.Location = new System.Drawing.Point(29, 108);
+            this.lbl_Vat.Location = new System.Drawing.Point(44, 166);
+            this.lbl_Vat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Vat.Name = "lbl_Vat";
-            this.lbl_Vat.Size = new System.Drawing.Size(51, 13);
+            this.lbl_Vat.Size = new System.Drawing.Size(82, 20);
             this.lbl_Vat.TabIndex = 23;
             this.lbl_Vat.Text = "Vat Class";
             // 
@@ -1386,41 +1429,44 @@
             // 
             this.cmb_Vat_Code.AllowTypedIn = false;
             this.cmb_Vat_Code.CurrentItem = null;
-            this.cmb_Vat_Code.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Vat_Code.Items")));
-            this.cmb_Vat_Code.Location = new System.Drawing.Point(80, 105);
+            this.cmb_Vat_Code.Location = new System.Drawing.Point(120, 162);
+            this.cmb_Vat_Code.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Vat_Code.Name = "cmb_Vat_Code";
             this.cmb_Vat_Code.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Vat_Code.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Vat_Code.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Vat_Code.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Vat_Code.PopupWidth = 300;
-            this.cmb_Vat_Code.Size = new System.Drawing.Size(300, 20);
+            this.cmb_Vat_Code.Size = new System.Drawing.Size(448, 29);
             this.cmb_Vat_Code.TabIndex = 9;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(517, 128);
+            this.label11.Location = new System.Drawing.Point(776, 197);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(27, 13);
+            this.label11.Size = new System.Drawing.Size(38, 20);
             this.label11.TabIndex = 32;
             this.label11.Text = "C/R";
             // 
             // lbl_Total
             // 
             this.lbl_Total.AutoSize = true;
-            this.lbl_Total.Location = new System.Drawing.Point(513, 8);
+            this.lbl_Total.Location = new System.Drawing.Point(770, 12);
+            this.lbl_Total.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Total.Name = "lbl_Total";
-            this.lbl_Total.Size = new System.Drawing.Size(31, 13);
+            this.lbl_Total.Size = new System.Drawing.Size(46, 20);
             this.lbl_Total.TabIndex = 26;
             this.lbl_Total.Text = "Total";
             // 
             // lbl_Not_Total
             // 
             this.lbl_Not_Total.AutoSize = true;
-            this.lbl_Not_Total.Location = new System.Drawing.Point(447, 28);
+            this.lbl_Not_Total.Location = new System.Drawing.Point(670, 43);
+            this.lbl_Not_Total.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Not_Total.Name = "lbl_Not_Total";
-            this.lbl_Not_Total.Size = new System.Drawing.Size(97, 13);
+            this.lbl_Not_Total.Size = new System.Drawing.Size(149, 20);
             this.lbl_Not_Total.TabIndex = 27;
             this.lbl_Not_Total.Text = "Not to exceed total";
             this.lbl_Not_Total.Visible = false;
@@ -1428,18 +1474,20 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(479, 66);
+            this.label8.Location = new System.Drawing.Point(718, 102);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(65, 13);
+            this.label8.Size = new System.Drawing.Size(99, 20);
             this.label8.TabIndex = 29;
             this.label8.Text = "Placed With";
             // 
             // lbl_PO_Date
             // 
             this.lbl_PO_Date.AutoSize = true;
-            this.lbl_PO_Date.Location = new System.Drawing.Point(490, 47);
+            this.lbl_PO_Date.Location = new System.Drawing.Point(735, 72);
+            this.lbl_PO_Date.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_PO_Date.Name = "lbl_PO_Date";
-            this.lbl_PO_Date.Size = new System.Drawing.Size(54, 13);
+            this.lbl_PO_Date.Size = new System.Drawing.Size(82, 20);
             this.lbl_PO_Date.TabIndex = 28;
             this.lbl_PO_Date.Text = "P.O. Date";
             // 
@@ -1447,23 +1495,24 @@
             // 
             this.cmb_POGroup.AllowTypedIn = false;
             this.cmb_POGroup.CurrentItem = null;
-            this.cmb_POGroup.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_POGroup.Items")));
-            this.cmb_POGroup.Location = new System.Drawing.Point(80, 2);
+            this.cmb_POGroup.Location = new System.Drawing.Point(120, 3);
+            this.cmb_POGroup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_POGroup.Name = "cmb_POGroup";
             this.cmb_POGroup.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_POGroup.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_POGroup.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_POGroup.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_POGroup.PopupWidth = 300;
-            this.cmb_POGroup.Size = new System.Drawing.Size(300, 20);
+            this.cmb_POGroup.Size = new System.Drawing.Size(448, 29);
             this.cmb_POGroup.TabIndex = 2;
             // 
             // lbl_PoGroup
             // 
             this.lbl_PoGroup.AutoSize = true;
-            this.lbl_PoGroup.Location = new System.Drawing.Point(26, 8);
+            this.lbl_PoGroup.Location = new System.Drawing.Point(39, 12);
+            this.lbl_PoGroup.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_PoGroup.Name = "lbl_PoGroup";
-            this.lbl_PoGroup.Size = new System.Drawing.Size(54, 13);
+            this.lbl_PoGroup.Size = new System.Drawing.Size(84, 20);
             this.lbl_PoGroup.TabIndex = 19;
             this.lbl_PoGroup.Text = "PO Group";
             // 
@@ -1521,10 +1570,11 @@
             this.p_Detail.Controls.Add(this.label6);
             this.p_Detail.Controls.Add(this.label5);
             this.p_Detail.Controls.Add(this.cmb_Purchase);
-            this.p_Detail.Location = new System.Drawing.Point(4, 22);
+            this.p_Detail.Location = new System.Drawing.Point(4, 29);
+            this.p_Detail.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.p_Detail.Name = "p_Detail";
-            this.p_Detail.Padding = new System.Windows.Forms.Padding(3);
-            this.p_Detail.Size = new System.Drawing.Size(876, 266);
+            this.p_Detail.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.p_Detail.Size = new System.Drawing.Size(1318, 421);
             this.p_Detail.TabIndex = 1;
             this.p_Detail.Text = "Details";
             this.p_Detail.UseVisualStyleBackColor = true;
@@ -1534,15 +1584,15 @@
             this.cmb_DetailVatCode.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_DetailVatCode, "Vat Code");
             this.cmb_DetailVatCode.CurrentItem = null;
-            this.cmb_DetailVatCode.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_DetailVatCode.Items")));
-            this.cmb_DetailVatCode.Location = new System.Drawing.Point(358, 100);
+            this.cmb_DetailVatCode.Location = new System.Drawing.Point(537, 154);
+            this.cmb_DetailVatCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_DetailVatCode.Name = "cmb_DetailVatCode";
             this.cmb_DetailVatCode.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_DetailVatCode.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_DetailVatCode.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_DetailVatCode.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_DetailVatCode.PopupWidth = 300;
-            this.cmb_DetailVatCode.Size = new System.Drawing.Size(80, 20);
+            this.cmb_DetailVatCode.Size = new System.Drawing.Size(118, 29);
             this.cmb_DetailVatCode.TabIndex = 80;
             this.cmb_DetailVatCode.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_DetailVatCode_Validating);
             this.cmb_DetailVatCode.Validated += new System.EventHandler(this.cmb_DetailVatCode_Validated);
@@ -1550,9 +1600,10 @@
             // eb_Vat2
             // 
             this.eb_Vat2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "VatPercentage", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Vat2.Location = new System.Drawing.Point(438, 100);
+            this.eb_Vat2.Location = new System.Drawing.Point(657, 154);
+            this.eb_Vat2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Vat2.Name = "eb_Vat2";
-            this.eb_Vat2.Size = new System.Drawing.Size(90, 20);
+            this.eb_Vat2.Size = new System.Drawing.Size(133, 29);
             this.eb_Vat2.TabIndex = 82;
             this.eb_Vat2.TabStop = false;
             // 
@@ -1565,9 +1616,10 @@
             // eb_Quantity2
             // 
             this.eb_Quantity2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "QtyOrder", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Quantity2.Location = new System.Drawing.Point(538, 100);
+            this.eb_Quantity2.Location = new System.Drawing.Point(807, 154);
+            this.eb_Quantity2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Quantity2.Name = "eb_Quantity2";
-            this.eb_Quantity2.Size = new System.Drawing.Size(113, 20);
+            this.eb_Quantity2.Size = new System.Drawing.Size(168, 29);
             this.eb_Quantity2.TabIndex = 85;
             this.eb_Quantity2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.eb_Quantity2_KeyDown);
             this.eb_Quantity2.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Quantity2_Validating);
@@ -1577,15 +1629,15 @@
             this.cmb_ProfileId.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_ProfileId, "Profile Id");
             this.cmb_ProfileId.CurrentItem = null;
-            this.cmb_ProfileId.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_ProfileId.Items")));
-            this.cmb_ProfileId.Location = new System.Drawing.Point(514, 65);
+            this.cmb_ProfileId.Location = new System.Drawing.Point(771, 100);
+            this.cmb_ProfileId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_ProfileId.Name = "cmb_ProfileId";
             this.cmb_ProfileId.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_ProfileId.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_ProfileId.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_ProfileId.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_ProfileId.PopupWidth = 300;
-            this.cmb_ProfileId.Size = new System.Drawing.Size(140, 20);
+            this.cmb_ProfileId.Size = new System.Drawing.Size(208, 29);
             this.cmb_ProfileId.TabIndex = 65;
             this.cmb_ProfileId.Enter += new System.EventHandler(this.cmb_ProfileId_Enter);
             this.cmb_ProfileId.Validated += new System.EventHandler(this.cmb_ProfileId_Validated);
@@ -1595,23 +1647,24 @@
             this.cmb_PoClass.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_PoClass, "Po Class");
             this.cmb_PoClass.CurrentItem = null;
-            this.cmb_PoClass.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_PoClass.Items")));
-            this.cmb_PoClass.Location = new System.Drawing.Point(400, 65);
+            this.cmb_PoClass.Location = new System.Drawing.Point(600, 100);
+            this.cmb_PoClass.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_PoClass.Name = "cmb_PoClass";
             this.cmb_PoClass.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_PoClass.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_PoClass.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_PoClass.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_PoClass.PopupWidth = 300;
-            this.cmb_PoClass.Size = new System.Drawing.Size(114, 20);
+            this.cmb_PoClass.Size = new System.Drawing.Size(169, 29);
             this.cmb_PoClass.TabIndex = 22;
             this.cmb_PoClass.Validated += new System.EventHandler(this.cmb_PoClass_Validated);
             // 
             // b_Detail_Patient_Memo
             // 
-            this.b_Detail_Patient_Memo.Location = new System.Drawing.Point(282, 120);
+            this.b_Detail_Patient_Memo.Location = new System.Drawing.Point(423, 185);
+            this.b_Detail_Patient_Memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_Detail_Patient_Memo.Name = "b_Detail_Patient_Memo";
-            this.b_Detail_Patient_Memo.Size = new System.Drawing.Size(51, 23);
+            this.b_Detail_Patient_Memo.Size = new System.Drawing.Size(76, 35);
             this.b_Detail_Patient_Memo.TabIndex = 54;
             this.b_Detail_Patient_Memo.Text = "Patient";
             this.b_Detail_Patient_Memo.UseVisualStyleBackColor = true;
@@ -1619,9 +1672,10 @@
             // 
             // b_req_info
             // 
-            this.b_req_info.Location = new System.Drawing.Point(215, 120);
+            this.b_req_info.Location = new System.Drawing.Point(322, 185);
+            this.b_req_info.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_req_info.Name = "b_req_info";
-            this.b_req_info.Size = new System.Drawing.Size(75, 23);
+            this.b_req_info.Size = new System.Drawing.Size(112, 35);
             this.b_req_info.TabIndex = 53;
             this.b_req_info.Text = "Req Info";
             this.b_req_info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1633,15 +1687,15 @@
             this.cmb_Deliver.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Deliver, "Deliver To");
             this.cmb_Deliver.CurrentItem = null;
-            this.cmb_Deliver.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Deliver.Items")));
-            this.cmb_Deliver.Location = new System.Drawing.Point(0, 65);
+            this.cmb_Deliver.Location = new System.Drawing.Point(0, 100);
+            this.cmb_Deliver.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Deliver.Name = "cmb_Deliver";
             this.cmb_Deliver.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Deliver.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Deliver.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Deliver.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Deliver.PopupWidth = 300;
-            this.cmb_Deliver.Size = new System.Drawing.Size(300, 20);
+            this.cmb_Deliver.Size = new System.Drawing.Size(448, 29);
             this.cmb_Deliver.TabIndex = 12;
             this.cmb_Deliver.Enter += new System.EventHandler(this.cmb_Deliver_Enter);
             this.cmb_Deliver.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Deliver_Validating);
@@ -1652,15 +1706,15 @@
             this.cmb_Act.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Act, "Account Number");
             this.cmb_Act.CurrentItem = null;
-            this.cmb_Act.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Act.Items")));
-            this.cmb_Act.Location = new System.Drawing.Point(565, 33);
+            this.cmb_Act.Location = new System.Drawing.Point(848, 51);
+            this.cmb_Act.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Act.Name = "cmb_Act";
             this.cmb_Act.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Act.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Act.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Act.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Act.PopupWidth = 300;
-            this.cmb_Act.Size = new System.Drawing.Size(300, 20);
+            this.cmb_Act.Size = new System.Drawing.Size(448, 29);
             this.cmb_Act.TabIndex = 11;
             this.cmb_Act.Enter += new System.EventHandler(this.cmb_Act_Enter);
             this.cmb_Act.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Act_Validating);
@@ -1671,8 +1725,8 @@
             this.cmb_Mat.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Mat, "Material Code");
             this.cmb_Mat.CurrentItem = null;
-            this.cmb_Mat.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Mat.Items")));
-            this.cmb_Mat.Location = new System.Drawing.Point(0, 33);
+            this.cmb_Mat.Location = new System.Drawing.Point(0, 51);
+            this.cmb_Mat.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Mat.Name = "cmb_Mat";
             this.cmb_Mat.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Mat.PopupOffset = new System.Drawing.Point(12, 0);
@@ -1680,7 +1734,7 @@
             this.cmb_Mat.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Mat.PopupWidth = 300;
             this.cmb_Mat.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmb_Mat.Size = new System.Drawing.Size(300, 20);
+            this.cmb_Mat.Size = new System.Drawing.Size(448, 29);
             this.cmb_Mat.TabIndex = 5;
             this.cmb_Mat.Click += new System.EventHandler(this.cmb_Mat_Click);
             this.cmb_Mat.Enter += new System.EventHandler(this.cmb_Mat_Enter);
@@ -1692,15 +1746,15 @@
             this.cmb_Loc.AllowTypedIn = false;
             this.cueExtender1.SetCueText(this.cmb_Loc, "Location");
             this.cmb_Loc.CurrentItem = null;
-            this.cmb_Loc.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Loc.Items")));
-            this.cmb_Loc.Location = new System.Drawing.Point(298, 33);
+            this.cmb_Loc.Location = new System.Drawing.Point(447, 51);
+            this.cmb_Loc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Loc.Name = "cmb_Loc";
             this.cmb_Loc.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Loc.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Loc.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Loc.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Loc.PopupWidth = 300;
-            this.cmb_Loc.Size = new System.Drawing.Size(270, 20);
+            this.cmb_Loc.Size = new System.Drawing.Size(403, 29);
             this.cmb_Loc.TabIndex = 7;
             this.cmb_Loc.Enter += new System.EventHandler(this.cmb_Loc_Enter);
             this.cmb_Loc.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Loc_Validating);
@@ -1710,9 +1764,10 @@
             // 
             this.cb_autorec.AutoSize = true;
             this.cb_autorec.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bs2, "AutoReceive", true));
-            this.cb_autorec.Location = new System.Drawing.Point(766, 102);
+            this.cb_autorec.Location = new System.Drawing.Point(1149, 157);
+            this.cb_autorec.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cb_autorec.Name = "cb_autorec";
-            this.cb_autorec.Size = new System.Drawing.Size(114, 17);
+            this.cb_autorec.Size = new System.Drawing.Size(171, 24);
             this.cb_autorec.TabIndex = 88;
             this.cb_autorec.Text = "Auto Receive Line";
             this.cb_autorec.UseVisualStyleBackColor = true;
@@ -1729,14 +1784,6 @@
             this.dbgrid1.AutoGenerateColumns = false;
             this.dbgrid1.Autoscrolling = false;
             this.dbgrid1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dbgrid1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dbgrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dbgrid1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.pONoDataGridViewTextBoxColumn,
@@ -1815,28 +1862,13 @@
             this.lineTotalDataGridViewTextBoxColumn});
             this.dbgrid1.ContextMenuStrip = this.contextMenuStrip1;
             this.dbgrid1.DataSource = this.bs2;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dbgrid1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dbgrid1.Location = new System.Drawing.Point(0, 143);
+            this.dbgrid1.Location = new System.Drawing.Point(0, 220);
+            this.dbgrid1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dbgrid1.Name = "dbgrid1";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dbgrid1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dbgrid1.RowHeadersWidth = 10;
             this.dbgrid1.RowTemplate.Height = 15;
             this.dbgrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dbgrid1.Size = new System.Drawing.Size(876, 284);
+            this.dbgrid1.Size = new System.Drawing.Size(1314, 442);
             this.dbgrid1.TabIndex = 64;
             // 
             // pONoDataGridViewTextBoxColumn
@@ -2285,6 +2317,7 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setAsBackorderToolStripMenuItem,
             this.copyLineToolStripMenuItem,
@@ -2292,44 +2325,45 @@
             this.insertLineToolStripMenuItem,
             this.addToCatalogToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(217, 154);
             // 
             // setAsBackorderToolStripMenuItem
             // 
             this.setAsBackorderToolStripMenuItem.Name = "setAsBackorderToolStripMenuItem";
-            this.setAsBackorderToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.setAsBackorderToolStripMenuItem.Size = new System.Drawing.Size(216, 30);
             this.setAsBackorderToolStripMenuItem.Text = "Set as backorder";
             // 
             // copyLineToolStripMenuItem
             // 
             this.copyLineToolStripMenuItem.Name = "copyLineToolStripMenuItem";
-            this.copyLineToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.copyLineToolStripMenuItem.Size = new System.Drawing.Size(216, 30);
             this.copyLineToolStripMenuItem.Text = "Copy Line";
             // 
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(216, 30);
             this.selectAllToolStripMenuItem.Text = "Select All";
             // 
             // insertLineToolStripMenuItem
             // 
             this.insertLineToolStripMenuItem.Name = "insertLineToolStripMenuItem";
-            this.insertLineToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.insertLineToolStripMenuItem.Size = new System.Drawing.Size(216, 30);
             this.insertLineToolStripMenuItem.Text = "Insert Line";
             // 
             // addToCatalogToolStripMenuItem
             // 
             this.addToCatalogToolStripMenuItem.Name = "addToCatalogToolStripMenuItem";
-            this.addToCatalogToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.addToCatalogToolStripMenuItem.Size = new System.Drawing.Size(216, 30);
             this.addToCatalogToolStripMenuItem.Text = "Add To Catalog";
             this.addToCatalogToolStripMenuItem.Click += new System.EventHandler(this.addToCatalogToolStripMenuItem_Click);
             // 
             // b_d_ItemMemo
             // 
-            this.b_d_ItemMemo.Location = new System.Drawing.Point(148, 120);
+            this.b_d_ItemMemo.Location = new System.Drawing.Point(222, 185);
+            this.b_d_ItemMemo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_d_ItemMemo.Name = "b_d_ItemMemo";
-            this.b_d_ItemMemo.Size = new System.Drawing.Size(74, 23);
+            this.b_d_ItemMemo.Size = new System.Drawing.Size(111, 35);
             this.b_d_ItemMemo.TabIndex = 52;
             this.b_d_ItemMemo.Text = "Item Memo";
             this.b_d_ItemMemo.UseVisualStyleBackColor = true;
@@ -2337,9 +2371,10 @@
             // 
             // b_D_Vendor_memo
             // 
-            this.b_D_Vendor_memo.Location = new System.Drawing.Point(71, 120);
+            this.b_D_Vendor_memo.Location = new System.Drawing.Point(106, 185);
+            this.b_D_Vendor_memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_D_Vendor_memo.Name = "b_D_Vendor_memo";
-            this.b_D_Vendor_memo.Size = new System.Drawing.Size(81, 23);
+            this.b_D_Vendor_memo.Size = new System.Drawing.Size(122, 35);
             this.b_D_Vendor_memo.TabIndex = 51;
             this.b_D_Vendor_memo.Text = "Vendor Memo";
             this.b_D_Vendor_memo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2348,9 +2383,10 @@
             // 
             // b_D_buyer_memo
             // 
-            this.b_D_buyer_memo.Location = new System.Drawing.Point(2, 120);
+            this.b_D_buyer_memo.Location = new System.Drawing.Point(3, 185);
+            this.b_D_buyer_memo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_D_buyer_memo.Name = "b_D_buyer_memo";
-            this.b_D_buyer_memo.Size = new System.Drawing.Size(80, 23);
+            this.b_D_buyer_memo.Size = new System.Drawing.Size(120, 35);
             this.b_D_buyer_memo.TabIndex = 42;
             this.b_D_buyer_memo.Text = "Buyer Memo";
             this.b_D_buyer_memo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2360,9 +2396,10 @@
             // eb_Unit_Cost2
             // 
             this.eb_Unit_Cost2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "UnitCost", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Unit_Cost2.Location = new System.Drawing.Point(278, 100);
+            this.eb_Unit_Cost2.Location = new System.Drawing.Point(417, 154);
+            this.eb_Unit_Cost2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Unit_Cost2.Name = "eb_Unit_Cost2";
-            this.eb_Unit_Cost2.Size = new System.Drawing.Size(80, 20);
+            this.eb_Unit_Cost2.Size = new System.Drawing.Size(118, 29);
             this.eb_Unit_Cost2.TabIndex = 77;
             this.eb_Unit_Cost2.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Unit_Cost2_Validating);
             this.eb_Unit_Cost2.Validated += new System.EventHandler(this.eb_Unit_Cost2_Validated);
@@ -2370,84 +2407,94 @@
             // eb_Conversion
             // 
             this.eb_Conversion.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "Conversion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Conversion.Location = new System.Drawing.Point(188, 100);
+            this.eb_Conversion.Location = new System.Drawing.Point(282, 154);
+            this.eb_Conversion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Conversion.Name = "eb_Conversion";
-            this.eb_Conversion.Size = new System.Drawing.Size(90, 20);
+            this.eb_Conversion.Size = new System.Drawing.Size(133, 29);
             this.eb_Conversion.TabIndex = 75;
             this.eb_Conversion.Validated += new System.EventHandler(this.eb_Conversion_Validated);
             // 
             // eb_Doctor_Id
             // 
-            this.eb_Doctor_Id.Location = new System.Drawing.Point(654, 65);
+            this.eb_Doctor_Id.Location = new System.Drawing.Point(981, 100);
+            this.eb_Doctor_Id.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Doctor_Id.Name = "eb_Doctor_Id";
-            this.eb_Doctor_Id.Size = new System.Drawing.Size(120, 20);
+            this.eb_Doctor_Id.Size = new System.Drawing.Size(178, 29);
             this.eb_Doctor_Id.TabIndex = 70;
             this.eb_Doctor_Id.TabStop = false;
             this.eb_Doctor_Id.Validated += new System.EventHandler(this.eb_Doctor_Id_Validated);
             // 
             // eb_Total3
             // 
-            this.eb_Total3.Location = new System.Drawing.Point(539, 121);
+            this.eb_Total3.Location = new System.Drawing.Point(808, 186);
+            this.eb_Total3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Total3.Name = "eb_Total3";
-            this.eb_Total3.Size = new System.Drawing.Size(100, 20);
+            this.eb_Total3.Size = new System.Drawing.Size(148, 29);
             this.eb_Total3.TabIndex = 26;
             this.eb_Total3.TabStop = false;
             // 
             // eb_Total2
             // 
             this.eb_Total2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "Total", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Total2.Location = new System.Drawing.Point(735, 0);
+            this.eb_Total2.Location = new System.Drawing.Point(1102, 0);
+            this.eb_Total2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Total2.Name = "eb_Total2";
-            this.eb_Total2.Size = new System.Drawing.Size(100, 20);
+            this.eb_Total2.Size = new System.Drawing.Size(148, 29);
             this.eb_Total2.TabIndex = 11;
             this.eb_Total2.TabStop = false;
             // 
             // eb_Status2
             // 
-            this.eb_Status2.Location = new System.Drawing.Point(493, 0);
+            this.eb_Status2.Location = new System.Drawing.Point(740, 0);
+            this.eb_Status2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Status2.Name = "eb_Status2";
-            this.eb_Status2.Size = new System.Drawing.Size(200, 20);
+            this.eb_Status2.Size = new System.Drawing.Size(298, 29);
             this.eb_Status2.TabIndex = 10;
             this.eb_Status2.TabStop = false;
             // 
             // eb_Date
             // 
-            this.eb_Date.Location = new System.Drawing.Point(380, 0);
+            this.eb_Date.Location = new System.Drawing.Point(570, 0);
+            this.eb_Date.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Date.Name = "eb_Date";
-            this.eb_Date.Size = new System.Drawing.Size(80, 20);
+            this.eb_Date.Size = new System.Drawing.Size(118, 29);
             this.eb_Date.TabIndex = 9;
             this.eb_Date.TabStop = false;
             // 
             // eb_Vendor
             // 
             this.eb_Vendor.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "VendorID", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Vendor.Location = new System.Drawing.Point(233, 0);
+            this.eb_Vendor.Location = new System.Drawing.Point(350, 0);
+            this.eb_Vendor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Vendor.Name = "eb_Vendor";
-            this.eb_Vendor.Size = new System.Drawing.Size(120, 20);
+            this.eb_Vendor.Size = new System.Drawing.Size(178, 29);
             this.eb_Vendor.TabIndex = 8;
             this.eb_Vendor.TabStop = false;
             // 
             // eb_Entity
             // 
             this.eb_Entity.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "Entity", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.eb_Entity.Location = new System.Drawing.Point(144, 0);
+            this.eb_Entity.Location = new System.Drawing.Point(216, 0);
+            this.eb_Entity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_Entity.Name = "eb_Entity";
-            this.eb_Entity.Size = new System.Drawing.Size(50, 20);
+            this.eb_Entity.Size = new System.Drawing.Size(73, 29);
             this.eb_Entity.TabIndex = 7;
             this.eb_Entity.TabStop = false;
             // 
             // eb_PO_Number
             // 
-            this.eb_PO_Number.Location = new System.Drawing.Point(68, 0);
+            this.eb_PO_Number.Location = new System.Drawing.Point(102, 0);
+            this.eb_PO_Number.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.eb_PO_Number.Name = "eb_PO_Number";
-            this.eb_PO_Number.Size = new System.Drawing.Size(48, 20);
+            this.eb_PO_Number.Size = new System.Drawing.Size(70, 29);
             this.eb_PO_Number.TabIndex = 1;
             // 
             // b_Dept
             // 
-            this.b_Dept.Location = new System.Drawing.Point(863, 31);
+            this.b_Dept.Location = new System.Drawing.Point(1294, 48);
+            this.b_Dept.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.b_Dept.Name = "b_Dept";
-            this.b_Dept.Size = new System.Drawing.Size(13, 23);
+            this.b_Dept.Size = new System.Drawing.Size(20, 35);
             this.b_Dept.TabIndex = 10;
             this.b_Dept.Text = "D";
             this.b_Dept.UseVisualStyleBackColor = true;
@@ -2457,19 +2504,21 @@
             // lbl_Percent
             // 
             this.lbl_Percent.AutoSize = true;
-            this.lbl_Percent.Location = new System.Drawing.Point(525, 105);
+            this.lbl_Percent.Location = new System.Drawing.Point(788, 162);
+            this.lbl_Percent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Percent.Name = "lbl_Percent";
-            this.lbl_Percent.Size = new System.Drawing.Size(15, 13);
+            this.lbl_Percent.Size = new System.Drawing.Size(24, 20);
             this.lbl_Percent.TabIndex = 57;
             this.lbl_Percent.Text = "%";
             // 
             // od_DeliverDate
             // 
             this.od_DeliverDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.od_DeliverDate.Location = new System.Drawing.Point(300, 65);
+            this.od_DeliverDate.Location = new System.Drawing.Point(450, 100);
+            this.od_DeliverDate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.od_DeliverDate.Name = "od_DeliverDate";
             this.od_DeliverDate.ShowCheckBox = true;
-            this.od_DeliverDate.Size = new System.Drawing.Size(100, 20);
+            this.od_DeliverDate.Size = new System.Drawing.Size(148, 26);
             this.od_DeliverDate.TabIndex = 13;
             this.od_DeliverDate.ValueChanged += new System.EventHandler(this.od_DeliverDate_ValueChanged_1);
             // 
@@ -2477,9 +2526,10 @@
             // 
             this.cb_Accrue.AutoSize = true;
             this.cb_Accrue.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bs2, "DoNotAccrue", true));
-            this.cb_Accrue.Location = new System.Drawing.Point(652, 102);
+            this.cb_Accrue.Location = new System.Drawing.Point(978, 157);
+            this.cb_Accrue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cb_Accrue.Name = "cb_Accrue";
-            this.cb_Accrue.Size = new System.Drawing.Size(120, 17);
+            this.cb_Accrue.Size = new System.Drawing.Size(183, 24);
             this.cb_Accrue.TabIndex = 87;
             this.cb_Accrue.TabStop = false;
             this.cb_Accrue.Text = "Do Not Accrue Line";
@@ -2489,9 +2539,10 @@
             // 
             this.cb_Substitute_Item.AutoSize = true;
             this.cb_Substitute_Item.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bs2, "SubstituteItem", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_Substitute_Item.Location = new System.Drawing.Point(775, 67);
+            this.cb_Substitute_Item.Location = new System.Drawing.Point(1162, 103);
+            this.cb_Substitute_Item.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cb_Substitute_Item.Name = "cb_Substitute_Item";
-            this.cb_Substitute_Item.Size = new System.Drawing.Size(73, 17);
+            this.cb_Substitute_Item.Size = new System.Drawing.Size(110, 24);
             this.cb_Substitute_Item.TabIndex = 71;
             this.cb_Substitute_Item.Text = "Substitute";
             this.cb_Substitute_Item.UseVisualStyleBackColor = true;
@@ -2499,180 +2550,200 @@
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(549, 86);
+            this.label51.Location = new System.Drawing.Point(824, 132);
+            this.label51.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(46, 13);
+            this.label51.Size = new System.Drawing.Size(71, 20);
             this.label51.TabIndex = 47;
             this.label51.Text = "Quantity";
             // 
             // lbl_VAT2
             // 
             this.lbl_VAT2.AutoSize = true;
-            this.lbl_VAT2.Location = new System.Drawing.Point(380, 86);
+            this.lbl_VAT2.Location = new System.Drawing.Point(570, 132);
+            this.lbl_VAT2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_VAT2.Name = "lbl_VAT2";
-            this.lbl_VAT2.Size = new System.Drawing.Size(28, 13);
+            this.lbl_VAT2.Size = new System.Drawing.Size(41, 20);
             this.lbl_VAT2.TabIndex = 46;
             this.lbl_VAT2.Text = "VAT";
             // 
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(281, 86);
+            this.label49.Location = new System.Drawing.Point(422, 132);
+            this.label49.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(50, 13);
+            this.label49.Size = new System.Drawing.Size(79, 20);
             this.label49.TabIndex = 45;
             this.label49.Text = "Unit Cost";
             // 
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(200, 86);
+            this.label48.Location = new System.Drawing.Point(300, 132);
+            this.label48.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(60, 13);
+            this.label48.Size = new System.Drawing.Size(93, 20);
             this.label48.TabIndex = 44;
             this.label48.Text = "Conversion";
             // 
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(10, 86);
+            this.label47.Location = new System.Drawing.Point(15, 132);
+            this.label47.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(88, 13);
+            this.label47.Size = new System.Drawing.Size(138, 20);
             this.label47.TabIndex = 43;
             this.label47.Text = "Unit Of Purchase";
             // 
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(670, 52);
+            this.label46.Location = new System.Drawing.Point(1005, 80);
+            this.label46.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(39, 13);
+            this.label46.Size = new System.Drawing.Size(60, 20);
             this.label46.TabIndex = 37;
             this.label46.Text = "Doctor";
             // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(525, 52);
+            this.label44.Location = new System.Drawing.Point(788, 80);
+            this.label44.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(50, 13);
+            this.label44.Size = new System.Drawing.Size(79, 20);
             this.label44.TabIndex = 35;
             this.label44.Text = "Profile ID";
             // 
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(405, 52);
+            this.label43.Location = new System.Drawing.Point(608, 80);
+            this.label43.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(56, 13);
+            this.label43.Size = new System.Drawing.Size(89, 20);
             this.label43.TabIndex = 34;
             this.label43.Text = "P.O. Class";
             // 
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(483, 123);
+            this.label38.Location = new System.Drawing.Point(724, 189);
+            this.label38.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(54, 13);
+            this.label38.Size = new System.Drawing.Size(83, 20);
             this.label38.TabIndex = 19;
             this.label38.Text = "Line Total";
             // 
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(316, 53);
+            this.label35.Location = new System.Drawing.Point(474, 82);
+            this.label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(66, 13);
+            this.label35.Size = new System.Drawing.Size(103, 20);
             this.label35.TabIndex = 16;
             this.label35.Text = "Deliver Date";
             // 
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(18, 53);
+            this.label34.Location = new System.Drawing.Point(27, 82);
+            this.label34.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(56, 13);
+            this.label34.Size = new System.Drawing.Size(86, 20);
             this.label34.TabIndex = 15;
             this.label34.Text = "Deliver To";
             // 
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(564, 20);
+            this.label33.Location = new System.Drawing.Point(846, 31);
+            this.label33.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(87, 13);
+            this.label33.Size = new System.Drawing.Size(134, 20);
             this.label33.TabIndex = 14;
             this.label33.Text = "Account Number";
             // 
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(297, 20);
+            this.label32.Location = new System.Drawing.Point(446, 31);
+            this.label32.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(48, 13);
+            this.label32.Size = new System.Drawing.Size(73, 20);
             this.label32.TabIndex = 13;
             this.label32.Text = "Location";
             // 
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(2, 20);
+            this.label31.Location = new System.Drawing.Point(3, 31);
+            this.label31.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(72, 13);
+            this.label31.Size = new System.Drawing.Size(113, 20);
             this.label31.TabIndex = 12;
             this.label31.Text = "Material Code";
             // 
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(690, 5);
+            this.label29.Location = new System.Drawing.Point(1035, 8);
+            this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(49, 13);
+            this.label29.Size = new System.Drawing.Size(75, 20);
             this.label29.TabIndex = 5;
             this.label29.Text = "PO Total";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(458, 5);
+            this.label26.Location = new System.Drawing.Point(687, 8);
+            this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(37, 13);
+            this.label26.Size = new System.Drawing.Size(57, 20);
             this.label26.TabIndex = 4;
             this.label26.Text = "Status";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(351, 5);
+            this.label23.Location = new System.Drawing.Point(526, 8);
+            this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(30, 13);
+            this.label23.Size = new System.Drawing.Size(45, 20);
             this.label23.TabIndex = 3;
             this.label23.Text = "Date";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(192, 5);
+            this.label7.Location = new System.Drawing.Point(288, 8);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(41, 13);
+            this.label7.Size = new System.Drawing.Size(62, 20);
             this.label7.TabIndex = 2;
             this.label7.Text = "Vendor";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(113, 5);
+            this.label6.Location = new System.Drawing.Point(170, 8);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(33, 13);
+            this.label6.Size = new System.Drawing.Size(51, 20);
             this.label6.TabIndex = 1;
             this.label6.Text = "Entity";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(2, 5);
+            this.label5.Location = new System.Drawing.Point(3, 8);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 13);
+            this.label5.Size = new System.Drawing.Size(105, 20);
             this.label5.TabIndex = 0;
             this.label5.Text = "P.O. Number";
             // 
@@ -2680,61 +2751,63 @@
             // 
             this.cmb_Purchase.AllowTypedIn = false;
             this.cmb_Purchase.CurrentItem = null;
-            this.cmb_Purchase.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Purchase.Items")));
-            this.cmb_Purchase.Location = new System.Drawing.Point(0, 100);
+            this.cmb_Purchase.Location = new System.Drawing.Point(0, 154);
+            this.cmb_Purchase.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmb_Purchase.Name = "cmb_Purchase";
             this.cmb_Purchase.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cmb_Purchase.PopupOffset = new System.Drawing.Point(12, 0);
             this.cmb_Purchase.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Purchase.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Purchase.PopupWidth = 300;
-            this.cmb_Purchase.Size = new System.Drawing.Size(185, 20);
+            this.cmb_Purchase.Size = new System.Drawing.Size(276, 29);
             this.cmb_Purchase.TabIndex = 73;
             this.cmb_Purchase.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Purchase_Validating);
             this.cmb_Purchase.Validated += new System.EventHandler(this.cmb_Purchase_Validated);
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.status,
             this.status2,
             this.toolStripStatusLabel3,
             this.Status3,
             this.lbl49});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 319);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 495);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(884, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1326, 30);
             this.statusStrip1.TabIndex = 95;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // status
             // 
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(13, 17);
+            this.status.Size = new System.Drawing.Size(22, 25);
             this.status.Text = "1";
             // 
             // status2
             // 
             this.status2.Name = "status2";
-            this.status2.Size = new System.Drawing.Size(13, 17);
+            this.status2.Size = new System.Drawing.Size(22, 25);
             this.status2.Text = "2";
             this.status2.TextChanged += new System.EventHandler(this.status2_TextChanged);
             // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(0, 25);
             // 
             // Status3
             // 
             this.Status3.Name = "Status3";
-            this.Status3.Size = new System.Drawing.Size(13, 17);
+            this.Status3.Size = new System.Drawing.Size(22, 25);
             this.Status3.Text = "3";
             // 
             // lbl49
             // 
             this.lbl49.Name = "lbl49";
-            this.lbl49.Size = new System.Drawing.Size(13, 17);
+            this.lbl49.Size = new System.Drawing.Size(22, 25);
             this.lbl49.Text = "4";
             this.lbl49.TextChanged += new System.EventHandler(this.lbl49_TextChanged);
             // 
@@ -2753,14 +2826,15 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 341);
+            this.ClientSize = new System.Drawing.Size(1326, 525);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
@@ -3049,7 +3123,6 @@
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem insertLineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToCatalogToolStripMenuItem;
-        private Ehs.Controls.TokenizingControl richTextBox1;
     }
 }
 

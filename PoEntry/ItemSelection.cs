@@ -214,6 +214,17 @@ namespace PoEntry
                 var tempreturn = this.DialogResult;
                 if (tempreturn == null)
                     this.DialogResult = DialogResult.Abort;
+                if (tempreturn == DialogResult.OK)
+                {
+                    if (orig.Detail.NonFile)
+                        orig.Detail.MatCode = CurMat;
+                    else
+                        orig.CurMat = CurMat;
+                    orig.Detail.VendorCatalog = CurVendorCat;
+                    orig.Detail.MFGCatalog = CurMfgCat ?? "";
+                    orig.Detail.MFGName = CurMfg ?? "";
+
+                }
             }
             catch
             {
@@ -256,6 +267,11 @@ namespace PoEntry
         private void ItemSelection_Load(object sender, EventArgs e)
         {
             eb_Description.Visible = false;
+        }
+
+        private void button1_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
         }
     }
 }
