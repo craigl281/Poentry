@@ -211,6 +211,7 @@ namespace PoEntry
         {
             try
             {
+                orig.gettingitem= true;
                 var tempreturn = this.DialogResult;
                 if (tempreturn == null)
                     this.DialogResult = DialogResult.Abort;

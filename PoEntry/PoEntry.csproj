@@ -57,7 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ehs.Controls">
-      <HintPath>bin\x86\Debug\Ehs.Controls.dll</HintPath>
+      <HintPath>E:\Repo\libs\Ehs.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Ehs.Forms">
       <HintPath>E:\Repo\libs\Ehs.Forms.dll</HintPath>
@@ -75,16 +75,12 @@
     <Reference Include="Ehs.Util">
       <HintPath>E:\Repo\libs\Ehs.Util.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddCatalog.cs">

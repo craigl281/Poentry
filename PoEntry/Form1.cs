@@ -383,7 +383,7 @@ namespace PoEntry
 
         public string CurMat
         {
-            get => cmb_Mat.CurrentItem.Key;
+            get => cmb_Mat.CurrentItem?.Key ?? null;
             set => cmb_Mat.CurrentItem = (cmb_Mat.Items.Exists(r => r.Key == value)) ? cmb_Mat.Items.Find(r => r.Key == value) : null;
         }
 
@@ -515,13 +515,13 @@ namespace PoEntry
 
         #endregion
 
-        bool gettingitem;
+        public bool gettingitem;
         ControlController FormController;
 
         public Form1(string[] parameters)
         {
             InitializeComponent();
-
+            Application.AddMessageFilter(m_filter);
             p_Header.Validated += new EventHandler(p_Header_Validated);
             p_Header.Validating += new CancelEventHandler(p_Header_Validating);
             p_Header.Enter += new EventHandler(p_Header_Enter);
@@ -926,10 +926,13 @@ namespace PoEntry
             data.Close();
             FillHeaderQuery();
             FillHeader();
-            FillDetailQuery();
+
 
             if (tabControl1.SelectedTab == p_Detail)
+            {
+                FillDetailQuery();
                 FillDetails();
+            }
             else
                 bs2.Position = -1;
             SetViewing();
@@ -1248,6 +1251,7 @@ Changing := false;
 
         public void ClearDetails()
         {
+            CurMat = null;
             if (bs2.Count < 1)
                 return;
             this.Changing = true;
@@ -1866,10 +1870,7 @@ Changing := false;
         }
         public void New1()
         {
-            ////////////////////////////////test shit
-            cmb_Entity.KeyLabel = "ID";
-            cmb_Entity.EditMode = false;//true for test
-            ///////////////////////////////test shit
+            updateValidatings();
             Already_Save_Header = false;
             MainVendor = DialogResult.No;
             if (viewMode1.Mode == ViewingMode.Inquiry)
@@ -1942,7 +1943,9 @@ Changing := false;
                 this.ClearHeader();
                 vendorFrm = new FrmVendor();
                 ClearDetails();
-
+                List_Detail = new FilteredBindingList<PoDetail>();
+                bs2.DataSource = List_Detail;
+                
                 if (data.SystemOptionsDictionary["USE_VAT_CODE_POHEADER"].ToBoolean())
                     cmb_Vat_Code.Items = data.prefillCombos("Vat", "");
                 if (this.cmb_Entity.Enabled)
@@ -1966,6 +1969,7 @@ Changing := false;
             eb_Entity.Text = CurrEntity;
             eb_Vendor.Text = CurVendor;
             cmb_Mat.Text = "";
+            CurMat = null;
             //ClearDetails();
 
             SetDetailFields(true);
@@ -1974,7 +1978,6 @@ Changing := false;
             {
                 cmb_Mat.Items = list_Mat;
                 cmb_Mat.Focus();
-                cmb_Mat.SelectAll();
             }
             if (this.CurVendor.ToUpper() == data.SystemOptionsDictionary["GENERAL_VENDOR"].ToNonNullString().ToUpper())
             {
@@ -1991,7 +1994,7 @@ Changing := false;
                 this.Changing = false;
             }
             if (cmb_Mat.ReadOnly == false)
-                cmb_Mat.Focus();
+                Mat_Enter();
         }
 
         #endregion New
@@ -2842,40 +2845,50 @@ WHERE PoHeader.PO_No = */
         }
         public void Cancel1()
         {
+            updateValidatings();
             int i = this.dbgrid1.CurrentCellAddress.Y;
             FormController.Canceling = true;
             Already_Save_Header = false;
             m_addItems.Checked = false;
             reopenPurchaseOrderToolStripMenuItem.Checked = false;
+            gettingitem = false;
             //m_EditSentPurchaseOrder.checked := false;
             this.FillHeaderQuery();
 
-            if (Header.PONo > 0)
+            if (Header.PONo > 0 && tabControl1.SelectedTab == p_Detail)
             {
-                if (tabControl1.SelectedTab == p_Detail)
+                if (bs2.Count == 0)
                 {
-                    if (bs2.Count == 0)
-                    {
-                        ClearDetails();
-                        SetViewing();
-                    }
-                    else
-                    {
-                        holdItem_Count = Detail.ItemCount;
-                        SetViewing();
-                        Changing = true;
-                        FillDetailQuery();
-                        bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                        FillDetails();
-                        Changing = false;
-                    }
-                    CanSwitch = true;
+                    ClearDetails();
+                    SetViewing();
                 }
                 else
+                {
+                    holdItem_Count = Detail.ItemCount;
                     SetViewing();
+                    Changing = true;
+                    FillDetailQuery();
+                    bs2.Position = bs2.Find("ItemCount", holdItem_Count);
+                    FillDetails();
+                    Changing = false;
+                }
+                CanSwitch = true;
             }
             else
+            {
+                List_Detail = new FilteredBindingList<PoDetail>();
+                try
+                {
+                    bs2.Clear();
+                    //bs2.DataSource = List_Detail;
+                }
+                catch (Exception exception1)
+                {
+                    MessageBox.Show(exception1.ToString());
+                }
+                ClearDetails();
                 SetViewing();
+            }
             if (viewMode1.Mode == ViewingMode.Editing && (tabControl1.SelectedTab == p_Detail))
             {
                 if (Detail.SplitDetail == false)
@@ -4296,10 +4309,19 @@ WHERE PoHeader.PO_No = */
 
             if (viewMode1.Mode == ViewingMode.Adding)
             {
+                if (cmb_Mat.CurrentItem != null && CurMat.Length > 0)
+                    return;
                 if (gettingitem == false)
                 {
                     ItemSelection _Is = new ItemSelection(this);
-                    returnvalue = _Is.ShowDialog();
+                    try
+                    {
+                        returnvalue = _Is.ShowDialog();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
                 }
 
                 try
@@ -4312,7 +4334,8 @@ WHERE PoHeader.PO_No = */
                             CurMat = Detail.MatCode;
                         }
                         SetDetailFocus();
-                        return;
+                        gettingitem = false;
+                        //return;
                     }
                 }
                 catch (Exception exc)
@@ -4550,6 +4573,7 @@ WHERE PoHeader.PO_No = */
         #region Detail
         private void cmb_Mat_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            return;
             if (viewMode1.Mode == ViewingMode.Viewing)
             {
                 //bs2.Position = cmb_Mat.CurrentItem.
@@ -5714,7 +5738,7 @@ WHERE PoHeader.PO_No = */
         {
             if (cmb_Mat.HasValidated == false)
             {
-                cmb_Mat.Focus();
+                //cmb_Mat.Focus();
                 //SendKeys.Send("{TAB}");
                 if (CurMat != null)
                     SendKeys.Send("{TAB}");
@@ -5786,9 +5810,12 @@ WHERE PoHeader.PO_No = */
                     SendKeys.Send("{TAB}");
                 return;
             }*/
-
+            answer = m_filter.IsKeyPressed(Keys.Tab);
+            if (answer)
+                SendKeys.Flush();
             eb_Quantity2.Focus();
         }
+        bool answer = false;
 
         private void UpdateFiles(int posneg)
         {
@@ -5965,6 +5992,26 @@ WHERE PoHeader.PO_No = */
                 save1(false);
             }
         }
+
+        void updateValidatings()
+        {
+            cmb_Entity.HasValidated = false;
+            cmb_Po_Type.HasValidated = false;
+            cmb_Ship_To.HasValidated = false;
+            cmb_vendor.HasValidated = false;
+            for(int i = 0; i< p_Detail.Controls.Count; i++)
+            {
+                if (p_Detail.Controls[i] is AutoCompleteTextBox)
+                    (p_Detail.Controls[i] as AutoCompleteTextBox).HasValidated = false;
+            }
+        }
+        private void eb_Quantity2_Enter(object sender, EventArgs e)
+        {
+            eb_Quantity2.SelectAll();
+        }
+
+        private KeyMessageFilter m_filter = new KeyMessageFilter();
+
     }
 }
 
@@ -5977,5 +6024,56 @@ class ItemMemo
     {
         this.Mat_Code = Mat_Code;
         this.Memo = Memo;
+    }
+}
+
+public class KeyMessageFilter : IMessageFilter
+{
+    private const int WM_KEYDOWN = 0x0100;
+    private const int WM_KEYUP = 0x0101;
+    private bool m_keyPressed = false;
+
+    private Dictionary<Keys, bool> m_keyTable = new Dictionary<Keys, bool>();
+
+    public Dictionary<Keys, bool> KeyTable
+    {
+        get { return m_keyTable; }
+        private set { m_keyTable = value; }
+    }
+
+    public bool IsKeyPressed()
+    {
+        return m_keyPressed;
+    }
+
+    public bool IsKeyPressed(Keys k)
+    {
+        bool pressed = false;
+
+        if (KeyTable.TryGetValue(k, out pressed))
+        {
+            return pressed;
+        }
+
+        return false;
+    }
+
+    public bool PreFilterMessage(ref Message m)
+    {
+        if (m.Msg == WM_KEYDOWN)
+        {
+            KeyTable[(Keys)m.WParam] = true;
+
+            m_keyPressed = true;
+        }
+
+        if (m.Msg == WM_KEYUP)
+        {
+            KeyTable[(Keys)m.WParam] = false;
+
+            m_keyPressed = false;
+        }
+
+        return false;
     }
 }
