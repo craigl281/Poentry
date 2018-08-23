@@ -671,11 +671,6 @@ namespace PoEntry
             }
             Default_Po_Class = data.SystemOptionsDictionary["DEFAULT_PO_CLASS"].ToNonNullString();
             Cross_Account_No = data.SystemOptionsDictionary["ACCOUNT_NO_XREF_TYPE"].ToChar();
-            /*
-            Fiscal_Period = data.SystemOptionsDictionary["MM_PERIOD"].ToInt32();
-            if (Fiscal_Period < 1)
-                Fiscal_Period = 1;
-            Fiscal_Year = data.SystemOptionsDictionary["MM_YEAR"].ToInt32();*/
             Mat_Code_Prefix = data.SystemOptionsDictionary["MAT_CODE_PREFIX"];
             if (Mat_Code_Prefix == "*")
                 Mat_Code_Prefix = "";
@@ -1440,154 +1435,6 @@ Changing := false;
 
         #endregion Detail
 
-        #region Fill Info
-
-
-        /*
-        private void FillDetailsWithUnitPurchase()
-        {
-            if (NonFile_Item)
-                return;
-            if (cb_Substitute_Item.Checked)
-                return;
-            q_Command.Parameters.Clear();
-            q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
-                                  + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
-                                  + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE imf.Mat_Code = "
-                                  + "@Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Vendor_Id = @Vendor_Id AND "
-                                  + "uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id AND uop.Unit_Purchase = "
-                                  + "@uop and uop.vendor_Catalog = @Vendor_Catalog";
-
-            q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
-            q_Command.Parameters.AddWithValue("Vendor_Id", _WVendor.Vendor.VendorID);
-            q_Command.Parameters.AddWithValue("uop", CurrentUOPPrime);
-            q_Command.Parameters.Add("Vendor_Catalog", SqlDbType.VarChar).Value = eb_Vendor_Catalog.Text;
-            using (SqlDataReader read = q_Command.ExecuteReader())
-            {
-                if (read.HasRows)
-                {
-                    read.Read();
-                    _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
-                                   read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
-                                   read[8].ToString(), read[9].ToInt64(), read[10].ToString());
-                }
-                else
-                    _IMF = null;
-            }
-            if (_IMF != null)
-                GetImf();
-        }
-
-        private void FillFrequencyQuery()
-        {
-            q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT mat_code, location, item_count, qty_on_invoice, nonfile, qty_received,"
-                                  + "conversion FROM PoDetail   WHERE Po_No = @Po_No AND Frequency_Batch "
-                                  + "= @Frequency_Batch AND Frequency_Period >= @Frequency_Period AND "
-                                  + "((Qty_On_Invoice = 0) AND (Qty_Matched = 0)) ORDER BY Frequency_Period";
-            q_Command.Parameters.AddWithValue("Po_No", CurrPo);
-            q_Command.Parameters.AddWithValue("Frequency_Batch", Frequency_Batch);
-            q_Command.Parameters.AddWithValue("Frequency_Period", Frequency_Period);
-            using (SqlDataReader Read = q_Command.ExecuteReader())
-            {
-                if (Read.HasRows)
-                {
-                    while (Read.Read())
-                        _Freq.Add(new Frequency(Read[2].ToInt32(), Read[3].ToInt32(), Read[5].ToInt32(), Read[6].ToInt32(),
-                                                Read[4].ToBoolean(), Read[0].ToString(), Read[1].ToString()));
-                }
-                else
-                    _Freq = null;
-            }
-        }
-
-        private void FillDetailsWithMatCode(string UOP)
-        {
-            string holdIMF;
-            //holdCur = eb_Mat_Code.SelectionStart;
-            if ((AddingRecord == false) && (EditingRecord == false))
-            {
-                skipme = true;
-                Changing = true;
-                //bs2.SuspendBinding();
-                bs2.Position = bs2.Find("MatCode", Detail.MatCode);
-                //bs2.ResumeBinding();
-                //eb_Mat_Code.SelectionStart = holdCur;
-                skipme = false;
-                return;
-            }
-            else if (NonFile_Item)
-                return;
-
-            q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
-                                  + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
-                                  + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE imf.Mat_Code = "
-                                  + "@Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Vendor_Id = @Vendor_Id AND "
-                                  + "uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id ";
-            if (UOP.Trim() == "")
-                q_Command.CommandText += "AND uop.Default_UOP = 1 ";
-            else
-            {
-                q_Command.CommandText += "AND uop.Unit_Purchase = @uop";
-                q_Command.Parameters.AddWithValue("uop", UOP);
-            }
-            q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
-            q_Command.Parameters.AddWithValue("Vendor_Id", _WVendor.Vendor.VendorID);
-            using (SqlDataReader read = q_Command.ExecuteReader())
-            {
-                if (read.HasRows)
-                {
-                    read.Read();
-                    _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
-                                   read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
-                                   read[8].ToString(), read[9].ToInt64(), read[10].ToString());
-                }
-                else
-                    _IMF = null;
-            }
-            if (_IMF == null)
-            {
-                q_Command.Parameters.Clear();
-                q_Command.CommandText = "SELECT TOP 1 UOP.Vendor_Catalog, UOP.Mfg_Catalog, UOP.Mfg_Name, IMF.Description1,"
-                                      + "UOP.Unit_Purchase, UOP.Conversion, UOP.Po_Cost, IMF.Buyer, IMF.Po_Class,"
-                                      + "UOP.Average_Lead_Time, IV.Contract FROM IMF, itemvend iv, UOP WHERE "
-                                      + "imf.Mat_Code = @Mat_Code AND iv.Mat_Code = imf.Mat_Code AND iv.Main_Vendor = "
-                                      + "1 AND uop.Mat_Code = imf.Mat_Code AND uop.vendor_Id = iv.Vendor_Id AND "
-                                      + "uop.Default_UOP = 1";
-                q_Command.Parameters.AddWithValue("Mat_Code", Detail.MatCode);
-                using (SqlDataReader read = q_Command.ExecuteReader())
-                {
-                    if (read.HasRows)
-                    {
-                        read.Read();
-                        _IMF = new IMF(read[0].ToString(), read[1].ToString(), read[2].ToString(), read[3].ToString(),
-                                       read[4].ToString(), read[5].ToString(), read[6].ToString(), read[7].ToString(),
-                                       read[8].ToString(), read[9].ToInt64(), read[10].ToString());
-                    }
-                    else
-                        _IMF = new IMF("", "", "", "", "", "", "", "", "", 1, "");
-                }
-
-            }
-            ///should be okay here. test it. could be wrong
-            //Detail.MatCode = cmb_Mat.Text.Substring(0, cmb_Mat.Text.IndexOf("     "));
-
-            GetImf();
-            GetLoc();
-
-            //eb_Mat_Code.SelectionStart = holdCur;
-            ChangedLocation();
-        }
-        
-        private void FillDetailsWithMfgCat()
-        {
-        }
-        */
-
-        #endregion
-
         #region Set Visibility
         public void SetHeaderFields(bool state)
         {
@@ -1993,6 +1840,7 @@ Changing := false;
                 cmb_Mat.ReadOnly = true;
                 this.Changing = false;
             }
+            eb_Conversion.Text = "1";
             if (cmb_Mat.ReadOnly == false)
                 Mat_Enter();
         }
@@ -2146,6 +1994,8 @@ end;
                 eb_Po_No.Focus();
                 if (alreadyvalidated == false)
                 {
+                    if (CheckHeader() == false)
+                        return;
                     if (ValidateRecord() == false)
                         return;
                 }
@@ -2234,34 +2084,34 @@ end;
                     else
                     {
                         if (PoReleasedActiveOrSent())
-                        {/*
-                            SqlTransaction Trans1;
-                            Trans1 = sqlConnection1.BeginTransaction();
+                        {
+                            SqlTransaction sqlTransaction = data._Com.Connection.BeginTransaction("SaveDetailActiveorsent");
+                            data._Com.Transaction = sqlTransaction;
                             try
                             {
-                                q_Command.Transaction = Trans1;
-
                                 SaveNewDetail();
                                 FillDetailQuery();
+                                //SetViewing();
                                 bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                                UpdateFilesForSingleItem(1);
-                                WriteToPoDetailChange("I");
+                                //UpdateFilesForSingleItem(1);
+                                //WriteToPoDetailChange("I");
                                 //UpdatePoHeaderClosed_FillDate_ItemsRecv;
-                                Trans1.Commit();
+                                sqlTransaction.Commit();
                             }
-                            catch (Exception e)
+                            catch (Exception SDAS)
                             {
-                                Trans1.Rollback();
-
-                                MessageBox.Show("Error in Transaction (3), Please Contact EHS."
-                                          + "\nTransaction was Rolled Back\n" + e.ToString(), "Error", MessageBoxButtons.OK);
+                                sqlTransaction.Rollback();
+                                MessageBox.Show("Error in transaction SDAS trying to save Detail.  Please Contact EHS."
+                                          + "\nTransaction was Rolled Back\n" + SDAS.ToString(), "Error", MessageBoxButtons.OK);
                             }
+                            data._Com.Transaction = null;
+                            data.Close();
                             if (AutoReceive)
                             {
-                                PoStatus = new EHS.POControl.PoStatus.FormPoStatus(CurrPo.ToDecimal(), Detail.ItemCount, "ALL");
+                                PoStatus = new EHS.POControl.PoStatus.FormPoStatus(data._Com.Connection.ConnectionString, CurrPo, Detail.ItemCount,                                     "ALL");
                                 PoStatus.ProcessQuantityRec(0, "ALL", 0, false);
                                 FillDetailQuery();
-                            }*/
+                            }
                         }
                         else
                             SaveNewDetail();
@@ -2514,8 +2364,6 @@ end;
 
         bool SaveHeader()
         {
-            if (CheckHeader() == false)
-                return false;
             Header.PODate = dt_PO_Date.Value;
             if (cb_overnight.Checked)
             {
@@ -2561,28 +2409,26 @@ end;
 
         public void SaveEditHeader()
         {
-            /*
-            int cer_id;
-            string_Build.Length = 0;
+            data.Open();
+            SqlTransaction sqlTransaction = data._Com.Connection.BeginTransaction("PoEditSave");
+            data._Com.Transaction = sqlTransaction;
 
-            SqlTransaction transaction = this.sqlConnection1.BeginTransaction("POEditSave");
-            q_Command.Transaction = transaction;
             try
             {
                 if (PoReleasedActiveOrSent() && USE_SUBLEDGER_AMOUNT)
                 {
-                    // EhsUtil.Change_ProjectBudget(C_Header["Project_No"].ToString(), Fiscal_Year, Fiscal_Period,
-                    // eb_Total.Text.ToDecimal() * (-1), 'E');
-
                     if (cmb_Project.Text.Trim() != "")
                     {
                         if (eb_Total.Text.Trim() != "")
                         {
-                            EhsUtil.Change_ProjectBudget(cmb_Project.Text, (decimal)Fiscal_Year, (decimal)Fiscal_Period,
-                            eb_Total.Text.ToDecimal(), 'E');
+                            EhsUtil.Change_ProjectBudget(ref data._Com, cmb_Project.Text, data.SystemOptionsDictionary["MM_YEAR"].ToDecimal(),
+                                                         data.SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), eb_Total.Text.ToDecimal(), 'E');
                         }
                         else
-                            EhsUtil.Change_ProjectBudget(cmb_Project.Text, Fiscal_Year, Fiscal_Period, 0, 'E');
+                        {
+                            EhsUtil.Change_ProjectBudget(ref data._Com, cmb_Project.Text, data.SystemOptionsDictionary["MM_YEAR"].ToDecimal(),
+                                                         data.SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), 0, 'E');
+                        }
                     }
                 }
 
@@ -2591,33 +2437,31 @@ end;
 
                 if (Header.ProjectNo != cmb_Project.Text)
                 {
-                    cer_id = GetCerId(cmb_Project.Text);
-                    q_Command.Parameters.Clear();
-                    q_Command.CommandText = "UPDATE PoDetail SET cer_id = @cer_id WHERE PO_NO = @Po_No";
-                    q_Command.Parameters.Add("Po_No", SqlDbType.Int).Value = eb_Po_No.Text.ToInt32();
-                    if (cer_id == 0)
-                        q_Command.Parameters.Add("cer_id", SqlDbType.Int).Value = DBNull.Value;
-                    else
-                        q_Command.Parameters.Add("cer_id", SqlDbType.Int).Value = cer_id;
-                    q_Command.ExecuteNonQuery();
+                    data._Com.Parameters.Clear();
+                    data._Com.CommandText = "UPDATE PoDetail SET cer_id = @cer_id WHERE PO_NO = @Po_No";
+                    data._Com.Parameters.AddWithValue("Po_No", CurrPo);
+                    data._Com.Parameters.Add("cer_id", SqlDbType.Int).Value = data.GetCerId(cmb_Project.Text);
+                    data._Com.ExecuteNonQuery();
 
-                    q_Command.Parameters.Clear();
-                    q_Command.CommandText = "UPDATE PoDetail SET Vendor_Id = @Vendor_Id, Return_Repair = @Return_Repair, ";
-                    q_Command.CommandText += " interfaced = case when interfaced = 'I' then 'C' when interfaced = 'C' then 'C' else '' end WHERE PO_NO = @Po_No";
-                    q_Command.Parameters.Add("Po_No", SqlDbType.Int).Value = eb_Po_No.Text.ToInt32();
-                    q_Command.Parameters.Add("Vendor_Id", SqlDbType.VarChar).Value = _WVendor.Vendor.VendorID;
-                    q_Command.Parameters.Add("Return_Repair", SqlDbType.Bit).Value = Return_Repair;
-                    q_Command.ExecuteNonQuery();
+                    data._Com.Parameters.Clear();
+                    data._Com.CommandText = "UPDATE PoDetail SET Vendor_Id = @Vendor_Id, Return_Repair = @Return_Repair, ";
+                    data._Com.CommandText += " interfaced = case when interfaced = 'I' then 'C' when interfaced = 'C' then 'C' else '' end WHERE PO_NO = @Po_No";
+                    data._Com.Parameters.AddWithValue("Po_No", CurrPo);
+                    data._Com.Parameters.AddWithValue("Vendor_Id", CurVendor);
+                    data._Com.Parameters.AddWithValue("Return_Repair", (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).ReturnRepair);
+                    data._Com.ExecuteNonQuery();
                 }
+                sqlTransaction.Commit();
             }
             catch (Exception ee)
             {
-                transaction.Rollback();
-                MessageBox.Show("Error in Transaction, Please Contact EHS.\n" + ee.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                sqlTransaction.Rollback();
+                data.Close();
+                MessageBox.Show("Error in Transaction, Save EditHeader, Please Contact EHS.\n" + ee.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
             }
-            transaction.Commit();
-            q_Command.Transaction = null;*/
+            data._Com.Transaction = null;
+            data.Close();
         }
 
         void SaveDetail()
@@ -3587,17 +3431,17 @@ WHERE PoHeader.PO_No = */
                             { result = false; return result; }
                         }
                     }
-                    if (cmb_vendor.HasValidated == false)
+                    if (cmb_vendor.HasValidated == false && CurVendor == null)
                     {
                         errorProvider1.SetError(cmb_vendor, "Pick a vendor");
                         return false;
                     }
-                    if (cmb_Po_Type.HasValidated == false)
+                    if (cmb_Po_Type.HasValidated == false && CurrPoType == null)
                     {
                         errorProvider1.SetError(cmb_Po_Type, "Pick a PoType");
                         return false;
                     }
-                    if (cmb_Ship_To.HasValidated == false)
+                    if (cmb_Ship_To.HasValidated == false && CurrShipTo == null)
                     {
                         errorProvider1.SetError(cmb_Ship_To, "Pick a ShipTo");
                         return false;
@@ -5485,138 +5329,8 @@ WHERE PoHeader.PO_No = */
         }
         #endregion save
 
-        /*
-        public void UpdateFilesForSingleItem(int posneg)
-        {
-            decimal QuantityTimesCost, Quantity;
-            DataTable Hold = new DataTable();
-            int i = 0;
+        
 
-            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * (decimal)posneg;
-            QuantityTimesCost += (QuantityTimesCost * Detail.VatPercentage / 100m);
-            Quantity = Detail.QtyOrder * Detail.Conversion * (decimal)posneg;
-
-            this.q_Command.Parameters.Clear();
-            this.q_Command.CommandText = "SELECT entity, account_no, profile_id, extended_amount, vat_amount "
-                          + "FROM PoDetailSplit WHERE po_no = @po_no AND item_count = @item_count";
-            this.q_Command.Parameters.AddWithValue("po_no", Detail.PONo);
-            this.q_Command.Parameters.AddWithValue("item_count", Detail.ItemCount);
-            using (SqlDataAdapter da = new SqlDataAdapter(q_Command))
-            {
-                da.Fill(Hold);
-            }
-
-            if (this.USE_SUBLEDGER_AMOUNT)
-            {
-                if (Header.ProjectNo != "")
-                {
-                    this.EhsUtil.Change_ProjectBudget(ref q_Command, Header.ProjectNo,
-                        (decimal)this.Fiscal_Year, (decimal)this.Fiscal_Period, QuantityTimesCost, 'E');
-                }
-            }
-            #region//is frequency is false
-            if (Is_Frequency == false)
-            {
-                EhsUtil.Change_VendorPurchase(ref q_Command, CurrEntity, _WVendor.Vendor.VendorID,
-                    this.Fiscal_Year, this.Fiscal_Period, QuantityTimesCost, 'D', 'P');
-                //    this.EhsUtil.Change_VendorPurchase(CurrEntity, this.C_Header["Vendor_Id"].ToString(), this.Fiscal_Year,
-                //         this.Fiscal_Period, QuantityTimesCost, 'D', 'P');
-
-                if (Detail.NonFile == false)
-                {
-                    //this.EhsUtil.Change_ItemUsage(this.Detail.Location, this.Detail.MatCode,
-                    //    this.Fiscal_Year, this.Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-                    this.EhsUtil.Change_ItemUsage(ref q_Command, Detail.Location, Detail.MatCode,
-                        this.Fiscal_Year, this.Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-                    if (Hold.Rows.Count == 0)
-                    {
-                        EhsUtil.Change_ItemBudget(ref q_Command, Detail.Entity, Detail.AccountNo, Detail.ProfileID, Detail.Location,
-                                Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost,
-                                Quantity, 'D', 'P', Cross_Account_No);
-                    }
-                    else
-                    {
-                        i = 0;
-                        while (i < Hold.Rows.Count)
-                        {
-                            EhsUtil.Change_ItemBudget(ref q_Command, Hold.Rows[i]["entity"].ToString(),
-                                Hold.Rows[i]["account_No"].ToString(), Hold.Rows[i]["Profile_Id"].ToString(),
-                                Detail.Location, Detail.MatCode, Fiscal_Year, Fiscal_Period,
-                                (decimal)posneg * (Hold.Rows[i]["Extended_Amount"].ToDecimal() +
-                                Hold.Rows[i]["Vat_Amount"].ToDecimal()), Quantity * (Hold.Rows[i]["percentage"].ToDecimal()
-                                / 100m), 'D', 'P', Cross_Account_No);
-                            i++;
-                        }
-                    }
-                }
-                if (Hold.Rows.Count == 0)
-                {
-                    // this.EhsUtil.Change_Budget(CurrEntity, Detail.AccountNo, Detail.ProfileID,
-                    //     Fiscal_Year, Fiscal_Period, QuantityTimesCost, 'D', 'P', Detail.MatCode,
-                    //     Cross_Account_No);
-                    this.EhsUtil.Change_Budget(ref q_Command, CurrEntity, Detail.AccountNo,
-                        Detail.ProfileID, Fiscal_Year, Fiscal_Period, QuantityTimesCost, 'D', 'P',
-                        Detail.MatCode, Cross_Account_No);
-                }
-                else
-                {
-                    i = 0;
-                    while (i < Hold.Rows.Count)
-                    {
-                        EhsUtil.Change_Budget(ref q_Command, Hold.Rows[i]["entity"].ToString(),
-                               Hold.Rows[i]["account_No"].ToString(), Detail.ProfileID, Fiscal_Year,
-                               Fiscal_Period, (decimal)posneg * Hold.Rows[i]["Extended_Amount"].ToDecimal() +
-                               Hold.Rows[i]["Vat_Amount"].ToDecimal(), 'D', 'P', Detail.MatCode,
-                               Cross_Account_No);
-                        i++;
-                    }
-                }
-            }
-            #endregion
-            if (Detail.NonFile == false)
-            {
-                this.Change_Inventory(Detail.QtyOrder - Detail.QtyReceived
-                                    * Detail.Conversion, posneg);
-                if (this.rsl)
-                {
-                    if (Hold.Rows.Count == 0)
-                    {
-                        // this.EhsUtil.Change_RSLUsage(Detail.DeliverTo, Detail.MatCode,
-                        //     Detail.Location, Detail.Entity, Detail.AccountNo,
-                        //     Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-                        this.EhsUtil.Change_RSLUsage(ref q_Command, Detail.DeliverTo,
-                            Detail.MatCode, Detail.Location, Detail.Entity,
-                            Detail.AccountNo, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D',
-                            'P');
-                    }
-                    else
-                    {
-                        i = 0;
-                        while (i < Hold.Rows.Count)
-                        {
-                            this.EhsUtil.Change_RSLUsage(ref q_Command, Detail.DeliverTo,
-                                Detail.MatCode, Detail.Location,
-                                Hold.Rows[i]["entity"].ToString(), Hold.Rows[i]["account_No"].ToString(), Fiscal_Year,
-                                Fiscal_Period, (decimal)posneg * (Hold.Rows[i]["Extended_Amount"].ToDecimal() +
-                                Hold.Rows[i]["Vat_Amount"].ToDecimal()), Quantity * (Hold.Rows[i]["percentage"].ToDecimal()
-                                / 100m), 'D', 'P');
-                            i++;
-                        }
-                    }
-                }
-            }
-            if (this.Detail.Contract != "")
-            {
-                if (!this.Return_Repair)
-                {
-                    EhsUtil.Change_ContractUsage(ref q_Command, Detail.Contract, Detail.Location,
-                           Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-
-                    //EhsUtil.Change_ContractUsage(Detail.Contract, Detail.Location,
-                    //      Detail.MatCode, Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-                }
-            }
-        }*/
 
         private void bs2_PositionChanged(object sender, EventArgs e)
         {
@@ -5712,24 +5426,27 @@ WHERE PoHeader.PO_No = */
         {
             if (cmb_Entity.HasValidated == false)
             {
-                cmb_Entity.Focus();
-                SendKeys.Send("{TAB}");
+                if (CurrEntity == null)
+                {
+                    cmb_Entity.Focus();
+                    SendKeys.Send("{TAB}");
+                }
             }
             if (cmb_Po_Type.HasValidated == false)
             {
-                cmb_Po_Type.Focus();
-                if (CurrPoType != null)
+                    cmb_Po_Type.Focus();
                     SendKeys.Send("{TAB}");
-                else
+                if (CurrPoType == null)
                     return false;
             }
             if (cmb_Ship_To.HasValidated == false)
             {
-                cmb_Ship_To.Focus();
-                if (CurrShipTo != "<NONE>")
+                    cmb_Ship_To.Focus();
                     SendKeys.Send("{TAB}");
-                else
+                if (CurrShipTo == null || CurrShipTo == "<NONE>")
                     return false;
+                else
+                    cmb_Ship_To_Validated(new object(), new EventArgs());
             }
             return true;
         }
@@ -6012,6 +5729,61 @@ WHERE PoHeader.PO_No = */
 
         private KeyMessageFilter m_filter = new KeyMessageFilter();
 
+
+        /*procedure Tform1.Change_Inventory(Amount: real; Pos_Neg: integer);
+begin
+  if Amount < 0 then exit;
+  with q_Query1 do
+    begin
+      sql.clear;
+      sql.add('select rsl from deliverto');
+      sql.add('where entity = :entity ');
+      sql.add('and deliver_to = :Deliver_To ');
+      parambyname('Deliver_To').asstring := q_PoDetail.fieldbyname('deliver_to').asstring;
+      parambyname('entity').asstring := q_PoDetail.fieldbyname('entity').asstring;
+      active := true;
+      if (eof = false) and (fieldbyname('rsl').asboolean = true) then rsl := true
+      else rsl := false;
+
+      sql.clear;
+      sql.add('select On_Order, Fill_and_Kill from Loc ');
+      sql.add('where Mat_Code = :Mat_Code ');
+      sql.add('and Location = :Location ');
+      ParamByName('Mat_Code').asstring := q_PoDetail.FieldByName('Mat_Code').asstring;
+      ParamByName('Location').asstring := q_PoDetail.FieldByName('Location').asstring;
+      active := true;
+      if (eof = false) and (not rsl) and (FieldByName('Fill_and_Kill').asboolean = true) then exit;//dont update on_order quantities if fill n kill item
+      if eof then MessageDlg('Loc record does not exist for Mat Code ' + q_PoDetail.FieldByName('Mat_Code').asstring
+        +#13+#10+'and Location ' + q_PoDetail.FieldByName('Location').asstring, mtError, [mbOK], 0)
+      else
+        with q_Query2 do
+          begin
+            sql.clear;
+            sql.add('update Loc ');
+            sql.add('set On_Order = case when (on_order + :on_order) < 0 then 0 else (on_order + :on_order) end ');
+            sql.add('where Mat_Code = :Mat_Code ');
+            sql.add('and Location = :Location ');
+            ParamByName('Mat_Code').asstring := q_PoDetail.FieldByName('Mat_Code').asstring;
+            ParamByName('Location').asstring := q_PoDetail.FieldByName('Location').asstring;
+            ParamByName('On_Order').asfloat := (Amount * Pos_Neg);
+            execute;
+
+            if rsl then
+              begin
+                sql.clear;
+                sql.add('update RslDetail ');
+                sql.add('set Refill_Expected = case when (Refill_Expected + :Refill_Expected) < 0 then 0 else (Refill_Expected + :Refill_Expected) end ');
+                sql.add('where Mat_Code = :Mat_Code ');
+                sql.add('and RSL = :RSL ');
+                ParamByName('Mat_Code').asstring := q_PoDetail.FieldByName('Mat_Code').asstring;
+                ParamByName('RSL').asstring := q_PoDetail.FieldByName('Deliver_To').asstring;
+                ParamByName('Refill_Expected').asfloat := (Amount * Pos_Neg);
+                execute;
+              end;
+          end;
+    end;
+end;*/
+
     }
 }
 
@@ -6077,3 +5849,4 @@ public class KeyMessageFilter : IMessageFilter
         return false;
     }
 }
+ 

@@ -2460,6 +2460,123 @@ namespace PoEntry
             */
             return "Complete";
         }
+
+        public void UpdateFilesForSingleItem(int posneg, PoDetail Detail, PoHeader Header, bool USE_SUBLEDGER_AMOUNT)
+        {
+            decimal QuantityTimesCost, Quantity;
+            DataTable Hold = new DataTable();
+            int i = 0;
+
+            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * (decimal)posneg;
+            QuantityTimesCost += (QuantityTimesCost * Detail.VatPercentage / 100m);
+            Quantity = Detail.QtyOrder * Detail.Conversion * (decimal)posneg;
+
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT entity, account_no, profile_id, extended_amount, vat_amount FROM PoDetailSplit WHERE po_no = @po_no AND item_count = @item_count";
+            _Com.Parameters.AddWithValue("po_no", Detail.PONo);
+            _Com.Parameters.AddWithValue("item_count", Detail.ItemCount);
+            using (SqlDataAdapter da = new SqlDataAdapter(_Com))
+            {
+                da.Fill(Hold);
+            }
+
+            if (USE_SUBLEDGER_AMOUNT)
+            {
+                if (Header.ProjectNo != "")
+                {
+                    EhsUtil.Change_ProjectBudget(ref _Com, Header.ProjectNo, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), 
+                                                 SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, 'E');
+                }
+            }
+            #region//is frequency is false
+            if (Is_Frequency == false)
+            {
+                EhsUtil.Change_VendorPurchase(ref _Com, Header.Entity, Header.VendorID, SystemOptionsDictionary["MM_YEAR"].ToDecimal(),
+                                              SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, 'D', 'P');
+
+                if (Detail.NonFile == false)
+                {
+                    EhsUtil.Change_ItemUsage(ref _Com, Detail.Location, Detail.MatCode, SystemOptionsDictionary["MM_YEAR"].ToDecimal(),
+                                             SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, Quantity, 'D', 'P');
+                    if (Hold.Rows.Count == 0)
+                    {
+                        EhsUtil.Change_ItemBudget(ref _Com, Detail.Entity, Detail.AccountNo, Detail.ProfileID, Detail.Location, Detail.MatCode, 
+                                                  SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), 
+                                                  QuantityTimesCost, Quantity, 'D', 'P', Cross_Account_No);
+                    }
+                    else
+                    {
+                        i = 0;
+                        while (i < Hold.Rows.Count)
+                        {
+                            EhsUtil.Change_ItemBudget(ref _Com, Hold.Rows[i]["entity"].ToString(), Hold.Rows[i]["account_No"].ToString(), 
+                                Hold.Rows[i]["Profile_Id"].ToString(),
+                                Detail.Location, Detail.MatCode, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(),
+                                (decimal)posneg * (Hold.Rows[i]["Extended_Amount"].ToDecimal() +
+                                Hold.Rows[i]["Vat_Amount"].ToDecimal()), Quantity * (Hold.Rows[i]["percentage"].ToDecimal()
+                                / 100m), 'D', 'P', Cross_Account_No);
+                            i++;
+                        }
+                    }
+                }
+                if (Hold.Rows.Count == 0)
+                {
+                    EhsUtil.Change_Budget(ref _Com, CurrEntity, Detail.AccountNo,
+                        Detail.ProfileID, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, 'D', 'P',
+                        Detail.MatCode, Cross_Account_No);
+                }
+                else
+                {
+                    i = 0;
+                    while (i < Hold.Rows.Count)
+                    {
+                        EhsUtil.Change_Budget(ref _Com, Hold.Rows[i]["entity"].ToString(),
+                               Hold.Rows[i]["account_No"].ToString(), Detail.ProfileID, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), (decimal)posneg * Hold.Rows[i]["Extended_Amount"].ToDecimal() +
+                               Hold.Rows[i]["Vat_Amount"].ToDecimal(), 'D', 'P', Detail.MatCode,
+                               Cross_Account_No);
+                        i++;
+                    }
+                }
+            }
+            #endregion
+            if (Detail.NonFile == false)
+            {
+                Change_Inventory(Detail.QtyOrder - Detail.QtyReceived
+                                    * Detail.Conversion, posneg);
+                if (rsl)
+                {
+                    if (Hold.Rows.Count == 0)
+                    {
+                        EhsUtil.Change_RSLUsage(ref _Com, Detail.DeliverTo,
+                            Detail.MatCode, Detail.Location, Detail.Entity,
+                            Detail.AccountNo, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, Quantity, 'D',
+                            'P');
+                    }
+                    else
+                    {
+                        i = 0;
+                        while (i < Hold.Rows.Count)
+                        {
+                            EhsUtil.Change_RSLUsage(ref _Com, Detail.DeliverTo,
+                                Detail.MatCode, Detail.Location,
+                                Hold.Rows[i]["entity"].ToString(), Hold.Rows[i]["account_No"].ToString(), SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), (decimal)posneg * (Hold.Rows[i]["Extended_Amount"].ToDecimal() +
+                                Hold.Rows[i]["Vat_Amount"].ToDecimal()), Quantity * (Hold.Rows[i]["percentage"].ToDecimal()
+                                / 100m), 'D', 'P');
+                            i++;
+                        }
+                    }
+                }
+            }
+            if (Detail.Contract != "")
+            {
+                if (!Return_Repair)
+                {
+                    EhsUtil.Change_ContractUsage(ref _Com, Detail.Contract, Detail.Location,
+                           Detail.MatCode, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, Quantity, 'D', 'P');
+                }
+            }
+        }
     }
 
 
