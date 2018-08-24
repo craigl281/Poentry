@@ -1222,8 +1222,11 @@ namespace PoEntry
                     }
                 case "Mat":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND "
-                                         + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY IV.Mat_Code";
+                        // _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND "
+                        //                  + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY IV.Mat_Code";
+                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code "
+                                         + "LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
+                                         + "IV.Vendor_Id = @Vendor ORDER BY IV.Mat_Code";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
@@ -1842,38 +1845,46 @@ namespace PoEntry
         public LocationDetail getLoc(string Mat_Code, string Location, string Entity)
         {
             LocationDetail ret = new LocationDetail();
+
             Open();
-            _Com.Parameters.Clear();
-            _Com.CommandText = "SELECT Mat_Code, Loc.Location, Patient_Charge_Number, On_Hand, Minimum, Maximum, Reorder_Point, Entity, Account_No, Type, Patient_Cost, Reorder_Location, Bin, Issue_Cost, "
-                             + "On_Order, Sub_Account, Average_Cost, ABC, Reorder_Quantity, Stockout_Quantity, Last_Activity_Date, Active, Memo, Entry_Date, Reorder_Override, Stockless, Fill_and_Kill, "
-                             + "Patient_Charge, Overnight, Vat_Code, Exclude_ROQ, Exclude_ABC, Substitute_Item, Count_Code, Interface_Flag, Bin2, Bin3, Average_Daily_Usage, DOQ, Floor_Stock, Exclude_OLR, "
-                             + "Alias_Item, Alias_Description, Last_Ordered_Date, Phase_Out, Additional_Qty_To_Order, Critical_Item, Original_Consignment_Quantity, Issue_On_Order_Req, "
-                             + "Additional_Qty_To_Order_Memo, Dont_Update_Issue_Cost, Entered_By, Interface_Previous_On_Hand, Deactivated_Date, Last_Counted_Date, Print_Barcode_On_Receipt, "
-                             + "Print_Barcode_On_Transfer, Implant, Max_Counts FROM Loc JOIN usertolocation ul ON ul.Location = LOC.Location WHERE Mat_Code = @Mat_Code AND Username = @username AND "
-                             + "LOC.Location = @Location AND LOC.Active = 1 ";
-            if (SameEntityInLoc)
-                _Com.CommandText += "AND Entity = @Entity ";
-            else
-                _Com.CommandText += "AND LOC.Entity in (SELECT DISTINCT Entity FROM loc WHERE mat_code = @mat_code AND ((entity = @entity) or (type = 'N'))) ";
-            _Com.Parameters.AddWithValue("Mat_Code", Mat_Code);
-            _Com.Parameters.AddWithValue("username", SqlUsername);
-            _Com.Parameters.AddWithValue("Location", Location);
-            _Com.Parameters.AddWithValue("Entity", Entity);
-            using (SqlDataReader reader = _Com.ExecuteReader())
+            try
             {
-                while (reader.Read())
+                _Com.Parameters.Clear();
+                _Com.CommandText = "SELECT Mat_Code, Loc.Location, Patient_Charge_Number, On_Hand, Minimum, Maximum, Reorder_Point, Entity, Account_No, Type, Patient_Cost, Reorder_Location, Bin, Issue_Cost, "
+                                 + "On_Order, Sub_Account, Average_Cost, ABC, Reorder_Quantity, Stockout_Quantity, Last_Activity_Date, Active, Memo, Entry_Date, Reorder_Override, Stockless, Fill_and_Kill, "
+                                 + "Patient_Charge, Overnight, Vat_Code, Exclude_ROQ, Exclude_ABC, Substitute_Item, Count_Code, Interface_Flag, Bin2, Bin3, Average_Daily_Usage, DOQ, Floor_Stock, Exclude_OLR, "
+                                 + "Alias_Item, Alias_Description, Last_Ordered_Date, Phase_Out, Additional_Qty_To_Order, Critical_Item, Original_Consignment_Quantity, Issue_On_Order_Req, "
+                                 + "Additional_Qty_To_Order_Memo, Dont_Update_Issue_Cost, Entered_By, Interface_Previous_On_Hand, Deactivated_Date, Last_Counted_Date, Print_Barcode_On_Receipt, "
+                                 + "Print_Barcode_On_Transfer, Implant, Max_Counts FROM Loc JOIN usertolocation ul ON ul.Location = LOC.Location WHERE Mat_Code = @Mat_Code AND Username = @username AND "
+                                 + "LOC.Location = @Location AND LOC.Active = 1 ";
+                if (SameEntityInLoc)
+                    _Com.CommandText += "AND Entity = @Entity ";
+                else
+                    _Com.CommandText += "AND LOC.Entity in (SELECT DISTINCT Entity FROM loc WHERE mat_code = @mat_code AND ((entity = @entity) or (type = 'N'))) ";
+                _Com.Parameters.AddWithValue("Mat_Code", Mat_Code);
+                _Com.Parameters.AddWithValue("username", SqlUsername);
+                _Com.Parameters.AddWithValue("Location", Location);
+                _Com.Parameters.AddWithValue("Entity", Entity);
+                using (SqlDataReader reader = _Com.ExecuteReader())
                 {
-                    ret = new LocationDetail(reader[0].ToNonNullString(), reader[1].ToNonNullString(), reader[2].ToNonNullString(), reader[3].ToDecimal(), reader[4].ToDecimal(), reader[5].ToDecimal(),
-                                             reader[6].ToDecimal(), reader[7].ToNonNullString(), reader[8].ToNonNullString(), reader[9].ToNonNullString(), reader[10].ToDecimal(), reader[11].ToNonNullString(),
-                                             reader[12].ToNonNullString(), reader[13].ToDecimal(), reader[14].ToDecimal(), reader[15].ToNonNullString(), reader[16].ToDecimal(), reader[17].ToNonNullString(),
-                                             reader[18].ToDecimal(), reader[19].ToDecimal(), reader[20].ToDateTime(), reader[21].ToBoolean(), reader[22].ToNonNullString(), reader[23].ToDateTime(),
-                                             reader[24].ToBoolean(), reader[25].ToBoolean(), reader[26].ToBoolean(), reader[27].ToBoolean(), reader[28].ToBoolean(), reader[29].ToNonNullString(),
-                                             reader[30].ToBoolean(), reader[31].ToBoolean(), reader[32].ToNonNullString(), reader[33].ToNonNullString(), reader[34].ToNonNullString(),
-                                             reader[35].ToNonNullString(), reader[36].ToNonNullString(), reader[37].ToDecimal(), reader[38].ToBoolean(), reader[39].ToBoolean(), reader[40].ToBoolean(),
-                                             reader[41].ToNonNullString(), reader[42].ToNonNullString(), reader[43].ToDateTime(), reader[44].ToBoolean(), reader[45].ToDecimal(), reader[46].ToBoolean(),
-                                             reader[47].ToDecimal(), reader[48].ToBoolean(), reader[49].ToNonNullString(), reader[50].ToBoolean(), reader[51].ToNonNullString(), reader[52].ToDecimal(),
-                                             reader[53].ToDateTime(), reader[54].ToDateTime(), reader[55].ToBoolean(), reader[56].ToBoolean(), reader[57].ToBoolean(), reader[58].ToInt32(), "");
+                    while (reader.Read())
+                    {
+                        ret = new LocationDetail(reader[0].ToNonNullString(), reader[1].ToNonNullString(), reader[2].ToNonNullString(), reader[3].ToDecimal(), reader[4].ToDecimal(), reader[5].ToDecimal(),
+                                                 reader[6].ToDecimal(), reader[7].ToNonNullString(), reader[8].ToNonNullString(), reader[9].ToNonNullString(), reader[10].ToDecimal(), reader[11].ToNonNullString(),
+                                                 reader[12].ToNonNullString(), reader[13].ToDecimal(), reader[14].ToDecimal(), reader[15].ToNonNullString(), reader[16].ToDecimal(), reader[17].ToNonNullString(),
+                                                 reader[18].ToDecimal(), reader[19].ToDecimal(), reader[20].ToDateTime(), reader[21].ToBoolean(), reader[22].ToNonNullString(), reader[23].ToDateTime(),
+                                                 reader[24].ToBoolean(), reader[25].ToBoolean(), reader[26].ToBoolean(), reader[27].ToBoolean(), reader[28].ToBoolean(), reader[29].ToNonNullString(),
+                                                 reader[30].ToBoolean(), reader[31].ToBoolean(), reader[32].ToNonNullString(), reader[33].ToNonNullString(), reader[34].ToNonNullString(),
+                                                 reader[35].ToNonNullString(), reader[36].ToNonNullString(), reader[37].ToDecimal(), reader[38].ToBoolean(), reader[39].ToBoolean(), reader[40].ToBoolean(),
+                                                 reader[41].ToNonNullString(), reader[42].ToNonNullString(), reader[43].ToDateTime(), reader[44].ToBoolean(), reader[45].ToDecimal(), reader[46].ToBoolean(),
+                                                 reader[47].ToDecimal(), reader[48].ToBoolean(), reader[49].ToNonNullString(), reader[50].ToBoolean(), reader[51].ToNonNullString(), reader[52].ToDecimal(),
+                                                 reader[53].ToDateTime(), reader[54].ToDateTime(), reader[55].ToBoolean(), reader[56].ToBoolean(), reader[57].ToBoolean(), reader[58].ToInt32(), "");
+                    }
                 }
+            }
+            catch(Exception ee)
+            {
+                MessageBox.Show(ee.ToString());
             }
             Close();
             return ret;
@@ -2462,7 +2473,7 @@ namespace PoEntry
         }
 
         public void UpdateFilesForSingleItem(int posneg, PoDetail Detail, PoHeader Header, bool USE_SUBLEDGER_AMOUNT)
-        {
+        {/*
             decimal QuantityTimesCost, Quantity;
             DataTable Hold = new DataTable();
             int i = 0;
@@ -2575,7 +2586,7 @@ namespace PoEntry
                     EhsUtil.Change_ContractUsage(ref _Com, Detail.Contract, Detail.Location,
                            Detail.MatCode, SystemOptionsDictionary["MM_YEAR"].ToDecimal(), SystemOptionsDictionary["MM_PERIOD"].ToDecimal(), QuantityTimesCost, Quantity, 'D', 'P');
                 }
-            }
+            }*/
         }
     }
 

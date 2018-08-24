@@ -214,7 +214,10 @@ namespace PoEntry
                 orig.gettingitem= true;
                 var tempreturn = this.DialogResult;
                 if (tempreturn == null)
+                {
+                    orig.gettingitem = false;
                     this.DialogResult = DialogResult.Abort;
+                }
                 if (tempreturn == DialogResult.OK)
                 {
                     if (orig.Detail.NonFile)
@@ -224,11 +227,13 @@ namespace PoEntry
                     orig.Detail.VendorCatalog = CurVendorCat;
                     orig.Detail.MFGCatalog = CurMfgCat ?? "";
                     orig.Detail.MFGName = CurMfg ?? "";
-
                 }
+                else
+                    orig.gettingitem = false;
             }
             catch
             {
+                orig.gettingitem = false;
                 this.DialogResult = DialogResult.Abort;
             }
         }

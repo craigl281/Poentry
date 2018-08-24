@@ -541,6 +541,12 @@ namespace PoEntry
             data.RestoreSettings(this);
             SetupConnections(ConnectionString);
             FormController = new ControlController(this);
+            cmb_Mat.DoubleClick += Cmb_Mat_DoubleClick;
+        }
+
+        private void Cmb_Mat_DoubleClick(object sender, EventArgs e)
+        {
+            Mat_Enter();
         }
 
         #region Status Text
@@ -4417,7 +4423,6 @@ WHERE PoHeader.PO_No = */
         #region Detail
         private void cmb_Mat_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            return;
             if (viewMode1.Mode == ViewingMode.Viewing)
             {
                 //bs2.Position = cmb_Mat.CurrentItem.
@@ -4480,9 +4485,19 @@ WHERE PoHeader.PO_No = */
             }
             else
             {
-                _CurLocationDetail = data.getLoc(CurMat, CurLoc, CurrEntity);
-                if (_CurLocationDetail.Location.Trim().Length < 1)
-                //if (_CurLocationDetail == null)
+                try
+                {
+                _CurLocationDetail = data.getLoc(CurMat, CurLoc, Header.Entity);
+
+                    if (_CurLocationDetail.Location.Trim().Length < 1)
+                    //if (_CurLocationDetail == null)
+                    {
+                        errorProvider1.SetError(cmb_Loc, "This Location Does Not Exist for this item,\n or you do not have rights to this Location");
+                        e.Cancel = true;
+                        return;
+                    }
+                }
+                catch
                 {
                     errorProvider1.SetError(cmb_Loc, "This Location Does Not Exist for this item,\n or you do not have rights to this Location");
                     e.Cancel = true;
@@ -5407,7 +5422,7 @@ WHERE PoHeader.PO_No = */
             if (InDetail)
                 return;
             if (viewMode1.Mode == ViewingMode.Adding || viewMode1.Mode == ViewingMode.Editing)
-                save1(true);
+                save1(false);
             if (CanSwitch == false)
                 e.Cancel = true;
         }
@@ -5438,6 +5453,8 @@ WHERE PoHeader.PO_No = */
                     SendKeys.Send("{TAB}");
                 if (CurrPoType == null)
                     return false;
+                else
+                    cmb_Po_Type_Validated(new object(), new EventArgs());
             }
             if (cmb_Ship_To.HasValidated == false)
             {
