@@ -515,7 +515,7 @@ namespace PoEntry
 
         #endregion
 
-        public bool gettingitem;
+        public bool gettingitem, AddItemFromVendor;
         ControlController FormController;
 
         public Form1(string[] parameters)
@@ -546,6 +546,7 @@ namespace PoEntry
 
         private void Cmb_Mat_DoubleClick(object sender, EventArgs e)
         {
+            gettingitem = false;
             Mat_Enter();
         }
 
@@ -1179,6 +1180,8 @@ namespace PoEntry
             }
             this.Changing = true;
             Detail.PONo = CurrPo;
+            CurMat = Detail.MatCode;
+            CurLoc = Detail.Location;
             CurAct = Detail.AccountNo;
             CurDeliver = Detail.DeliverTo;
 
@@ -1804,6 +1807,7 @@ Changing := false;
                 if (this.cmb_Entity.Enabled)
                     this.cmb_Entity.Focus();
             }
+            InDetail = false;
             //Pnl_Vendor.ReadOnly = false;
             cmb_vendor.ReadOnly = true;
             dbgrid1.Enabled = false;
@@ -2695,6 +2699,7 @@ WHERE PoHeader.PO_No = */
         }
         public void Cancel1()
         {
+            InDetail = false;
             updateValidatings();
             int i = this.dbgrid1.CurrentCellAddress.Y;
             FormController.Canceling = true;
@@ -4178,7 +4183,7 @@ WHERE PoHeader.PO_No = */
                 {
                     if (returnvalue != null && returnvalue == DialogResult.OK)
                     {
-                        if (Detail.NonFile)
+                        if (Detail.NonFile || AddItemFromVendor)
                         {
                             cmb_Mat.Items.Add(new ComboBoxString(Detail.MatCode));
                             CurMat = Detail.MatCode;
@@ -4444,6 +4449,7 @@ WHERE PoHeader.PO_No = */
                 {
                     LastLocUsed = Detail.Location;
                     AddItemVend();
+                    GetMatDetails("");
                     FillDetailsWithMatCode("");
                 }
                 else
@@ -4487,10 +4493,9 @@ WHERE PoHeader.PO_No = */
             {
                 try
                 {
-                _CurLocationDetail = data.getLoc(CurMat, CurLoc, Header.Entity);
+                    _CurLocationDetail = data.getLoc(CurMat, CurLoc, Header.Entity);
 
-                    if (_CurLocationDetail.Location.Trim().Length < 1)
-                    //if (_CurLocationDetail == null)
+                    if (_CurLocationDetail == null)
                     {
                         errorProvider1.SetError(cmb_Loc, "This Location Does Not Exist for this item,\n or you do not have rights to this Location");
                         e.Cancel = true;
@@ -4554,6 +4559,12 @@ WHERE PoHeader.PO_No = */
                     e.Cancel = true;
                     return;
                 }
+            }
+            if (CurAct == null)
+            {
+                errorProvider1.SetError(cmb_Act, "Act Number is needed");
+                e.Cancel = true;
+                return;
             }
             errorProvider1.Clear();
         }
@@ -4809,9 +4820,6 @@ WHERE PoHeader.PO_No = */
             }
             List_Uop = data.GetUop(CurMat, CurVendor);
         }
-
-
-
         private void cmb_Loc_Validated(object sender, EventArgs e)
         {
             if (Changing)
@@ -5522,10 +5530,10 @@ WHERE PoHeader.PO_No = */
                     SendKeys.Send("{TAB}");
                 return;
             }
-            if (eb_Conversion.HasValidated == false)
+            if (eb_Conversion.HasValidated == false || Detail.NonFile)
             {
                 eb_Conversion.Focus();
-                if (eb_Conversion.Text.ToDecimal() > 0m)
+                if (eb_Conversion.Text.ToDecimal() > 0m && Detail.NonFile == false)
                     SendKeys.Send("{TAB}");
                 return;
             }

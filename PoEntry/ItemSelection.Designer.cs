@@ -30,12 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemSelection));
-            this.cueExtender1 = new Ehs.Controls.CueExtender();
-            this.cmb_Mat = new Ehs.Controls.AutoCompleteTextBox();
-            this.cmb_VendorCatalog = new Ehs.Controls.AutoCompleteTextBox();
-            this.cmb_MfgCatalog = new Ehs.Controls.AutoCompleteTextBox();
-            this.eb_Description = new Ehs.Controls.EhsTextBox();
-            this.cmb_Mfg_Name = new Ehs.Controls.AutoCompleteTextBox();
             this.b_MUOP = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -45,86 +39,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.addItemFromOtherVendorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmb_Mfg_Name = new Ehs.Controls.AutoCompleteTextBox();
+            this.eb_Description = new Ehs.Controls.EhsTextBox();
+            this.cmb_MfgCatalog = new Ehs.Controls.AutoCompleteTextBox();
+            this.cmb_VendorCatalog = new Ehs.Controls.AutoCompleteTextBox();
+            this.cmb_Mat = new Ehs.Controls.AutoCompleteTextBox();
+            this.cueExtender1 = new Ehs.Controls.CueExtender();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmb_Mat
-            // 
-            this.cmb_Mat.AllowTypedIn = false;
-            this.cueExtender1.SetCueText(this.cmb_Mat, "Material Code");
-            this.cmb_Mat.CurrentItem = null;
-            this.cmb_Mat.Location = new System.Drawing.Point(56, 37);
-            this.cmb_Mat.Name = "cmb_Mat";
-            this.cmb_Mat.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.cmb_Mat.PopupOffset = new System.Drawing.Point(12, 0);
-            this.cmb_Mat.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
-            this.cmb_Mat.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.cmb_Mat.PopupWidth = 300;
-            this.cmb_Mat.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmb_Mat.Size = new System.Drawing.Size(400, 20);
-            this.cmb_Mat.TabIndex = 5;
-            this.cmb_Mat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_Mat_KeyDown);
-            this.cmb_Mat.Validated += new System.EventHandler(this.cmb_Mat_Validated);
-            // 
-            // cmb_VendorCatalog
-            // 
-            this.cmb_VendorCatalog.AllowTypedIn = false;
-            this.cueExtender1.SetCueText(this.cmb_VendorCatalog, "Vendor Catalog");
-            this.cmb_VendorCatalog.CurrentItem = null;
-            this.cmb_VendorCatalog.Location = new System.Drawing.Point(56, 57);
-            this.cmb_VendorCatalog.Name = "cmb_VendorCatalog";
-            this.cmb_VendorCatalog.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.cmb_VendorCatalog.PopupOffset = new System.Drawing.Point(12, 0);
-            this.cmb_VendorCatalog.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
-            this.cmb_VendorCatalog.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.cmb_VendorCatalog.PopupWidth = 300;
-            this.cmb_VendorCatalog.Size = new System.Drawing.Size(400, 20);
-            this.cmb_VendorCatalog.TabIndex = 9;
-            this.cmb_VendorCatalog.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_VendorCatalog_Validating);
-            this.cmb_VendorCatalog.Validated += new System.EventHandler(this.cmb_VendorCatalog_Validated);
-            // 
-            // cmb_MfgCatalog
-            // 
-            this.cmb_MfgCatalog.AllowTypedIn = false;
-            this.cueExtender1.SetCueText(this.cmb_MfgCatalog, "Mfg Catalog");
-            this.cmb_MfgCatalog.CurrentItem = null;
-            this.cmb_MfgCatalog.Location = new System.Drawing.Point(56, 77);
-            this.cmb_MfgCatalog.Name = "cmb_MfgCatalog";
-            this.cmb_MfgCatalog.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.cmb_MfgCatalog.PopupOffset = new System.Drawing.Point(12, 0);
-            this.cmb_MfgCatalog.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
-            this.cmb_MfgCatalog.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.cmb_MfgCatalog.PopupWidth = 300;
-            this.cmb_MfgCatalog.Size = new System.Drawing.Size(400, 20);
-            this.cmb_MfgCatalog.TabIndex = 13;
-            this.cmb_MfgCatalog.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_MfgCatalog_Validating);
-            this.cmb_MfgCatalog.Validated += new System.EventHandler(this.cmb_MfgCatalog_Validated);
-            // 
-            // eb_Description
-            // 
-            this.cueExtender1.SetCueText(this.eb_Description, "Description");
-            this.eb_Description.Location = new System.Drawing.Point(456, 37);
-            this.eb_Description.Name = "eb_Description";
-            this.eb_Description.Size = new System.Drawing.Size(350, 20);
-            this.eb_Description.TabIndex = 7;
-            this.eb_Description.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Description_Validating);
-            // 
-            // cmb_Mfg_Name
-            // 
-            this.cmb_Mfg_Name.AllowTypedIn = false;
-            this.cueExtender1.SetCueText(this.cmb_Mfg_Name, "MfgName");
-            this.cmb_Mfg_Name.CurrentItem = null;
-            this.cmb_Mfg_Name.Location = new System.Drawing.Point(511, 77);
-            this.cmb_Mfg_Name.Name = "cmb_Mfg_Name";
-            this.cmb_Mfg_Name.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.cmb_Mfg_Name.PopupOffset = new System.Drawing.Point(12, 0);
-            this.cmb_Mfg_Name.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
-            this.cmb_Mfg_Name.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.cmb_Mfg_Name.PopupWidth = 300;
-            this.cmb_Mfg_Name.Size = new System.Drawing.Size(350, 20);
-            this.cmb_Mfg_Name.TabIndex = 15;
-            this.cmb_Mfg_Name.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Mfg_Name_Validating);
             // 
             // b_MUOP
             // 
@@ -148,9 +72,11 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.addItemFromOtherVendorToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
@@ -160,6 +86,7 @@
             // 
             // toolsToolStripMenuItem
             // 
+            this.toolsToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
@@ -205,6 +132,91 @@
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 37;
             this.label4.Text = "Mfg Name";
+            // 
+            // addItemFromOtherVendorToolStripMenuItem
+            // 
+            this.addItemFromOtherVendorToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.addItemFromOtherVendorToolStripMenuItem.Name = "addItemFromOtherVendorToolStripMenuItem";
+            this.addItemFromOtherVendorToolStripMenuItem.Size = new System.Drawing.Size(172, 20);
+            this.addItemFromOtherVendorToolStripMenuItem.Text = "Add Item From Other Vendor";
+            this.addItemFromOtherVendorToolStripMenuItem.Click += new System.EventHandler(this.addItemFromOtherVendorToolStripMenuItem_Click);
+            // 
+            // cmb_Mfg_Name
+            // 
+            this.cmb_Mfg_Name.AllowTypedIn = false;
+            this.cueExtender1.SetCueText(this.cmb_Mfg_Name, "MfgName");
+            this.cmb_Mfg_Name.CurrentItem = null;
+            this.cmb_Mfg_Name.Location = new System.Drawing.Point(511, 77);
+            this.cmb_Mfg_Name.Name = "cmb_Mfg_Name";
+            this.cmb_Mfg_Name.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.cmb_Mfg_Name.PopupOffset = new System.Drawing.Point(12, 0);
+            this.cmb_Mfg_Name.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
+            this.cmb_Mfg_Name.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.cmb_Mfg_Name.PopupWidth = 300;
+            this.cmb_Mfg_Name.Size = new System.Drawing.Size(350, 20);
+            this.cmb_Mfg_Name.TabIndex = 15;
+            this.cmb_Mfg_Name.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Mfg_Name_Validating);
+            // 
+            // eb_Description
+            // 
+            this.cueExtender1.SetCueText(this.eb_Description, "Description");
+            this.eb_Description.Location = new System.Drawing.Point(456, 37);
+            this.eb_Description.Name = "eb_Description";
+            this.eb_Description.Size = new System.Drawing.Size(350, 20);
+            this.eb_Description.TabIndex = 7;
+            this.eb_Description.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Description_Validating);
+            // 
+            // cmb_MfgCatalog
+            // 
+            this.cmb_MfgCatalog.AllowTypedIn = false;
+            this.cueExtender1.SetCueText(this.cmb_MfgCatalog, "Mfg Catalog");
+            this.cmb_MfgCatalog.CurrentItem = null;
+            this.cmb_MfgCatalog.Location = new System.Drawing.Point(56, 77);
+            this.cmb_MfgCatalog.Name = "cmb_MfgCatalog";
+            this.cmb_MfgCatalog.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.cmb_MfgCatalog.PopupOffset = new System.Drawing.Point(12, 0);
+            this.cmb_MfgCatalog.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
+            this.cmb_MfgCatalog.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.cmb_MfgCatalog.PopupWidth = 300;
+            this.cmb_MfgCatalog.Size = new System.Drawing.Size(400, 20);
+            this.cmb_MfgCatalog.TabIndex = 13;
+            this.cmb_MfgCatalog.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_MfgCatalog_Validating);
+            this.cmb_MfgCatalog.Validated += new System.EventHandler(this.cmb_MfgCatalog_Validated);
+            // 
+            // cmb_VendorCatalog
+            // 
+            this.cmb_VendorCatalog.AllowTypedIn = false;
+            this.cueExtender1.SetCueText(this.cmb_VendorCatalog, "Vendor Catalog");
+            this.cmb_VendorCatalog.CurrentItem = null;
+            this.cmb_VendorCatalog.Location = new System.Drawing.Point(56, 57);
+            this.cmb_VendorCatalog.Name = "cmb_VendorCatalog";
+            this.cmb_VendorCatalog.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.cmb_VendorCatalog.PopupOffset = new System.Drawing.Point(12, 0);
+            this.cmb_VendorCatalog.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
+            this.cmb_VendorCatalog.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.cmb_VendorCatalog.PopupWidth = 300;
+            this.cmb_VendorCatalog.Size = new System.Drawing.Size(400, 20);
+            this.cmb_VendorCatalog.TabIndex = 9;
+            this.cmb_VendorCatalog.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_VendorCatalog_Validating);
+            this.cmb_VendorCatalog.Validated += new System.EventHandler(this.cmb_VendorCatalog_Validated);
+            // 
+            // cmb_Mat
+            // 
+            this.cmb_Mat.AllowTypedIn = false;
+            this.cueExtender1.SetCueText(this.cmb_Mat, "Material Code");
+            this.cmb_Mat.CurrentItem = null;
+            this.cmb_Mat.Location = new System.Drawing.Point(56, 37);
+            this.cmb_Mat.Name = "cmb_Mat";
+            this.cmb_Mat.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.cmb_Mat.PopupOffset = new System.Drawing.Point(12, 0);
+            this.cmb_Mat.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
+            this.cmb_Mat.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.cmb_Mat.PopupWidth = 300;
+            this.cmb_Mat.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cmb_Mat.Size = new System.Drawing.Size(400, 20);
+            this.cmb_Mat.TabIndex = 5;
+            this.cmb_Mat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_Mat_KeyDown);
+            this.cmb_Mat.Validated += new System.EventHandler(this.cmb_Mat_Validated);
             // 
             // ItemSelection
             // 
@@ -253,5 +265,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem addItemFromOtherVendorToolStripMenuItem;
     }
 }

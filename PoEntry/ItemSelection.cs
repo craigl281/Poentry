@@ -58,6 +58,11 @@ namespace PoEntry
             cmb_Mfg_Name.AllowTypedIn = orig.data.SystemOptionsDictionary["POENTRY_CAN_FREEFORM_MFG"].ToBoolean();//Allows Freeform
         }
 
+        private void ItemSelection_Load(object sender, EventArgs e)
+        {
+            eb_Description.Visible = false;
+        }
+
         #region Validating 
         private void eb_Description_Validating(object sender, CancelEventArgs e)
         {
@@ -157,9 +162,8 @@ namespace PoEntry
             if (cmb_Mat.Text == "")
                 return;
             orig.CurMat = CurMat;
-            if (orig.Detail.NonFile)
+            if (orig.Detail.NonFile || orig.AddItemFromVendor)
                 return;
-
             orig.GetMatDetails("");
 
             if (orig._IMF.UseContract.Trim().Length > 0)
@@ -211,7 +215,7 @@ namespace PoEntry
         {
             try
             {
-                orig.gettingitem= true;
+                orig.gettingitem = true;
                 var tempreturn = this.DialogResult;
                 if (tempreturn == null)
                 {
@@ -220,7 +224,7 @@ namespace PoEntry
                 }
                 if (tempreturn == DialogResult.OK)
                 {
-                    if (orig.Detail.NonFile)
+                    if (orig.Detail.NonFile || orig.AddItemFromVendor)
                         orig.Detail.MatCode = CurMat;
                     else
                         orig.CurMat = CurMat;
@@ -228,8 +232,6 @@ namespace PoEntry
                     orig.Detail.MFGCatalog = CurMfgCat ?? "";
                     orig.Detail.MFGName = CurMfg ?? "";
                 }
-                else
-                    orig.gettingitem = false;
             }
             catch
             {
@@ -270,14 +272,18 @@ namespace PoEntry
             SendKeys.Send("{TAB}");
         }
 
-        private void ItemSelection_Load(object sender, EventArgs e)
-        {
-            eb_Description.Visible = false;
-        }
-
         private void button1_KeyDown(object sender, KeyEventArgs e)
         {
             this.DialogResult = DialogResult.OK;
         }
+
+        private void addItemFromOtherVendorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cmb_Mat.Items = orig.data.prefillCombos("MatNotVendor", orig.Header.VendorID);
+            orig.AddItemFromVendor = true;
+            cmb_VendorCatalog.AllowTypedIn = true;
+            cmb_MfgCatalog.AllowTypedIn = true;
+        }
+
     }
 }

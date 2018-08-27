@@ -1236,6 +1236,14 @@ namespace PoEntry
                         _Com.Parameters.AddWithValue("PoNo", parameter);
                         break;
                     }
+                case "MatNotVendor":
+                    {
+                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code "
+                                         + "LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
+                                         + "IV.Vendor_Id <> @Vendor ORDER BY IV.Mat_Code";
+                        _Com.Parameters.AddWithValue("Vendor", parameter);
+                        break;
+                    }
                 case "Deliver":
                     {
                         _Com.CommandText = "SELECT DISTINCT Deliver_To, Description FROM DeliverTo WHERE Active = 1 AND Entity = @entity ORDER BY Deliver_To ";
@@ -2739,6 +2747,151 @@ namespace PoEntry
             this.Stockless_UOP = Stockless_UOP;
             this.Purchase_In_Multiples_Of = Purchase_In_Multiples_Of;
         }
+    }
+
+    public class LocationDetail
+    {
+        #region Private Members
+        private string m_MatCode; private string m_Location; private string m_PatientChargeNumber; private decimal m_OnHand; private decimal m_Minimum; private decimal m_Maximum; private decimal m_ReorderPoint; private string m_Entity; private string m_AccountNo; private string m_Type; private decimal m_PatientCost; private string m_ReorderLocation; private string m_Bin; private decimal m_IssueCost; private decimal m_OnOrder; private string m_SubAccount; private decimal m_AverageCost; private string m_ABC; private decimal m_ReorderQuantity; private decimal m_StockoutQuantity; private DateTime m_LastActivityDate; private bool m_Active; private string m_Memo; private DateTime m_EntryDate; private bool m_ReorderOverride; private bool m_Stockless; private bool m_FillandKill; private bool m_PatientCharge; private bool m_Overnight; private string m_VatCode; private bool m_ExcludeROQ; private bool m_ExcludeABC; private string m_SubstituteItem; private string m_CountCode; private string m_InterfaceFlag; private string m_Bin2; private string m_Bin3; private decimal m_AverageDailyUsage; private bool m_DOQ; private bool m_FloorStock; private bool m_ExcludeOLR; private string m_AliasItem; private string m_AliasDescription; private DateTime m_LastOrderedDate; private bool m_PhaseOut; private decimal m_AdditionalQtyToOrder; private bool m_CriticalItem; private decimal m_OriginalConsignmentQuantity; private bool m_IssueOnOrderReq; private string m_AdditionalQtyToOrderMemo; private bool m_DontUpdateIssueCost; private string m_EnteredBy; private decimal m_InterfacePreviousOnHand; private DateTime m_DeactivatedDate; private DateTime m_LastCountedDate; private bool m_PrintBarcodeOnReceipt; private bool m_PrintBarcodeOnTransfer; private bool m_Implant; private int m_MaxCounts; private string m_locdesc;
+        #endregion
+        #region Public Properties
+        public string Display { get { return this.ToString(); } }
+        public string MatCode { get { return m_MatCode; } set { if (value.Length > 10) throw new ArgumentException("Mat Code must be 10 characters or fewer", "value"); else m_MatCode = value; } }
+        public string Location { get { return m_Location; } set { if (value.Length > 7) throw new ArgumentException("Location must be 7 characters or fewer", "value"); else m_Location = value; } }
+        public string PatientChargeNumber { get { return m_PatientChargeNumber; } set { if (value.Length > 20) throw new ArgumentException("Patient Charge Number must be 20 characters or fewer", "value"); else m_PatientChargeNumber = value; } }
+        public decimal OnHand { get { return m_OnHand; } set { m_OnHand = value; } }
+        public decimal Minimum { get { return m_Minimum; } set { m_Minimum = value; } }
+        public decimal Maximum { get { return m_Maximum; } set { m_Maximum = value; } }
+        public decimal ReorderPoint { get { return m_ReorderPoint; } set { m_ReorderPoint = value; } }
+
+        public string Entity { get { return m_Entity; } set { m_Entity = value; } }
+
+        public string AccountNo { get { return m_AccountNo; } set { if (value.Length > 31) throw new ArgumentException("Account No must be 31 characters or fewer", "value"); else m_AccountNo = value; } }
+        public string Type { get { return m_Type; } set { if (value.Length > 1) throw new ArgumentException("Type must be 1 characters or fewer", "value"); else m_Type = value; } }
+        public decimal PatientCost { get { return m_PatientCost; } set { m_PatientCost = value; } }
+        public string ReorderLocation { get { return m_ReorderLocation; } set { if (value.Length > 7) throw new ArgumentException("Reorder Location must be 7 characters or fewer", "value"); else m_ReorderLocation = value; } }
+        public string Bin { get { return m_Bin; } set { if (value.Length > 25) throw new ArgumentException("Bin must be 25 characters or fewer", "value"); else m_Bin = value; } }
+        public decimal IssueCost { get { return m_IssueCost; } set { m_IssueCost = value; } }
+        public decimal OnOrder { get { return m_OnOrder; } set { m_OnOrder = value; } }
+        public string SubAccount { get { return m_SubAccount; } set { if (value.Length > 15) throw new ArgumentException("Sub Account must be 15 characters or fewer", "value"); else m_SubAccount = value; } }
+        public decimal AverageCost { get { return m_AverageCost; } set { m_AverageCost = value; } }
+        public string ABC { get { return m_ABC; } set { if (value.Length > 1) throw new ArgumentException("ABC must be 1 characters or fewer", "value"); else m_ABC = value; } }
+        public decimal ReorderQuantity { get { return m_ReorderQuantity; } set { m_ReorderQuantity = value; } }
+        public decimal StockoutQuantity { get { return m_StockoutQuantity; } set { m_StockoutQuantity = value; } }
+        public DateTime LastActivityDate { get { return m_LastActivityDate; } set { m_LastActivityDate = value; } }
+        public bool Active { get { return m_Active; } set { m_Active = value; } }
+        public string Memo { get { return m_Memo; } set { m_Memo = value; } }
+        public DateTime EntryDate { get { return m_EntryDate; } set { m_EntryDate = value; } }
+        public bool ReorderOverride { get { return m_ReorderOverride; } set { m_ReorderOverride = value; } }
+        public bool Stockless { get { return m_Stockless; } set { m_Stockless = value; } }
+        public bool FillandKill { get { return m_FillandKill; } set { m_FillandKill = value; } }
+        public bool PatientCharge { get { return m_PatientCharge; } set { m_PatientCharge = value; } }
+        public bool Overnight { get { return m_Overnight; } set { m_Overnight = value; } }
+        public string VatCode { get { return m_VatCode; } set { if (value.Length > 3) throw new ArgumentException("Vat Code must be 3 characters or fewer", "value"); else m_VatCode = value; } }
+        public bool ExcludeROQ { get { return m_ExcludeROQ; } set { m_ExcludeROQ = value; } }
+        public bool ExcludeABC { get { return m_ExcludeABC; } set { m_ExcludeABC = value; } }
+        public string SubstituteItem { get { return m_SubstituteItem; } set { if (value.Length > 10) throw new ArgumentException("Substitute Item must be 10 characters or fewer", "value"); else m_SubstituteItem = value; } }
+        public string CountCode { get { return m_CountCode; } set { if (value.Length > 7) throw new ArgumentException("Count Code must be 7 characters or fewer", "value"); else m_CountCode = value; } }
+        public string InterfaceFlag { get { return m_InterfaceFlag; } set { if (value.Length > 5) throw new ArgumentException("Interface Flag must be 5 characters or fewer", "value"); else m_InterfaceFlag = value; } }
+        public string Bin2 { get { return m_Bin2; } set { if (value.Length > 25) throw new ArgumentException("Bin2 must be 25 characters or fewer", "value"); else m_Bin2 = value; } }
+        public string Bin3 { get { return m_Bin3; } set { if (value.Length > 25) throw new ArgumentException("Bin3 must be 25 characters or fewer", "value"); else m_Bin3 = value; } }
+        public decimal AverageDailyUsage { get { return m_AverageDailyUsage; } set { m_AverageDailyUsage = value; } }
+        public bool DOQ { get { return m_DOQ; } set { m_DOQ = value; } }
+        public bool FloorStock { get { return m_FloorStock; } set { m_FloorStock = value; } }
+        public bool ExcludeOLR { get { return m_ExcludeOLR; } set { m_ExcludeOLR = value; } }
+        public string AliasItem { get { return m_AliasItem; } set { if (value.Length > 25) throw new ArgumentException("Alias Item must be 25 characters or fewer", "value"); else m_AliasItem = value; } }
+        public string AliasDescription { get { return m_AliasDescription; } set { if (value.Length > 75) throw new ArgumentException("Alias Description must be 75 characters or fewer", "value"); else m_AliasDescription = value; } }
+        public DateTime LastOrderedDate { get { return m_LastOrderedDate; } set { m_LastOrderedDate = value; } }
+        public bool PhaseOut { get { return m_PhaseOut; } set { m_PhaseOut = value; } }
+        public decimal AdditionalQtyToOrder { get { return m_AdditionalQtyToOrder; } set { m_AdditionalQtyToOrder = value; } }
+        public bool CriticalItem { get { return m_CriticalItem; } set { m_CriticalItem = value; } }
+        public decimal OriginalConsignmentQuantity { get { return m_OriginalConsignmentQuantity; } set { m_OriginalConsignmentQuantity = value; } }
+        public bool IssueOnOrderReq { get { return m_IssueOnOrderReq; } set { m_IssueOnOrderReq = value; } }
+        public string AdditionalQtyToOrderMemo { get { return m_AdditionalQtyToOrderMemo; } set { m_AdditionalQtyToOrderMemo = value; } }
+        public bool DontUpdateIssueCost { get { return m_DontUpdateIssueCost; } set { m_DontUpdateIssueCost = value; } }
+        public string EnteredBy { get { return m_EnteredBy; } set { if (value.Length > 10) throw new ArgumentException("Entered By must be 10 characters or fewer", "value"); else m_EnteredBy = value; } }
+        public decimal InterfacePreviousOnHand { get { return m_InterfacePreviousOnHand; } set { m_InterfacePreviousOnHand = value; } }
+        public DateTime DeactivatedDate { get { return m_DeactivatedDate; } set { m_DeactivatedDate = value; } }
+        public DateTime LastCountedDate { get { return m_LastCountedDate; } set { m_LastCountedDate = value; } }
+        public bool PrintBarcodeOnReceipt { get { return m_PrintBarcodeOnReceipt; } set { m_PrintBarcodeOnReceipt = value; } }
+        public bool PrintBarcodeOnTransfer { get { return m_PrintBarcodeOnTransfer; } set { m_PrintBarcodeOnTransfer = value; } }
+        public bool Implant { get { return m_Implant; } set { m_Implant = value; } }
+        public int MaxCounts { get { return m_MaxCounts; } set { m_MaxCounts = value; } }
+        public string Description { get { return m_locdesc; } set { m_locdesc = value; } }
+        #endregion
+        #region Constructor
+        public LocationDetail() { }
+        public LocationDetail
+        (string MatCode, string Location, string PatientChargeNumber, decimal OnHand, decimal Minimum, decimal Maximum, decimal ReorderPoint, string Entity, string AccountNo, string Type, decimal PatientCost, string ReorderLocation, string Bin, decimal IssueCost, decimal OnOrder, string SubAccount, decimal AverageCost, string ABC, decimal ReorderQuantity, decimal StockoutQuantity, DateTime LastActivityDate, bool Active, string Memo, DateTime EntryDate, bool ReorderOverride, bool Stockless, bool FillandKill, bool PatientCharge, bool Overnight, string VatCode, bool ExcludeROQ, bool ExcludeABC, string SubstituteItem, string CountCode, string InterfaceFlag, string Bin2, string Bin3, decimal AverageDailyUsage, bool DOQ, bool FloorStock, bool ExcludeOLR, string AliasItem, string AliasDescription, DateTime LastOrderedDate, bool PhaseOut, decimal AdditionalQtyToOrder, bool CriticalItem, decimal OriginalConsignmentQuantity, bool IssueOnOrderReq, string AdditionalQtyToOrderMemo, bool DontUpdateIssueCost, string EnteredBy, decimal InterfacePreviousOnHand, DateTime DeactivatedDate, DateTime LastCountedDate, bool PrintBarcodeOnReceipt, bool PrintBarcodeOnTransfer, bool Implant, int MaxCounts, string description)
+        {
+            this.MatCode = MatCode;
+            this.Location = Location;
+            this.PatientChargeNumber = PatientChargeNumber;
+            this.OnHand = OnHand;
+            this.Minimum = Minimum;
+            this.Maximum = Maximum;
+            this.ReorderPoint = ReorderPoint;
+            this.Entity = Entity;
+            this.AccountNo = AccountNo;
+            this.Type = Type;
+            this.PatientCost = PatientCost;
+            this.ReorderLocation = ReorderLocation;
+            this.Bin = Bin;
+            this.IssueCost = IssueCost;
+            this.OnOrder = OnOrder;
+            this.SubAccount = SubAccount;
+            this.AverageCost = AverageCost;
+            this.ABC = ABC;
+            this.ReorderQuantity = ReorderQuantity;
+            this.StockoutQuantity = StockoutQuantity;
+            this.LastActivityDate = LastActivityDate;
+            this.Active = Active;
+            this.Memo = Memo;
+            this.EntryDate = EntryDate;
+            this.ReorderOverride = ReorderOverride;
+            this.Stockless = Stockless;
+            this.FillandKill = FillandKill;
+            this.PatientCharge = PatientCharge;
+            this.Overnight = Overnight;
+            this.VatCode = VatCode;
+            this.ExcludeROQ = ExcludeROQ;
+            this.ExcludeABC = ExcludeABC;
+            this.SubstituteItem = SubstituteItem;
+            this.CountCode = CountCode;
+            this.InterfaceFlag = InterfaceFlag;
+            this.Bin2 = Bin2;
+            this.Bin3 = Bin3;
+            this.AverageDailyUsage = AverageDailyUsage;
+            this.DOQ = DOQ;
+            this.FloorStock = FloorStock;
+            this.ExcludeOLR = ExcludeOLR;
+            this.AliasItem = AliasItem;
+            this.AliasDescription = AliasDescription;
+            this.LastOrderedDate = LastOrderedDate;
+            this.PhaseOut = PhaseOut;
+            this.AdditionalQtyToOrder = AdditionalQtyToOrder;
+            this.CriticalItem = CriticalItem;
+            this.OriginalConsignmentQuantity = OriginalConsignmentQuantity;
+            this.IssueOnOrderReq = IssueOnOrderReq;
+            this.AdditionalQtyToOrderMemo = AdditionalQtyToOrderMemo;
+            this.DontUpdateIssueCost = DontUpdateIssueCost;
+            this.EnteredBy = EnteredBy;
+            this.InterfacePreviousOnHand = InterfacePreviousOnHand;
+            this.DeactivatedDate = DeactivatedDate;
+            this.LastCountedDate = LastCountedDate;
+            this.PrintBarcodeOnReceipt = PrintBarcodeOnReceipt;
+            this.PrintBarcodeOnTransfer = PrintBarcodeOnTransfer;
+            this.Implant = Implant;
+            this.MaxCounts = MaxCounts;
+            this.m_locdesc = description;
+        }
+        #endregion
+        #region Public Overrides
+        public override string ToString()
+        {
+            return Location + " - " + Description + " - " + MatCode;
+        }
+        #endregion
     }
 
 }
