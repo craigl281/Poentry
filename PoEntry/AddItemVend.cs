@@ -11,6 +11,7 @@ namespace PoEntry
 {
     public partial class AddItemVend : Form
     {
+        public Ehs.Models.ItemVend item;
         string Comment = "", CurrentUOPIV;
         int IVUOPSize;
         //bool Changing;
@@ -46,38 +47,33 @@ namespace PoEntry
             if (ValidateRecord())
             {
                 q_Command.Parameters.Clear();
-                q_Command.CommandText = "INSERT INTO ItemVend ";
-                q_Command.CommandText += "(Mat_Code, Vendor_Id, Vendor_Catalog, Mfg_Name, Mfg_Catalog, Mfg_Code, Unit_Purchase, PO_Cost, Comment, Active, Conversion ) VALUES";
-                q_Command.CommandText += " (@Mat_Code, @Vendor_Id, @Vendor_Catalog, @Mfg_Name, @Mfg_Catalog, @Mfg_Code, @Unit_Purchase, @PO_Cost, @Comment, @Active, @Conversion )";
-                q_Command.Parameters.Add("Mat_Code", SqlDbType.VarChar).Value = eb_mat_code.Text;
-                q_Command.Parameters.Add("Vendor_Id", SqlDbType.VarChar).Value = eb_vendor_id.Text;
-                q_Command.Parameters.Add("Vendor_Catalog", SqlDbType.VarChar).Value = eb_vendor_cat.Text;
-                q_Command.Parameters.Add("Mfg_Name", SqlDbType.VarChar).Value = eb_mfg_name.Text;
-                q_Command.Parameters.Add("Mfg_Catalog", SqlDbType.VarChar).Value = eb_mfg_cat.Text;
-                q_Command.Parameters.Add("Mfg_Code", SqlDbType.VarChar).Value = eb_mfg_code.Text;
-                q_Command.Parameters.Add("Unit_Purchase", SqlDbType.VarChar).Value = CurrentUOPIV;
-                q_Command.Parameters.Add("PO_Cost", SqlDbType.Float).Value = Convert.ToSingle(eb_cost.Text);
-                q_Command.Parameters.Add("Comment", SqlDbType.Text).Value = Comment;
-                q_Command.Parameters.Add("Active", SqlDbType.Bit).Value = true;
-                q_Command.Parameters.Add("Conversion", SqlDbType.Float).Value = Convert.ToSingle(eb_conversion.Text);
+                q_Command.CommandText = "INSERT INTO ItemVend (Mat_Code, Vendor_Id, Vendor_Catalog, Mfg_Name, Mfg_Catalog, Mfg_Code, Unit_Purchase, PO_Cost, Comment, Active, Conversion ) VALUES (@Mat_Code, @Vendor_Id, @Vendor_Catalog, @Mfg_Name, @Mfg_Catalog, @Mfg_Code, @Unit_Purchase, @PO_Cost, @Comment, 1, @Conversion )";
+                q_Command.Parameters.AddWithValue("Mat_Code", item.MatCode);
+                q_Command.Parameters.AddWithValue("Vendor_Id", item.VendorId);
+                q_Command.Parameters.AddWithValue("Vendor_Catalog", item.VendorCatalog);
+                q_Command.Parameters.AddWithValue("Mfg_Name", item.MFGName);
+                q_Command.Parameters.AddWithValue("Mfg_Catalog", item.MFGCatalog);
+                q_Command.Parameters.AddWithValue("Mfg_Code", item.MFGCode);
+                q_Command.Parameters.AddWithValue("Unit_Purchase", item.UnitPurchase);
+                q_Command.Parameters.AddWithValue("PO_Cost", item.POCost);
+                q_Command.Parameters.AddWithValue("Comment", SqlDbType.Text).Value = Comment;
+                q_Command.Parameters.AddWithValue("Conversion", item.Conversion);
                 q_Command.ExecuteNonQuery();
 
                 q_Command.Parameters.Clear();
-                q_Command.CommandText = "INSERT INTO UOP ";
-                q_Command.CommandText += "(Mat_Code, Vendor_Id, Vendor_Catalog, Mfg_Name, Mfg_Catalog, Mfg_Code, Unit_Purchase, PO_Cost, Conversion, Default_UOP, Active) VALUES";
-                q_Command.CommandText += " (@Mat_Code, @Vendor_Id, @Vendor_Catalog, @Mfg_Name, @Mfg_Catalog, @Mfg_Code, @Unit_Purchase, @PO_Cost, @Conversion, 1, 1 )";
-                q_Command.Parameters.Add("Mat_Code", SqlDbType.VarChar).Value = eb_mat_code.Text;
-                q_Command.Parameters.Add("Vendor_Id", SqlDbType.VarChar).Value = eb_vendor_id.Text;
-                q_Command.Parameters.Add("Vendor_Catalog", SqlDbType.VarChar).Value = eb_vendor_cat.Text;
-                q_Command.Parameters.Add("Mfg_Name", SqlDbType.VarChar).Value = eb_mfg_name.Text;
-                q_Command.Parameters.Add("Mfg_Catalog", SqlDbType.VarChar).Value = eb_mfg_cat.Text;
-                q_Command.Parameters.Add("Mfg_Code", SqlDbType.VarChar).Value = eb_mfg_code.Text;
-                q_Command.Parameters.Add("Unit_Purchase", SqlDbType.VarChar).Value = CurrentUOPIV;
-                q_Command.Parameters.Add("PO_Cost", SqlDbType.Float).Value = Convert.ToSingle(eb_cost.Text);
-                q_Command.Parameters.Add("Conversion", SqlDbType.Float).Value = Convert.ToSingle(eb_conversion.Text);
+                q_Command.CommandText = "INSERT INTO UOP (Mat_Code, Vendor_Id, Vendor_Catalog, Mfg_Name, Mfg_Catalog, Mfg_Code, Unit_Purchase, PO_Cost, Conversion, Default_UOP, Active) VALUES (@Mat_Code, @Vendor_Id, @Vendor_Catalog, @Mfg_Name, @Mfg_Catalog, @Mfg_Code, @Unit_Purchase, @PO_Cost, @Conversion, 1, 1 )";
+                q_Command.Parameters.AddWithValue("Mat_Code", item.MatCode);
+                q_Command.Parameters.AddWithValue("Vendor_Id", item.VendorId);
+                q_Command.Parameters.AddWithValue("Vendor_Catalog", item.VendorCatalog);
+                q_Command.Parameters.AddWithValue("Mfg_Name", item.MFGName);
+                q_Command.Parameters.AddWithValue("Mfg_Catalog", item.MFGCatalog);
+                q_Command.Parameters.AddWithValue("Mfg_Code", item.MFGCode);
+                q_Command.Parameters.AddWithValue("Unit_Purchase", item.UnitPurchase);
+                q_Command.Parameters.AddWithValue("PO_Cost", item.POCost);
+                q_Command.Parameters.AddWithValue("Comment", SqlDbType.Text).Value = Comment;
+                q_Command.Parameters.AddWithValue("Conversion", item.Conversion);
                 q_Command.ExecuteNonQuery();
                 this.Close();
-
             }
         }
 

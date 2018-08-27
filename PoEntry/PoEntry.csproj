@@ -178,6 +178,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\Ehs.Models.ItemVend.datasource" />
     <None Include="Properties\DataSources\Ehs.Models.PoDetail.datasource" />
     <None Include="Properties\DataSources\Ehs.Models.PoHeader.datasource" />
     <None Include="Properties\DataSources\Ehs.Models.Vendor.datasource" />
