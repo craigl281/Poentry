@@ -104,36 +104,6 @@ namespace PoEntry
             return true;
         }
 
-        public void FillUOPCombo(string PassUnit)
-        {
-            int i = 0;
-
-            q_Command.Parameters.Clear();
-            q_Command.CommandText = "SELECT * FROM UnitOfMeasure WHERE Active = 1 ORDER BY UOM ";
-            cmb_uop.Items.Clear();
-            IVUOPSize = 9;
-            using (SqlDataReader read = q_Command.ExecuteReader())
-            {
-                while (read.Read()) { cmb_uop.Items.Add(((string)read["UOM"]).PadRight(IVUOPSize, ' ') + (string)read["Description"]); }
-                try
-                {
-                    while (cmb_uop.Items.Count > i && cmb_uop.Items[i].ToString().Substring(0, IVUOPSize).Trim() != PassUnit)
-                    {
-                        i++;
-                    }
-                }
-                catch { }
-                if (i >= cmb_uop.Items.Count) { cmb_uop.SelectedIndex = 0; }
-                else { cmb_uop.SelectedIndex = i; }
-                CurrentUOPIV = cmb_uop.SelectedItem.ToString().Substring(0, IVUOPSize).Trim();
-            }
-        }
-
-        private void cmb_uop_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CurrentUOPIV = cmb_uop.SelectedItem.ToString().Substring(0, IVUOPSize).Trim();
-        }
-
         private void eb_vendor_cat_Leave(object sender, EventArgs e)
         {
             /*

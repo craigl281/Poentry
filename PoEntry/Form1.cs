@@ -4596,7 +4596,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void cmb_Purchase_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Purchase_Validating(object sender, CancelEventArgs e)
         {
             if (CurrentUOPPrime == null)
             {
@@ -4606,7 +4606,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void eb_Unit_Cost2_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void eb_Unit_Cost2_Validating(object sender, CancelEventArgs e)
         {
             string Batch_No, contract;
             bool Default_UOP;
@@ -4615,7 +4615,7 @@ WHERE PoHeader.PO_No = */
             Price_Changed = false;
             if (Changing)
                 return;
-            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType)?.ReturnRepair??false)
+            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType)?.ReturnRepair ?? false)
                 return;
             if (viewMode1.Mode == ViewingMode.Editing)
             {
@@ -4639,7 +4639,7 @@ WHERE PoHeader.PO_No = */
 
             Default_UOP = false;
             var temp = List_Uop?.Find(r => r.Vendor_Catalog == Detail.VendorCatalog && r.Unit_Purchase == CurrentUOPPrime);
-            if (temp != null &&  temp.PO_Cost != eb_Unit_Cost2.Text.ToDecimal())
+            if (temp != null && temp.PO_Cost != eb_Unit_Cost2.Text.ToDecimal())
             {
                 Price_Changed = true;
                 if (Allow_Update_Master)
