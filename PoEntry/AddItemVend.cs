@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using Ehs.Controls;
 using Ehs.Util;
 
 
@@ -11,6 +12,7 @@ namespace PoEntry
 {
     public partial class AddItemVend : Form
     {
+        Form1 Form;
         public Ehs.Models.ItemVend item;
         string Comment = "", CurrentUOPIV;
         int IVUOPSize;
@@ -19,6 +21,12 @@ namespace PoEntry
         public AddItemVend(Form1 frm)
         {
             InitializeComponent();
+
+            Form.data.Open();
+            cmb_Purchase.Items = EHS.Orders.prefillcombo(Form.data._Com, "UOM", "");
+            Form.data.Close();
+            //var temp = new 
+            //cmb_Mat.Items= new System.Collections.Generic.List<ComboBoxString> = new ComboBoxString(Form.CurMat);
             /*
             EhsLogin login8 = new EhsLogin(this.sqlConnection7);
             login8.Login();

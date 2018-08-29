@@ -5001,6 +5001,9 @@ WHERE PoHeader.PO_No = */
         #region Extra Forms
         private void AddItemVend()
         {
+            AddItemVend fadditem = new AddItemVend(this);
+
+
             //variables.MUST_ENTER_MFG_NAME = MUST_ENTER_MFG_NAME;
             //variables.CurrentUOPPrime = CurrentUOPPrime;
             //variables.COPY_VC_TO_MFG = COPY_VC_TO_MFG;
