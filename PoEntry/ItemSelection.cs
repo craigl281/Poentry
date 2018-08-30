@@ -280,9 +280,12 @@ namespace PoEntry
         private void addItemFromOtherVendorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             cmb_Mat.Items = orig.data.prefillCombos("MatNotVendor", orig.Header.VendorID);
+            cmb_VendorCatalog.Items = orig.data.prefillCombos("VendorCatNotVendor", orig.Header.VendorID);
+            cmb_MfgCatalog.Items = orig.data.prefillCombos("MfgCatNotVendor", orig.Header.VendorID);
+            CurMat = null;
             orig.AddItemFromVendor = true;
-            cmb_VendorCatalog.AllowTypedIn = true;
-            cmb_MfgCatalog.AllowTypedIn = true;
+            //            cmb_VendorCatalog.AllowTypedIn = true;
+            //            cmb_MfgCatalog.AllowTypedIn = true;
         }
 
     }

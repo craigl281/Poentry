@@ -1224,8 +1224,7 @@ namespace PoEntry
                     {
                         // _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND "
                         //                  + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY IV.Mat_Code";
-                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code "
-                                         + "LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
+                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
                                          + "IV.Vendor_Id = @Vendor ORDER BY IV.Mat_Code";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
@@ -1238,8 +1237,7 @@ namespace PoEntry
                     }
                 case "MatNotVendor":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code "
-                                         + "LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
+                        _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
                                          + "IV.Vendor_Id <> @Vendor ORDER BY IV.Mat_Code";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
@@ -1252,15 +1250,25 @@ namespace PoEntry
                     }
                 case "VendorCat":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND "
-                                         + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY Vendor_Catalog";
+                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY Vendor_Catalog";
+                        _Com.Parameters.AddWithValue("Vendor", parameter);
+                        break;
+                    }
+                case "VendorCatNotVendor":
+                    {
+                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Vendor_Id <> @Vendor ORDER BY Vendor_Catalog";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
                 case "MfgCat":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND "
-                                         + "IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY Mfg_Catalog";
+                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Vendor_Id = @Vendor ORDER BY Mfg_Catalog";
+                        _Com.Parameters.AddWithValue("Vendor", parameter);
+                        break;
+                    }
+                case "MfgCatNotVendor":
+                    {
+                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Vendor_Id <> @Vendor ORDER BY Mfg_Catalog";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
