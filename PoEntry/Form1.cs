@@ -1258,7 +1258,7 @@ Changing := false;
             CurMat = null;
             if (bs2.Count < 1)
                 return;
-            this.Changing = true;
+            Changing = true;
             /*try
             {
                 Detail.PONo = CurrPo;
@@ -1311,6 +1311,7 @@ Changing := false;
             Surgery_Date = DateTime.Today;
             //cb_Accrue.Checked = (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).DontAccrual; check on this.
             btn_olr.Enabled = false;
+            Changing = false;
         }
         private void bs2_CurrentItemChanged(object sender, EventArgs e)
         {
@@ -1404,12 +1405,13 @@ Changing := false;
                 var temp = data.GetLoc(CurMat);
                 if (temp != null)
                 {
-                    this.Changing = true;
+                    Changing = true;
                     if (LastLocUsed != null && LastLocUsed.Trim().Length > 0)
                     {
                         var row = (temp.Exists(r => r.Key == LastLocUsed)) ? temp.Find(r => r.Key == LastLocUsed) : null;
                         if (row == null)
                         {
+                            Changing = false;
                             cmb_Loc.Focus();
                             return;
                         }
@@ -1471,7 +1473,7 @@ Changing := false;
 
         public void SetDetailFields(bool state)
         {
-            this.Changing = true;
+            Changing = true;
             this.eb_PO_Number.ReadOnly = state;
             this.cmb_Mat.ReadOnly = false;
             this.cmb_Loc.ReadOnly = !state;
@@ -1592,6 +1594,7 @@ Changing := false;
                     cmb_Mat.CurrentItem = null;
                     cmb_Act.CurrentItem = null;
                     this.ClearDetails();
+                    Changing = false;
                 }
                 else
                 {
@@ -1834,6 +1837,7 @@ Changing := false;
             if (cmb_Mat.ReadOnly == false)
             {
                 cmb_Mat.Items = list_Mat;
+                Changing = false;
                 cmb_Mat.Focus();
             }
             if (this.CurVendor.ToUpper() == data.SystemOptionsDictionary["GENERAL_VENDOR"].ToNonNullString().ToUpper())
@@ -1851,8 +1855,9 @@ Changing := false;
                 this.Changing = false;
             }
             eb_Conversion.Text = "1";
-            if (cmb_Mat.ReadOnly == false)
-                Mat_Enter();
+            Changing = false;
+            //if (cmb_Mat.ReadOnly == false)
+            //    Mat_Enter();
         }
 
         #endregion New
@@ -3009,7 +3014,7 @@ WHERE PoHeader.PO_No = */
                 }
             }
             //need to refresh data in case anyone else released PO
-            decimal holdItemCount = this.Detail.ItemCount;
+            decimal holdItemCount = this.Detail?.ItemCount ?? 0;
             this.FillHeaderQuery();
             this.FillDetailQuery();
             this.SetViewing();
@@ -4158,6 +4163,7 @@ WHERE PoHeader.PO_No = */
         {
             Mat_Enter();
         }
+        ItemSelection _Is;
         void Mat_Enter()
         {
             DialogResult returnvalue = new DialogResult();
@@ -4168,7 +4174,7 @@ WHERE PoHeader.PO_No = */
                     return;
                 if (gettingitem == false)
                 {
-                    ItemSelection _Is = new ItemSelection(this);
+                    _Is = new ItemSelection(this);
                     try
                     {
                         returnvalue = _Is.ShowDialog();
@@ -4808,6 +4814,14 @@ WHERE PoHeader.PO_No = */
         {
             if (Detail.NonFile)
                 return;
+            if (_Is != null)
+            {
+                if (AddItemFromVendor)
+                {
+                    cmb_Mat.Items.Add(new ComboBoxString(_Is.CurMat));
+                    CurMat = _Is.CurMat;
+                }
+            }
             _IMF = data.FillImf(CurMat, CurVendor, UOP);
             if (_IMF.UseContract != "" && (cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).ReturnRepair == false)
             {
@@ -4977,9 +4991,10 @@ WHERE PoHeader.PO_No = */
             if ((viewMode1.Mode != ViewingMode.Adding) && (viewMode1.Mode != ViewingMode.Editing))
             {
                 skipme = true;
-                this.Changing = true;
+                Changing = true;
                 //this.bs2.SuspendBinding();
                 bs2.Position = bs2.Find("MatCode", Detail.MatCode);
+                Changing = false;
                 //bs2.ResumeBinding();
                 //this.eb_Mat_Code.SelectionStart = this.holdCur;
                 skipme = false;

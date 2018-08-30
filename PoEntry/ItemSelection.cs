@@ -162,7 +162,7 @@ namespace PoEntry
             if (cmb_Mat.Text == "")
                 return;
             orig.CurMat = CurMat;
-            if (orig.Detail.NonFile || orig.AddItemFromVendor)
+            if (orig.Detail.NonFile)// || orig.AddItemFromVendor)
                 return;
             orig.GetMatDetails("");
 
