@@ -2604,6 +2604,35 @@ namespace PoEntry
                 }
             }*/
         }
+
+        public void SaveNewItemToVendor(PoDetail detail, string vendorid)
+        {
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "INSERT INTO ItemVend (Mat_Code, Vendor_Id, Vendor_Catalog, Mfg_Name, Mfg_Catalog, Unit_Purchase, PO_Cost, Active, Conversion ) VALUES (@Mat_Code, @Vendor_Id, @Vendor_Catalog, @Mfg_Name, @Mfg_Catalog, @Unit_Purchase, @PO_Cost, 1, @Conversion )";
+            _Com.Parameters.AddWithValue("Mat_Code", detail.MatCode);
+            _Com.Parameters.AddWithValue("Vendor_Id", vendorid);
+            _Com.Parameters.AddWithValue("Vendor_Catalog", detail.VendorCatalog);
+            _Com.Parameters.AddWithValue("Mfg_Name", detail.MFGName);
+            _Com.Parameters.AddWithValue("Mfg_Catalog", detail.MFGCatalog);
+            _Com.Parameters.AddWithValue("Unit_Purchase", detail.UnitPurchase);
+            _Com.Parameters.AddWithValue("PO_Cost", detail.UnitCost);
+            _Com.Parameters.AddWithValue("Conversion", detail.Conversion);
+            _Com.ExecuteNonQuery();
+
+            _Com.Parameters.Clear();
+            _Com.CommandText = "INSERT INTO UOP (Mat_Code, Vendor_Id, Vendor_Catalog, Mfg_Name, Mfg_Catalog, Unit_Purchase, PO_Cost, Conversion, Default_UOP, Active) VALUES (@Mat_Code, @Vendor_Id, @Vendor_Catalog, @Mfg_Name, @Mfg_Catalog,@Unit_Purchase, @PO_Cost, @Conversion, 1, 1 )";
+            _Com.Parameters.AddWithValue("Mat_Code", detail.MatCode);
+            _Com.Parameters.AddWithValue("Vendor_Id", vendorid);
+            _Com.Parameters.AddWithValue("Vendor_Catalog", detail.VendorCatalog);
+            _Com.Parameters.AddWithValue("Mfg_Name", detail.MFGName);
+            _Com.Parameters.AddWithValue("Mfg_Catalog", detail.MFGCatalog);
+            _Com.Parameters.AddWithValue("Unit_Purchase", detail.UnitPurchase);
+            _Com.Parameters.AddWithValue("PO_Cost", detail.UnitCost);
+            _Com.Parameters.AddWithValue("Conversion", detail.Conversion);
+            _Com.ExecuteNonQuery();
+            Close();
+        }
     }
 
 

@@ -42,6 +42,7 @@ namespace PoEntry
         {
             InitializeComponent();
             orig = frm;
+            addItemFromOtherVendorToolStripMenuItem.Enabled = orig.data.SystemOptionsDictionary["ENABLE_ADD_ITEMVEND"].ToBoolean();
             cmb_Mat.Items = orig.data.prefillCombos("Mat", orig.Header.VendorID);
             if (cmb_Mat.Items.Count < 1)
             {
@@ -284,8 +285,8 @@ namespace PoEntry
             cmb_MfgCatalog.Items = orig.data.prefillCombos("MfgCatNotVendor", orig.Header.VendorID);
             CurMat = null;
             orig.AddItemFromVendor = true;
-            //            cmb_VendorCatalog.AllowTypedIn = true;
-            //            cmb_MfgCatalog.AllowTypedIn = true;
+            cmb_VendorCatalog.AllowTypedIn = true;
+            cmb_MfgCatalog.AllowTypedIn = true;
         }
 
     }

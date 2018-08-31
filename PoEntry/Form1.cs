@@ -2502,6 +2502,9 @@ end;
             Detail.ProgramEdited = "PoEntry9";
             Detail.LastUsername = SqlUsername;
             Detail.DateEdited = DateTime.Today;
+
+            if (AddItemFromVendor)
+                data.SaveNewItemToVendor(Detail, Header.VendorID);
         }
 
         public void SaveNewDetail()
@@ -4446,9 +4449,9 @@ WHERE PoHeader.PO_No = */
                 return;
             }
             Detail.MatCode = cmb_Mat.CurrentItem.Key;
-            if (Detail.NonFile)
-                return;
-            if (_IMF == null || _IMF.Mfg_Name == "")
+            //if (Detail.NonFile)
+            //    return;
+            /*if (_IMF == null || _IMF.Mfg_Name == "")
             {
                 if ((ENABLE_ADD_ITEMS) && (MessageBox.Show("This item you are attempting to add is not on file for this vendor."
                     + "\nWould you like to add it now?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes))
@@ -4469,13 +4472,7 @@ WHERE PoHeader.PO_No = */
                     Changing = false;
                     return;
                 }
-            }
-            if (data.GetActive(Detail.MatCode, Detail.VendorID) == false)
-            {
-                errorProvider1.SetError(cmb_Mat, "This item is set inactive for this Vendor");
-                e.Cancel = true;
-                return;
-            }
+            }*/
             errorProvider1.Clear();
         }
         private void cmb_Loc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
