@@ -4449,6 +4449,11 @@ WHERE PoHeader.PO_No = */
                 return;
             }
             Detail.MatCode = cmb_Mat.CurrentItem.Key;
+            if (AddItemFromVendor)
+            {
+                AddItemVend();
+                FillDetailsWithMatCode("");
+            }
             //if (Detail.NonFile)
             //    return;
             /*if (_IMF == null || _IMF.Mfg_Name == "")
@@ -5014,7 +5019,7 @@ WHERE PoHeader.PO_No = */
         private void AddItemVend()
         {
             AddItemVend fadditem = new AddItemVend(this);
-
+            fadditem.ShowDialog();
 
             //variables.MUST_ENTER_MFG_NAME = MUST_ENTER_MFG_NAME;
             //variables.CurrentUOPPrime = CurrentUOPPrime;

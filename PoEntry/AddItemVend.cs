@@ -21,10 +21,11 @@ namespace PoEntry
         public AddItemVend(Form1 frm)
         {
             InitializeComponent();
-
+            Form = frm;
             Form.data.Open();
             cmb_Purchase.Items = EHS.Orders.prefillcombo(Form.data._Com, "UOM", "");
             Form.data.Close();
+            cmb_Mat.Items = new System.Collections.Generic.List<ComboBoxString>(1) { new ComboBoxString(frm.CurMat) };
             //var temp = new 
             //cmb_Mat.Items= new System.Collections.Generic.List<ComboBoxString> = new ComboBoxString(Form.CurMat);
             /*

@@ -80,6 +80,7 @@
             this.cmb_Mat.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Mat.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Mat.PopupWidth = 300;
+            this.cmb_Mat.ReadOnly = true;
             this.cmb_Mat.Size = new System.Drawing.Size(531, 20);
             this.cmb_Mat.TabIndex = 21;
             // 
@@ -94,6 +95,7 @@
             this.cmb_Vendor.PopupSelectionBackColor = System.Drawing.SystemColors.Highlight;
             this.cmb_Vendor.PopupSelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.cmb_Vendor.PopupWidth = 300;
+            this.cmb_Vendor.ReadOnly = true;
             this.cmb_Vendor.Size = new System.Drawing.Size(531, 20);
             this.cmb_Vendor.TabIndex = 20;
             // 

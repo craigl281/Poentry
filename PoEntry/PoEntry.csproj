@@ -62,8 +62,9 @@
     <Reference Include="Ehs.Forms">
       <HintPath>E:\Repo\libs\Ehs.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="EHS.Forms.Orders">
-      <HintPath>E:\Repo\libs\EHS.Forms.Orders.dll</HintPath>
+    <Reference Include="EHS.Forms.Orders, Version=2.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Repo\libraries\EHS.Forms.Orders\bin\x86\Debug\EHS.Forms.Orders.dll</HintPath>
     </Reference>
     <Reference Include="Ehs.Models, Version=3.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
