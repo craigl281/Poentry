@@ -1809,6 +1809,7 @@ Changing := false;
                     cmb_Vat_Code.Items = data.prefillCombos("Vat", "");
                 if (this.cmb_Entity.Enabled)
                     this.cmb_Entity.Focus();
+                list_Mat = null;
             }
             InDetail = false;
             //Pnl_Vendor.ReadOnly = false;
@@ -3516,23 +3517,6 @@ WHERE PoHeader.PO_No = */
                             q.Read();
                             if (q.HasRows)
                             {
-                                if (viewMode1.Mode == ViewingMode.Adding && !q["Active"].ToBoolean())
-                                {
-                                    MessageBox.Show("This Item is Set Inactive for this Vendor", "Information", MessageBoxButtons.OK);
-                                    if (cmb_Mat.ReadOnly == false)
-                                        cmb_Mat.SelectAll();
-                                    result = false;
-                                    return result;
-                                }
-                                if (data.SystemOptionsDictionary["ASK_IF_NOT_MAIN_VENDOR"].ToBoolean() && viewMode1.Mode == ViewingMode.Adding && !q["Main_Vendor"].ToBoolean())
-                                {
-                                    if (MainVendor != DialogResult.Yes)
-                                    {
-                                        if (MessageBox.Show("This is not the Main Vendor for this item.\nDo you want to continue?", "Information", MessageBoxButtons.YesNo) == DialogResult.No)
-                                        { return false; }
-                                        MainVendor = DialogResult.Yes;
-                                    }
-                                }
                                 if (this.POENTRY_NOT_ORDERED_MONTHS > 0)
                                 {
                                     try
@@ -3548,34 +3532,6 @@ WHERE PoHeader.PO_No = */
                                         if (MessageBox.Show("This item hasn't been ordered in the past\n" + this.POENTRY_PRICE_CHECK_AMOUNT + " month.\nDo you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
                                         { return false; }
                                     }
-                                }
-                            }
-                            else
-                            {
-                                q.Close();
-                                if (this.ENABLE_ADD_ITEMS && MessageBox.Show("This item you are attempting to add is not on file for this vendor. \nWould you like to add it now?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                {
-                                    LastLocUsed = cmb_Loc.Text;
-                                    this.AddItemVend();
-                                    this.FillDetailsWithMatCode("");
-                                    result = false;
-                                    return result;
-                                }
-                                else
-                                {
-                                    if (!this.Enable_Add_ItemVend)
-                                    { MessageBox.Show("This Item isn't on file for this Vendor.", "Warning", MessageBoxButtons.OK); }
-                                    this.Changing = true;
-                                    this.eb_Vendor_Catalog.Text = "";
-                                    this.b_MUOP.Visible = false;
-                                    this.eb_MFG_Catalog.Text = "";
-                                    this.eb_Description.Text = "";
-                                    this.ClearDetails();
-                                    if (cmb_Mat.ReadOnly == false)
-                                        cmb_Mat.SelectAll();
-                                    this.Changing = false;
-                                    result = false;
-                                    return result;
                                 }
                             }
                         }
@@ -4451,8 +4407,8 @@ WHERE PoHeader.PO_No = */
             Detail.MatCode = cmb_Mat.CurrentItem.Key;
             if (AddItemFromVendor)
             {
-                AddItemVend();
-                FillDetailsWithMatCode("");
+  //              AddItemVend();
+  //              FillDetailsWithMatCode("");
             }
             //if (Detail.NonFile)
             //    return;
@@ -4922,14 +4878,6 @@ WHERE PoHeader.PO_No = */
                 if (Detail != null)
                     Detail.DeliverDate = null;
             }
-            SetDetailFocus();
-        }
-        private void eb_Vendor_Catalog_Validated(object sender, EventArgs e)
-        {
-            SetDetailFocus();
-        }
-        private void eb_MFG_Catalog_Validated(object sender, EventArgs e)
-        {
             SetDetailFocus();
         }
         private void cmb_PoClass_Validated(object sender, EventArgs e)
