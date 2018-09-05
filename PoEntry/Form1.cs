@@ -3482,7 +3482,7 @@ WHERE PoHeader.PO_No = */
             }
             if (this.tabControl1.SelectedTab == this.p_Detail)
             {
-                /*
+                  /*
                 #region//detail
                 ////////////////////////////Details Tab
                 try
@@ -3500,99 +3500,14 @@ WHERE PoHeader.PO_No = */
                     ///////////////////////////////////////
 
                     if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).ReturnRepair)
-                        this.NonFile_Item = true; 
+                        Detail.NonFile = true; 
 
-                    if (!this.NonFile_Item)
+                    if (Detail.NonFile == false)
                     {
+                      
                         #region//Not NonFile
 
 
-                        this.q_Command.Parameters.Clear();
-                        q_Command.CommandText = "SELECT Active, Main_Vendor, dateadd(month, @dateadd1, last_ordered_date) as compare_date FROM ItemVend WHERE Mat_Code = @Mat_Code AND Vendor_Id = @Vendor_Id ";
-                        this.q_Command.Parameters.Add("Mat_Code", SqlDbType.VarChar).Value = Detail.MatCode;
-                        this.q_Command.Parameters.Add("Vendor_Id", SqlDbType.VarChar).Value = CurVendor;
-                        this.q_Command.Parameters.Add("dateadd1", SqlDbType.Int).Value = this.POENTRY_NOT_ORDERED_MONTHS;
-                        using (SqlDataReader q = this.q_Command.ExecuteReader())
-                        {
-                            q.Read();
-                            if (q.HasRows)
-                            {
-                                if (this.POENTRY_NOT_ORDERED_MONTHS > 0)
-                                {
-                                    try
-                                    {
-                                        if (q["compare_date"].ToDateTime() < DateTime.Today)
-                                        {
-                                            if (MessageBox.Show("This item hasn't been ordered in the past\n" + this.POENTRY_PRICE_CHECK_AMOUNT + " month.\nDo you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-                                            { return false; }
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        if (MessageBox.Show("This item hasn't been ordered in the past\n" + this.POENTRY_PRICE_CHECK_AMOUNT + " month.\nDo you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-                                        { return false; }
-                                    }
-                                }
-                            }
-                        }
-                        if (viewMode1.Mode == ViewingMode.Adding || (this.EditingRecord &&
-                            eb_Quantity2.Text.ToDecimal() != temp_qty_order))
-                        {
-                            this.q_Command.Parameters.Clear();
-                            this.q_Command.CommandText = "SELECT purchase_in_multiples_of FROM uop WHERE Mat_Code = @Mat_Code ";
-                            this.q_Command.CommandText += "AND Vendor_Id = @Vendor_Id AND unit_purchase = @unit_purchase AND Vendor_catalog = @Vendor_catalog AND active = 1 ";
-                            this.q_Command.Parameters.Add("Mat_Code", SqlDbType.VarChar).Value = Detail.MatCode;
-                            this.q_Command.Parameters.Add("Vendor_Id", SqlDbType.VarChar).Value = this._WVendor.Vendor.VendorID;
-                            this.q_Command.Parameters.Add("unit_purchase", SqlDbType.VarChar).Value = this.CurrentUOPPrime;
-                            this.q_Command.Parameters.Add("Vendor_catalog", SqlDbType.VarChar).Value = this.eb_Vendor_Catalog.Text;
-                            using (SqlDataReader q = this.q_Command.ExecuteReader())
-                            {
-                                q.Read();
-                                if (q.HasRows)
-                                {
-                                    int v = q["purchase_in_multiples_of"].ToInt32();
-                                    if (v > 1)
-                                    {
-                                        int z = eb_Quantity2.Text.ToInt32();
-                                        if (v != 0)
-                                        {
-                                            if ((z % v) != 0)
-                                            {
-                                                if (MessageBox.Show("This vendor is requesting that you purchase this item in multiples of " + v.ToString() + "\n Do you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-                                                {
-                                                    this.eb_Quantity2.Focus();
-                                                    result = false;
-                                                    return result;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (Detail.Contract != "" && (temp_u_cost != eb_Unit_Cost2.Text.ToDecimal()) &&
-                            this.cb_Substitute_Item.Checked == false)
-                        {
-                            this.q_Command.Parameters.Clear();
-                            this.q_Command.CommandText = "SELECT Purchase_Cost FROM ContractDetail WHERE contract = @contract AND mat_code = @mat_code";
-                            this.q_Command.Parameters.Add("contract", SqlDbType.VarChar).Value = Detail.Contract;
-                            this.q_Command.Parameters.Add("mat_code", SqlDbType.VarChar).Value = Detail.MatCode;
-                            using (SqlDataReader q = this.q_Command.ExecuteReader())
-                            {
-                                if (q.Read())
-                                {
-                                    if (q["Purchase_cost"].ToDecimal() < eb_Unit_Cost2.Text.ToDecimal())
-                                    {
-                                        MessageBox.Show("The unit cost cannot be greater than the contract cost, \nwhich is " + q["Purchase_cost"].ToString(), "Information", MessageBoxButtons.OK);
-                                        if (this.eb_Unit_Cost2.Enabled)
-                                        { this.eb_Unit_Cost2.Focus(); }
-                                        result = false;
-                                        return result;
-                                    }
-                                }
-                            }
-                        }
 
                         #endregion
                     }
@@ -4280,7 +4195,7 @@ WHERE PoHeader.PO_No = */
                 e.Cancel = true;
             }
         }
-        private void cmb_POGroup_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_POGroup_Validating(object sender, CancelEventArgs e)
         {
             errorProvider1.Clear();
             if (data.SystemOptionsDictionary["MUST_USE_DEFAULT_PO_GROUP"].ToBoolean() == false && this.USE_PO_GROUPS)
@@ -4292,7 +4207,7 @@ WHERE PoHeader.PO_No = */
                 }
             }
         }
-        private void cmb_Po_Type_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Po_Type_Validating(object sender, CancelEventArgs e)
         {
             if (CurrPoType == "" || CurrPoType == "<NONE>")
             {
@@ -4324,7 +4239,7 @@ WHERE PoHeader.PO_No = */
 
             errorProvider1.Clear();
         }
-        private void cmb_Ship_To_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Ship_To_Validating(object sender, CancelEventArgs e)
         {
             if (CurrShipTo == "<NONE>" || CurrShipTo.Trim().Length == 0)
             {
@@ -4334,7 +4249,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void eb_Req_No_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void eb_Req_No_Validating(object sender, CancelEventArgs e)
         {
             if (viewMode1.Mode == ViewingMode.Adding)
             {
@@ -4354,7 +4269,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void cmb_Project_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Project_Validating(object sender, CancelEventArgs e)
         {
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).SubLedger && cmb_Project.CurrentItem == null)
             {
@@ -4363,7 +4278,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void cmb_vendor_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_vendor_Validating(object sender, CancelEventArgs e)
         {
             if (CurVendor == "")
             {
@@ -4372,11 +4287,11 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void Pnl_Vendor_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Pnl_Vendor_Validating(object sender, CancelEventArgs e)
         {
 
         }
-        private void eb_Nonfile_Contract_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void eb_Nonfile_Contract_Validating(object sender, CancelEventArgs e)
         {
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).ServiceContract)
             {
@@ -4391,7 +4306,7 @@ WHERE PoHeader.PO_No = */
         #endregion Header
 
         #region Detail
-        private void cmb_Mat_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Mat_Validating(object sender, CancelEventArgs e)
         {
             if (viewMode1.Mode == ViewingMode.Viewing)
             {
@@ -4405,38 +4320,9 @@ WHERE PoHeader.PO_No = */
                 return;
             }
             Detail.MatCode = cmb_Mat.CurrentItem.Key;
-            if (AddItemFromVendor)
-            {
-  //              AddItemVend();
-  //              FillDetailsWithMatCode("");
-            }
-            //if (Detail.NonFile)
-            //    return;
-            /*if (_IMF == null || _IMF.Mfg_Name == "")
-            {
-                if ((ENABLE_ADD_ITEMS) && (MessageBox.Show("This item you are attempting to add is not on file for this vendor."
-                    + "\nWould you like to add it now?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes))
-                {
-                    LastLocUsed = Detail.Location;
-                    AddItemVend();
-                    GetMatDetails("");
-                    FillDetailsWithMatCode("");
-                }
-                else
-                {
-                    if (Enable_Add_ItemVend == false)
-                        MessageBox.Show("This Item is not on file for this Vendor.", "Warning", MessageBoxButtons.OK);
-                    Changing = true;
-                    ClearDetails();
-                    if (cmb_Mat.Enabled)
-                        cmb_Mat.Focus();
-                    Changing = false;
-                    return;
-                }
-            }*/
             errorProvider1.Clear();
         }
-        private void cmb_Loc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Loc_Validating(object sender, CancelEventArgs e)
         {
             if (viewMode1.Mode == ViewingMode.Viewing)
                 return;
@@ -4492,7 +4378,7 @@ WHERE PoHeader.PO_No = */
 
             errorProvider1.Clear();
         }
-        private void cmb_Act_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Act_Validating(object sender, CancelEventArgs e)
         {
             if (viewMode1.Mode == ViewingMode.Viewing || viewMode1.Mode == ViewingMode.Inquiry)
                 return;
@@ -4532,7 +4418,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void cmb_Deliver_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_Deliver_Validating(object sender, CancelEventArgs e)
         {
             if (viewMode1.Mode == ViewingMode.Viewing || viewMode1.Mode == ViewingMode.Inquiry)
                 return;
@@ -4654,7 +4540,7 @@ WHERE PoHeader.PO_No = */
             }
             errorProvider1.Clear();
         }
-        private void cmb_DetailVatCode_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void cmb_DetailVatCode_Validating(object sender, CancelEventArgs e)
         {
             if (data.SystemOptionsDictionary["VAT_HEADER_MATCH_DETAIL"].ToBoolean())
             {
@@ -4672,7 +4558,7 @@ WHERE PoHeader.PO_No = */
 
             errorProvider1.Clear();
         }
-        private void eb_Quantity2_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void eb_Quantity2_Validating(object sender, CancelEventArgs e)
         {
             if (data.SystemOptionsDictionary["POPUP_MSG_ZERO_QTYORD"].ToBoolean())
             {
@@ -4687,6 +4573,27 @@ WHERE PoHeader.PO_No = */
                     }
                 }
             }
+
+            if (Detail.NonFile)
+                return;
+
+            if (viewMode1.Mode == ViewingMode.Adding || (viewMode1.Mode == ViewingMode.Editing && eb_Quantity2.Text.ToDecimal() != Detail.QtyOrder))
+            {
+                var temp = List_Uop.Find(r => r.Unit_Purchase == Detail.UnitPurchase).Purchase_In_Multiples_Of;
+
+                if (temp > 1)
+                {
+                    if (eb_Quantity2.Text.ToInt32() % temp != 0)
+                    {
+                        if (MessageBox.Show("This vendor is requesting that you purchase this item in multiples of " + temp.ToString() + "\n Do you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            this.eb_Quantity2.Focus();
+                            e.Cancel = true;
+                        }
+                    }
+                }
+            }
+
             errorProvider1.Clear();
         }
         #endregion Detail

@@ -34,12 +34,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addItemFromOtherVendorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.addItemFromOtherVendorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmb_Mfg_Name = new Ehs.Controls.AutoCompleteTextBox();
             this.eb_Description = new Ehs.Controls.EhsTextBox();
             this.cmb_MfgCatalog = new Ehs.Controls.AutoCompleteTextBox();
@@ -93,6 +93,14 @@
             this.toolsToolStripMenuItem.Text = "Add NonFile";
             this.toolsToolStripMenuItem.Click += new System.EventHandler(this.toolsToolStripMenuItem_Click);
             // 
+            // addItemFromOtherVendorToolStripMenuItem
+            // 
+            this.addItemFromOtherVendorToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.addItemFromOtherVendorToolStripMenuItem.Name = "addItemFromOtherVendorToolStripMenuItem";
+            this.addItemFromOtherVendorToolStripMenuItem.Size = new System.Drawing.Size(172, 20);
+            this.addItemFromOtherVendorToolStripMenuItem.Text = "Add Item From Other Vendor";
+            this.addItemFromOtherVendorToolStripMenuItem.Click += new System.EventHandler(this.addItemFromOtherVendorToolStripMenuItem_Click);
+            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -132,14 +140,6 @@
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 37;
             this.label4.Text = "Mfg Name";
-            // 
-            // addItemFromOtherVendorToolStripMenuItem
-            // 
-            this.addItemFromOtherVendorToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
-            this.addItemFromOtherVendorToolStripMenuItem.Name = "addItemFromOtherVendorToolStripMenuItem";
-            this.addItemFromOtherVendorToolStripMenuItem.Size = new System.Drawing.Size(172, 20);
-            this.addItemFromOtherVendorToolStripMenuItem.Text = "Add Item From Other Vendor";
-            this.addItemFromOtherVendorToolStripMenuItem.Click += new System.EventHandler(this.addItemFromOtherVendorToolStripMenuItem_Click);
             // 
             // cmb_Mfg_Name
             // 
@@ -216,6 +216,7 @@
             this.cmb_Mat.Size = new System.Drawing.Size(400, 20);
             this.cmb_Mat.TabIndex = 5;
             this.cmb_Mat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_Mat_KeyDown);
+            this.cmb_Mat.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Mat_Validating);
             this.cmb_Mat.Validated += new System.EventHandler(this.cmb_Mat_Validated);
             // 
             // ItemSelection

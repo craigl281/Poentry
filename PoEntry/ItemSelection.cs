@@ -289,5 +289,19 @@ namespace PoEntry
             cmb_MfgCatalog.AllowTypedIn = true;
         }
 
+        private void cmb_Mat_Validating(object sender, CancelEventArgs e)
+        {
+            if (orig.Detail.NonFile)
+                return;
+            if (orig.data.SystemOptionsDictionary["POENTRY_NOT_ORDERED_MONTHS"].ToInt32() > 0)
+            {
+                if (orig.data.OrderDays(CurMat, orig.Header.VendorID))
+                {
+                    if (MessageBox.Show("This item hasn't been ordered in the past\n" + orig.data.SystemOptionsDictionary["POENTRY_NOT_ORDERED_MONTHS"] + " month.\nDo you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                        e.Cancel = true;
+                }
+            }
+        }
+
     }
 }

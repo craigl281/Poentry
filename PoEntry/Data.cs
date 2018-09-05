@@ -480,7 +480,7 @@ namespace PoEntry
                 case "MatNotVendor":
                     {
                         _Com.CommandText = "SELECT DISTINCT IV.Mat_Code, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code LEFT JOIN LOC ON LOC.Mat_Code = IMF.Mat_Code WHERE IMF.Active = 1 AND IV.Active = 1 AND LOC.Active = 1 AND "
-                                         + "IV.Vendor_Id <> @Vendor ORDER BY IV.Mat_Code";
+                                         + "IV.Mat_Code NOT IN (SELECT IV.Mat_Code FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code  WHERE IV.Vendor_Id = @Vendor) ORDER BY IV.Mat_Code";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
@@ -498,7 +498,8 @@ namespace PoEntry
                     }
                 case "VendorCatNotVendor":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Vendor_Id <> @Vendor ORDER BY Vendor_Catalog";
+                        _Com.CommandText = "SELECT DISTINCT IV.Vendor_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Mat_Code NOT IN (SELECT IV.Mat_Code FROM IMF JOIN ItemVend "
+                                         + "IV ON IV.Mat_Code = IMF.Mat_Code  WHERE IV.Vendor_Id = @Vendor) ORDER BY Vendor_Catalog";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
@@ -510,7 +511,8 @@ namespace PoEntry
                     }
                 case "MfgCatNotVendor":
                     {
-                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Vendor_Id <> @Vendor ORDER BY Mfg_Catalog";
+                        _Com.CommandText = "SELECT DISTINCT IV.Mfg_Catalog, IMF.Description1 FROM IMF JOIN ItemVend IV ON IV.Mat_Code = IMF.Mat_Code WHERE IV.Active = 1 AND IV.Active = 1 AND IV.Mat_Code NOT IN (SELECT IV.Mat_Code FROM IMF JOIN ItemVend IV ON "
+                                         + "IV.Mat_Code = IMF.Mat_Code  WHERE IV.Vendor_Id = @Vendor) ORDER BY Mfg_Catalog";
                         _Com.Parameters.AddWithValue("Vendor", parameter);
                         break;
                     }
@@ -1039,8 +1041,8 @@ namespace PoEntry
                 if (read.HasRows)
                 {
                     read.Read();
-                    ret = new IMF(read[0].ToNonNullString(), read[1].ToNonNullString(), read[2].ToNonNullString(), read[3].ToNonNullString(), read[4].ToNonNullString(), 
-                                  read[5].ToNonNullString(), read[6].ToNonNullString(), read[7].ToNonNullString(), read[8].ToNonNullString(), read[9].ToInt64(), 
+                    ret = new IMF(read[0].ToNonNullString(), read[1].ToNonNullString(), read[2].ToNonNullString(), read[3].ToNonNullString(), read[4].ToNonNullString(),
+                                  read[5].ToNonNullString(), read[6].ToNonNullString(), read[7].ToNonNullString(), read[8].ToNonNullString(), read[9].ToInt64(),
                                   read[10].ToNonNullString(), read[11].ToNonNullString());
                 }
             }
@@ -1140,7 +1142,7 @@ namespace PoEntry
                     }
                 }
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString());
             }
@@ -1623,7 +1625,7 @@ namespace PoEntry
             Open();
             _Com.Parameters.Clear();
             _Com.CommandText = "SELECT Item_Count, Mat_Code, Qty_Order, Unit_Cost, Qty_Order * Unit_Cost AS Sub_Total, Vat_Percentage, Unit_Cost * Qty_Order * (Vat_Percentage / 100) AS Tax_Total, "
-                             +"Unit_Cost * Qty_Order * (1 + Vat_Percentage / 100) AS Total FROM podetail WHERE po_no = @po_no";
+                             + "Unit_Cost * Qty_Order * (1 + Vat_Percentage / 100) AS Total FROM podetail WHERE po_no = @po_no";
             _Com.Parameters.AddWithValue("po_no", po);
             using (SqlDataAdapter sa = new SqlDataAdapter(_Com))
             {
@@ -1875,6 +1877,26 @@ namespace PoEntry
             _Com.ExecuteNonQuery();
             Close();
         }
+
+        public bool OrderDays(string MatCode, string CurVendor)
+        {
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT dateadd(month, @dateadd1, last_ordered_date) as compare_date FROM ItemVend WHERE Mat_Code = @Mat_Code AND Vendor_Id = @Vendor_Id ";
+            _Com.Parameters.AddWithValue("Mat_Code", MatCode);
+            _Com.Parameters.AddWithValue("Vendor_Id", CurVendor);
+            _Com.Parameters.AddWithValue("dateadd1", SystemOptionsDictionary["POENTRY_NOT_ORDERED_MONTHS"].ToDateTime());
+            using (SqlDataReader q = _Com.ExecuteReader())
+            {
+                q.Read();
+                if (q.HasRows)
+                {
+                    if (q["compare_date"].ToDateTime() < DateTime.Today)
+                        return true;
+                }
+            }
+            return false;
+        }
+
     }
 
 
