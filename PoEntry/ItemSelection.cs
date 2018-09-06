@@ -303,5 +303,26 @@ namespace PoEntry
             }
         }
 
+        private void addFreightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var mat = orig.data.SystemOptionsDictionary["FREIGHT_MAT_CODE"];
+            cmb_Mat.Items.Add(new ComboBoxString(mat));
+            CurMat = mat;
+            orig.Detail.NonFile = true;
+            eb_Description.Text = "FREIGHT";
+            if (orig.data.SystemOptionsDictionary["USE_LAST_MFG_NAME"].ToBoolean() && CurMfg.Trim() == "")
+            {
+                if (orig.bs2.Count > 1)
+                {
+                    CurMfg = ((PoDetail)orig.bs2[orig.bs2.Position - 1]).MFGName;
+                }
+            }
+            cmb_VendorCatalog.AllowTypedIn = true;
+            cmb_MfgCatalog.AllowTypedIn = true;
+            cmb_VendorCatalog.Text = "FREIGHT";
+            orig.Detail.QtyOrder = 1;
+            SendKeys.Send("{TAB}");
+            //this.DialogResult = DialogResult.OK;
+        }
     }
 }

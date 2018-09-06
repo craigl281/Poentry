@@ -52,7 +52,6 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.resequenceLineNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewBreakdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_addFreight = new System.Windows.Forms.ToolStripMenuItem();
             this.addItemToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeDeliverDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -407,7 +406,6 @@
             this.toolStripMenuItem3,
             this.resequenceLineNumbersToolStripMenuItem,
             this.viewBreakdownToolStripMenuItem,
-            this.m_addFreight,
             this.addItemToToolStripMenuItem,
             this.changeDeliverDateToolStripMenuItem,
             this.changeEntityToolStripMenuItem,
@@ -491,14 +489,6 @@
             this.viewBreakdownToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.viewBreakdownToolStripMenuItem.Text = "View Breakdown";
             this.viewBreakdownToolStripMenuItem.Click += new System.EventHandler(this.viewBreakdownToolStripMenuItem_Click);
-            // 
-            // m_addFreight
-            // 
-            this.m_addFreight.Name = "m_addFreight";
-            this.m_addFreight.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.m_addFreight.Size = new System.Drawing.Size(255, 22);
-            this.m_addFreight.Text = "Add Freight";
-            this.m_addFreight.Click += new System.EventHandler(this.m_addFreight_Click);
             // 
             // addItemToToolStripMenuItem
             // 
@@ -2790,7 +2780,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem resequenceLineNumbersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewBreakdownToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem m_addFreight;
         private System.Windows.Forms.ToolStripMenuItem addItemToToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeDeliverDateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeEntityToolStripMenuItem;

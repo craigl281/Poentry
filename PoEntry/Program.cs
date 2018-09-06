@@ -11,7 +11,7 @@ namespace PoEntry
         [STAThread]
         static void Main(string[] args)
         {
-            /*
+            
             args = new string[6];
             args[0] = "vmpersei";
             args[1] = "pinnacle";

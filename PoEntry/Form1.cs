@@ -3176,7 +3176,7 @@ WHERE PoHeader.PO_No = */
                 MessageBox.Show("Can't resequence this po.  It was previously release.", "warning", MessageBoxButtons.OK);
                 return;
             }
-
+            MessageBox.Show(data.resequenceDetails(Header.PONo));
         }
 
         private void viewBreakdownToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3185,14 +3185,19 @@ WHERE PoHeader.PO_No = */
             detailBreakdown.ShowDialog();
         }
 
-        private void m_addFreight_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void addItemToToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if ((Detail.MatCode == "") || (Detail.VendorID == ""))
+            {
+                MessageBox.Show("You must choose a valid item and vendor", "warning", MessageBoxButtons.OK);
+                return;
+            }
+            if (Detail.NonFile)
+            {
+                MessageBox.Show("Can't add nonfile item to contract", "warning", MessageBoxButtons.OK);
+                return;
+            }
+            InsertContractDetail();
         }
 
         private void changeDeliverDateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5584,11 +5589,12 @@ WHERE PoHeader.PO_No = */
             if (tabControl1.SelectedTab == p_Detail)
             {
                 reopenPurchaseOrderToolStripMenuItem.Visible = true;
-
+                addItemToToolStripMenuItem.Visible = viewMode1.Mode == ViewingMode.Viewing;
             }
             else
             {
                 reopenPurchaseOrderToolStripMenuItem.Visible = false;
+                addItemToToolStripMenuItem.Visible = false;
             }
             if (viewMode1.Mode == ViewingMode.Viewing)
             {

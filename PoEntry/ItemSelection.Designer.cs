@@ -46,6 +46,7 @@
             this.cmb_VendorCatalog = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_Mat = new Ehs.Controls.AutoCompleteTextBox();
             this.cueExtender1 = new Ehs.Controls.CueExtender();
+            this.addFreightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -76,7 +77,8 @@
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolsToolStripMenuItem,
-            this.addItemFromOtherVendorToolStripMenuItem});
+            this.addItemFromOtherVendorToolStripMenuItem,
+            this.addFreightToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
@@ -219,6 +221,16 @@
             this.cmb_Mat.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Mat_Validating);
             this.cmb_Mat.Validated += new System.EventHandler(this.cmb_Mat_Validated);
             // 
+            // addFreightToolStripMenuItem
+            // 
+            this.addFreightToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.addFreightToolStripMenuItem.CheckOnClick = true;
+            this.addFreightToolStripMenuItem.Name = "addFreightToolStripMenuItem";
+            this.addFreightToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.addFreightToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.addFreightToolStripMenuItem.Text = "Add Freight";
+            this.addFreightToolStripMenuItem.Click += new System.EventHandler(this.addFreightToolStripMenuItem_Click);
+            // 
             // ItemSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -267,5 +279,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem addItemFromOtherVendorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addFreightToolStripMenuItem;
     }
 }
