@@ -11,6 +11,8 @@ using Ehs.Controls;
 using System.Linq;
 using System.Threading;
 using System.ComponentModel;
+using CrystalDecisions.CrystalReports.Engine;
+using EHS.Report;
 
 namespace PoEntry
 {
@@ -622,7 +624,7 @@ namespace PoEntry
             //firstload = false;
             CheckPoGroup();
 
-            //FillUserDefineCaptions();
+            FillUserDefineCaptions();
             SetViewing();
             if (!POENTRY_SHOW_MULTIMEDIA_PATH)
             {
@@ -636,6 +638,8 @@ namespace PoEntry
             EditEnabled = false;
             dt_PO_Date.Value = DateTime.Now;
         }
+
+
 
         #region Get Options for form
         public void GetSystemOptions()
@@ -998,6 +1002,7 @@ namespace PoEntry
             status2.Text = vendorFrm.Vendor.VendorAccount;
             cb_Has_Image.Checked = Header.HasScannedImage;
             btn_rcv.Enabled = Header.HasScannedImageRCV;
+            eb_Man_Req_User.Visible = eb_Man_Req_User.Text.Trim().Length > 0;
         }
 
         public void FillStatus()
@@ -1105,6 +1110,7 @@ namespace PoEntry
             eb_Status2.Text = "";
             lbl_Not_Total.ForeColor = SystemColors.ControlText;
             eb_Not_Total.ForeColor = SystemColors.ControlText;
+            eb_Man_Req_User.Visible = false;
             label27.Visible = false;
             btn_Notify.Visible = false;
             cmb_Po_Type.Width = cmb_Entity.Width;//
@@ -1555,7 +1561,7 @@ Changing := false;
             int i = this.dbgrid1.CurrentCellAddress.Y;
             togglePagesToolStripMenuItem.Enabled = true;
             m_addItems.Enabled = false;
-            m_addFreight.Enabled = false;
+            //m_addFreight.Enabled = false;
             reopenPurchaseOrderToolStripMenuItem.Enabled = false;
             /*  SetSplit;
   m_General_Vendor.enabled := false;            */
@@ -1752,7 +1758,7 @@ Changing := false;
             if (tabControl1.SelectedTab == p_Detail)
             {
                 CanSwitch = false;
-                m_addFreight.Enabled = true;
+                //m_addFreight.Enabled = true;
                 SetDetailFields(true);
             }
             else
@@ -1834,9 +1840,10 @@ Changing := false;
             //ClearDetails();
 
             SetDetailFields(true);
-            m_addFreight.Enabled = true;
+            //m_addFreight.Enabled = true;
             if (cmb_Mat.ReadOnly == false)
             {
+                eb_PO_Number.Focus();
                 cmb_Mat.Items = list_Mat;
                 Changing = false;
                 cmb_Mat.Focus();
@@ -3166,12 +3173,16 @@ WHERE PoHeader.PO_No = */
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-
+            ReportDocument cryRpt = new ReportDocument();
+            EHS.Report.Util RptUtil;
+            cryRpt.Load(data.SystemOptionsDictionary["EXE_PATH"] + Report_Name);
+            RptUtil = new EHS.Report.Util(cryRpt, data._Com.Connection);
+            cryRpt.ToPrinter("{PoHeader.PO_No} = " + Header.PONo.ToString());
         }
 
         private void resequenceLineNumbersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Header.OriginalReleaseDate != null)
+            if (Header.ReleaseDate != null )
             {
                 MessageBox.Show("Can't resequence this po.  It was previously release.", "warning", MessageBoxButtons.OK);
                 return;
@@ -3197,7 +3208,7 @@ WHERE PoHeader.PO_No = */
                 MessageBox.Show("Can't add nonfile item to contract", "warning", MessageBoxButtons.OK);
                 return;
             }
-            InsertContractDetail();
+            //InsertContractDetail();
         }
 
         private void changeDeliverDateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3259,6 +3270,18 @@ WHERE PoHeader.PO_No = */
             data._Com.Parameters.AddWithValue("po_no", CurrPo);
             CurrPo = data._Com.ExecuteScalar().ToDecimal();
             this.GetPo();
+        }
+
+        private void about1_Click(object sender, EventArgs e)
+        {
+            Ehs.Forms.EHSAbout a = new Ehs.Forms.EHSAbout(data._Com.Connection);
+            a.ShowDialog();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Ehs.Forms.HelpBrowser b = new Ehs.Forms.HelpBrowser();
+            b.ShowDialog();
         }
 
         #endregion Menu
@@ -4661,6 +4684,22 @@ WHERE PoHeader.PO_No = */
         {
             cmb_vendor.HasValidated = true;
         }
+        private void eb_Req_No_Validated(object sender, EventArgs e)
+        {
+            /*
+            if ((trim(eb_req_no.text) <> '') and(trim(eb_req_no.text) <> '0')) or
+  (trim(eb_man_req_user.text) <> '')
+     then
+    begin
+      eb_man_req_user.visible := true;
+            label51.visible := true;
+            end
+  else
+    begin
+      eb_man_req_user.visible := false;
+            label51.visible := false;
+            end;*/
+        }
 
         #endregion header
 
@@ -4813,6 +4852,7 @@ WHERE PoHeader.PO_No = */
         }
         private void eb_Conversion_Validated(object sender, EventArgs e)
         {
+            eb_Conversion.HasValidated = true;
             SetDetailFocus();
         }
         private void eb_Unit_Cost2_Validated(object sender, EventArgs e)
@@ -5410,7 +5450,7 @@ WHERE PoHeader.PO_No = */
                     SendKeys.Send("{TAB}");
                 return;
             }
-            if (eb_Conversion.HasValidated == false || Detail.NonFile)
+            if (eb_Conversion.HasValidated == false)
             {
                 eb_Conversion.Focus();
                 if (eb_Conversion.Text.ToDecimal() > 0m && Detail.NonFile == false)
@@ -5635,6 +5675,40 @@ WHERE PoHeader.PO_No = */
 
         private KeyMessageFilter m_filter = new KeyMessageFilter();
 
+        public void FillUserDefineCaptions()
+        {
+            this.lbl_L_UD1.Visible = false;
+            this.lbl_L_UD2.Visible = false;
+            this.lbl_L_UD3.Visible = false;
+            this.eb_UD1.Visible = false;
+            this.eb_UD2.Visible = false;
+            this.eb_UD3.Visible = false;
+            
+            if (data.SystemOptionsDictionary["USER_PO_1"] != "")
+            {
+                this.lbl_L_UD1.Visible = true;
+                this.eb_UD1.Visible = true;
+                this.lbl_L_UD1.Text = data.SystemOptionsDictionary["USER_PO_1"];
+                this.lbl_L_UD1.Left = 106 - this.lbl_L_UD1.Width;
+            }
+            if (data.SystemOptionsDictionary["USER_PO_2"] != "")
+            {
+                this.lbl_L_UD2.Visible = true;
+                this.eb_UD2.Visible = true;
+                this.lbl_L_UD2.Text = data.SystemOptionsDictionary["USER_PO_2"];
+                this.lbl_L_UD2.Left = 569 - this.lbl_L_UD2.Width;
+
+                if (lbl_L_UD2.Width > 218)
+                { this.lbl_L_UD2.Left = 341; }
+            }
+            if (data.SystemOptionsDictionary["USER_PO_3"] != "")
+            {
+                this.lbl_L_UD3.Visible = true;
+                this.eb_UD3.Visible = true;
+                this.lbl_L_UD3.Text = data.SystemOptionsDictionary["USER_PO_3"];
+                this.lbl_L_UD3.Left = 106 - this.lbl_L_UD3.Width;
+            }
+        }
 
         /*procedure Tform1.Change_Inventory(Amount: real; Pos_Neg: integer);
 begin

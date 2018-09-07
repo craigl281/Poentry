@@ -56,6 +56,7 @@
     <ApplicationIcon>EHS_Icon_Test.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="Ehs.Controls">
       <HintPath>E:\Repo\libs\Ehs.Controls.dll</HintPath>
     </Reference>
@@ -72,6 +73,10 @@
     </Reference>
     <Reference Include="EHS.Orders">
       <HintPath>E:\Repo\libs\EHS.Orders.dll</HintPath>
+    </Reference>
+    <Reference Include="EHS.Report, Version=3.0.6795.28970, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Repo\libs\EHS.Report.dll</HintPath>
     </Reference>
     <Reference Include="Ehs.Util">
       <HintPath>E:\Repo\libs\Ehs.Util.dll</HintPath>

@@ -48,10 +48,8 @@
             this.togglePagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_addItems = new System.Windows.Forms.ToolStripMenuItem();
             this.addItemToRSLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewPOInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.resequenceLineNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewBreakdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addItemToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeDeliverDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +59,9 @@
             this.returnCancelledItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitDetailLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.canceledMemoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewPOInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewBreakdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Quicklinks_TS = new System.Windows.Forms.ToolStripMenuItem();
             this.inquiries_TS = new System.Windows.Forms.ToolStripMenuItem();
             this.reports_TS = new System.Windows.Forms.ToolStripMenuItem();
@@ -402,10 +403,8 @@
             this.togglePagesToolStripMenuItem,
             this.m_addItems,
             this.addItemToRSLToolStripMenuItem,
-            this.viewPOInformationToolStripMenuItem,
             this.toolStripMenuItem3,
             this.resequenceLineNumbersToolStripMenuItem,
-            this.viewBreakdownToolStripMenuItem,
             this.addItemToToolStripMenuItem,
             this.changeDeliverDateToolStripMenuItem,
             this.changeEntityToolStripMenuItem,
@@ -458,14 +457,6 @@
             this.addItemToRSLToolStripMenuItem.Text = "Add Item to RSL";
             this.addItemToRSLToolStripMenuItem.Click += new System.EventHandler(this.addItemToRSLToolStripMenuItem_Click);
             // 
-            // viewPOInformationToolStripMenuItem
-            // 
-            this.viewPOInformationToolStripMenuItem.Name = "viewPOInformationToolStripMenuItem";
-            this.viewPOInformationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.viewPOInformationToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
-            this.viewPOInformationToolStripMenuItem.Text = "View PO Information";
-            this.viewPOInformationToolStripMenuItem.Click += new System.EventHandler(this.viewPOInformationToolStripMenuItem_Click);
-            // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
@@ -481,14 +472,6 @@
             this.resequenceLineNumbersToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.resequenceLineNumbersToolStripMenuItem.Text = "Resequence Line Numbers";
             this.resequenceLineNumbersToolStripMenuItem.Click += new System.EventHandler(this.resequenceLineNumbersToolStripMenuItem_Click);
-            // 
-            // viewBreakdownToolStripMenuItem
-            // 
-            this.viewBreakdownToolStripMenuItem.Name = "viewBreakdownToolStripMenuItem";
-            this.viewBreakdownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.viewBreakdownToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
-            this.viewBreakdownToolStripMenuItem.Text = "View Breakdown";
-            this.viewBreakdownToolStripMenuItem.Click += new System.EventHandler(this.viewBreakdownToolStripMenuItem_Click);
             // 
             // addItemToToolStripMenuItem
             // 
@@ -548,9 +531,35 @@
             // 
             // toolStripMenuItem1
             // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.canceledMemoToolStripMenuItem,
+            this.viewPOInformationToolStripMenuItem,
+            this.viewBreakdownToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem1.Text = "View";
+            // 
+            // canceledMemoToolStripMenuItem
+            // 
+            this.canceledMemoToolStripMenuItem.Name = "canceledMemoToolStripMenuItem";
+            this.canceledMemoToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.canceledMemoToolStripMenuItem.Text = "Canceled Memo";
+            // 
+            // viewPOInformationToolStripMenuItem
+            // 
+            this.viewPOInformationToolStripMenuItem.Name = "viewPOInformationToolStripMenuItem";
+            this.viewPOInformationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.viewPOInformationToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.viewPOInformationToolStripMenuItem.Text = "View PO Information";
+            this.viewPOInformationToolStripMenuItem.Click += new System.EventHandler(this.viewPOInformationToolStripMenuItem_Click);
+            // 
+            // viewBreakdownToolStripMenuItem
+            // 
+            this.viewBreakdownToolStripMenuItem.Name = "viewBreakdownToolStripMenuItem";
+            this.viewBreakdownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.viewBreakdownToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.viewBreakdownToolStripMenuItem.Text = "View Breakdown";
+            this.viewBreakdownToolStripMenuItem.Click += new System.EventHandler(this.viewBreakdownToolStripMenuItem_Click);
             // 
             // Quicklinks_TS
             // 
@@ -616,12 +625,14 @@
             this.toolStripMenuItem2.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.toolStripMenuItem2.Size = new System.Drawing.Size(118, 22);
             this.toolStripMenuItem2.Text = "Help";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // about1
             // 
             this.about1.Name = "about1";
             this.about1.Size = new System.Drawing.Size(118, 22);
             this.about1.Text = "About";
+            this.about1.Click += new System.EventHandler(this.about1_Click);
             // 
             // toolStrip1
             // 
@@ -1066,7 +1077,7 @@
             // 
             // eb_UD2
             // 
-            this.eb_UD2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined2", true));
+            this.eb_UD2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined2", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.eb_UD2.Location = new System.Drawing.Point(570, 165);
             this.eb_UD2.Name = "eb_UD2";
             this.eb_UD2.Size = new System.Drawing.Size(210, 20);
@@ -1074,7 +1085,7 @@
             // 
             // eb_UD1
             // 
-            this.eb_UD1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined1", true));
+            this.eb_UD1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined1", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.eb_UD1.Location = new System.Drawing.Point(134, 165);
             this.eb_UD1.Name = "eb_UD1";
             this.eb_UD1.Size = new System.Drawing.Size(206, 20);
@@ -1082,7 +1093,7 @@
             // 
             // eb_UD3
             // 
-            this.eb_UD3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined3", true));
+            this.eb_UD3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "UserDefined3", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.eb_UD3.Location = new System.Drawing.Point(134, 185);
             this.eb_UD3.Name = "eb_UD3";
             this.eb_UD3.Size = new System.Drawing.Size(206, 20);
@@ -1098,7 +1109,7 @@
             // 
             // eb_Man_Req_User
             // 
-            this.eb_Man_Req_User.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "ManualReqUser", true));
+            this.eb_Man_Req_User.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "ManualReqUser", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.eb_Man_Req_User.Location = new System.Drawing.Point(90, 205);
             this.eb_Man_Req_User.Name = "eb_Man_Req_User";
             this.eb_Man_Req_User.Size = new System.Drawing.Size(250, 20);
@@ -1144,6 +1155,7 @@
             this.eb_Req_No.Size = new System.Drawing.Size(101, 20);
             this.eb_Req_No.TabIndex = 7;
             this.eb_Req_No.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Req_No_Validating);
+            this.eb_Req_No.Validated += new System.EventHandler(this.eb_Req_No_Validated);
             // 
             // eb_Confirmation
             // 
@@ -3020,6 +3032,7 @@
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem insertLineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToCatalogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem canceledMemoToolStripMenuItem;
     }
 }
 

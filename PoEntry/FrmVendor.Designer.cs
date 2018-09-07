@@ -169,7 +169,6 @@
             this.cmb_vendor.BackColor = System.Drawing.SystemColors.Window;
             this.cueExtender1.SetCueText(this.cmb_vendor, "Vendor");
             this.cmb_vendor.CurrentItem = null;
-            this.cmb_vendor.Items = null;
             this.cmb_vendor.Location = new System.Drawing.Point(0, 0);
             this.cmb_vendor.Name = "cmb_vendor";
             this.cmb_vendor.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -245,7 +244,6 @@
             // 
             this.cmb_Terms_Code.AllowTypedIn = false;
             this.cmb_Terms_Code.CurrentItem = null;
-            this.cmb_Terms_Code.Items = ((System.Collections.Generic.List<Ehs.Controls.ComboBoxString>)(resources.GetObject("cmb_Terms_Code.Items")));
             this.cmb_Terms_Code.Location = new System.Drawing.Point(582, 20);
             this.cmb_Terms_Code.Name = "cmb_Terms_Code";
             this.cmb_Terms_Code.PopupBorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -338,7 +336,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmVendor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "FrmVendor";
+            this.Text = "Vendor Selection";
             this.Load += new System.EventHandler(this.FrmVendor_Load);
             this.Shown += new System.EventHandler(this.FrmVendor_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
