@@ -35,6 +35,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addItemFromOtherVendorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFreightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,7 +47,6 @@
             this.cmb_VendorCatalog = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_Mat = new Ehs.Controls.AutoCompleteTextBox();
             this.cueExtender1 = new Ehs.Controls.CueExtender();
-            this.addFreightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -102,6 +102,16 @@
             this.addItemFromOtherVendorToolStripMenuItem.Size = new System.Drawing.Size(172, 20);
             this.addItemFromOtherVendorToolStripMenuItem.Text = "Add Item From Other Vendor";
             this.addItemFromOtherVendorToolStripMenuItem.Click += new System.EventHandler(this.addItemFromOtherVendorToolStripMenuItem_Click);
+            // 
+            // addFreightToolStripMenuItem
+            // 
+            this.addFreightToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.addFreightToolStripMenuItem.CheckOnClick = true;
+            this.addFreightToolStripMenuItem.Name = "addFreightToolStripMenuItem";
+            this.addFreightToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.addFreightToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.addFreightToolStripMenuItem.Text = "Add Freight";
+            this.addFreightToolStripMenuItem.Click += new System.EventHandler(this.addFreightToolStripMenuItem_Click);
             // 
             // errorProvider1
             // 
@@ -221,16 +231,6 @@
             this.cmb_Mat.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Mat_Validating);
             this.cmb_Mat.Validated += new System.EventHandler(this.cmb_Mat_Validated);
             // 
-            // addFreightToolStripMenuItem
-            // 
-            this.addFreightToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
-            this.addFreightToolStripMenuItem.CheckOnClick = true;
-            this.addFreightToolStripMenuItem.Name = "addFreightToolStripMenuItem";
-            this.addFreightToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.addFreightToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
-            this.addFreightToolStripMenuItem.Text = "Add Freight";
-            this.addFreightToolStripMenuItem.Click += new System.EventHandler(this.addFreightToolStripMenuItem_Click);
-            // 
             // ItemSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,6 +254,7 @@
             this.Text = "ItemSelection";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ItemSelection_FormClosing);
             this.Load += new System.EventHandler(this.ItemSelection_Load);
+            this.Shown += new System.EventHandler(this.ItemSelection_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

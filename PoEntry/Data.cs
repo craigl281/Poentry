@@ -1897,6 +1897,18 @@ namespace PoEntry
             return false;
         }
 
+        public int GetFreqBatch(decimal po_no)
+        {
+            int ret;
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT MAX(frequency_batch) as maxb FROM podetail WHERE po_no = @po_no";
+            _Com.Parameters.AddWithValue("po_no", po_no);
+            ret = _Com.ExecuteScalar().ToInt32() + 1;
+            Close();
+            return ret;
+        }
+
     }
 
 

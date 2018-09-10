@@ -325,5 +325,10 @@ namespace PoEntry
             SendKeys.Send("{TAB}");
             //this.DialogResult = DialogResult.OK;
         }
+
+        private void ItemSelection_Shown(object sender, EventArgs e)
+        {
+            cmb_Mat.Focus();
+        }
     }
 }

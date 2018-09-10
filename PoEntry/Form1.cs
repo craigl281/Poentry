@@ -13,6 +13,7 @@ using System.Threading;
 using System.ComponentModel;
 using CrystalDecisions.CrystalReports.Engine;
 using EHS.Report;
+using System.Transactions;
 
 namespace PoEntry
 {
@@ -1161,7 +1162,9 @@ namespace PoEntry
         public void FillDetailQuery()
         {
             Changing = true;
+            data.Open();
             List_Detail = _PDC.GetList(CurrPo);
+            data.Close();
             bs2.DataSource = List_Detail;
             if (Detail != null && List_Detail.Count == 0)
                 Detail.ItemCount = 0;
@@ -1816,8 +1819,9 @@ Changing := false;
                 if (this.cmb_Entity.Enabled)
                     this.cmb_Entity.Focus();
                 list_Mat = null;
+                InDetail = false;
             }
-            InDetail = false;
+
             //Pnl_Vendor.ReadOnly = false;
             cmb_vendor.ReadOnly = true;
             dbgrid1.Enabled = false;
@@ -1843,7 +1847,8 @@ Changing := false;
             //m_addFreight.Enabled = true;
             if (cmb_Mat.ReadOnly == false)
             {
-                eb_PO_Number.Focus();
+                if (cmb_Mat.Focused)
+                    eb_PO_Number.Focus();
                 cmb_Mat.Items = list_Mat;
                 Changing = false;
                 cmb_Mat.Focus();
@@ -2051,7 +2056,6 @@ end;
                     if (SaveNewHeader() == false)
                         return;
                     //GetPo();
-                    SetViewing();
                     if (CurVendor.ToUpper() != data.SystemOptionsDictionary["GENERAL_VENDOR"].ToNonNullString().ToUpper())
                     {
                         /// <summary>
@@ -2060,11 +2064,13 @@ end;
                         /// <param name="sender"></param>
                         /// <param name="e"></param>
                         tabControl1.SelectedTab = p_Detail;
-                        New1();
+                        //New1();
                         //I need a fix for this          tabControl1.SelectedTab = p_Detail;
                         //List_Detail.Add(new PoDetail());//new FilteredBindingList<PoDetail>();
                         //New1();
                     }
+                    else
+                        SetViewing();
                 }
                 #endregion
                 #region//Editing
@@ -2108,22 +2114,24 @@ end;
                     {
                         if (PoReleasedActiveOrSent())
                         {
-                            SqlTransaction sqlTransaction = data._Com.Connection.BeginTransaction("SaveDetailActiveorsent");
-                            data._Com.Transaction = sqlTransaction;
+                            data.Open();
                             try
                             {
-                                SaveNewDetail();
-                                FillDetailQuery();
-                                //SetViewing();
-                                bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                                //UpdateFilesForSingleItem(1);
-                                //WriteToPoDetailChange("I");
-                                //UpdatePoHeaderClosed_FillDate_ItemsRecv;
-                                sqlTransaction.Commit();
+                                using (TransactionScope ts = new TransactionScope())
+                                {
+                                    SaveNewDetail();
+                                    FillDetailQuery();
+                                    //SetViewing();
+                                    bs2.Position = bs2.Find("ItemCount", holdItem_Count);
+                                    //UpdateFilesForSingleItem(1);
+                                    //WriteToPoDetailChange("I");
+                                    //UpdatePoHeaderClosed_FillDate_ItemsRecv;
+
+                                    ts.Complete();
+                                }
                             }
                             catch (Exception SDAS)
                             {
-                                sqlTransaction.Rollback();
                                 MessageBox.Show("Error in transaction SDAS trying to save Detail.  Please Contact EHS."
                                           + "\nTransaction was Rolled Back\n" + SDAS.ToString(), "Error", MessageBoxButtons.OK);
                             }
@@ -2131,7 +2139,7 @@ end;
                             data.Close();
                             if (AutoReceive)
                             {
-                                PoStatus = new EHS.POControl.PoStatus.FormPoStatus(data._Com.Connection.ConnectionString, CurrPo, Detail.ItemCount,                                     "ALL");
+                                PoStatus = new EHS.POControl.PoStatus.FormPoStatus(data._Com.Connection.ConnectionString, CurrPo, Detail.ItemCount, "ALL");
                                 PoStatus.ProcessQuantityRec(0, "ALL", 0, false);
                                 FillDetailQuery();
                             }
@@ -2544,7 +2552,8 @@ end;
                     Detail.ReceiptDate = DeliverDate;
             }
             Detail.DeliverDate = DeliverDate;
-
+            data.Open();
+            //_PDC.DatabaseUpdate('I', Detail, data._Com);
             _PDC.Insert(Detail);
 
             if (Price_Changed)
@@ -5093,40 +5102,18 @@ WHERE PoHeader.PO_No = */
         #region Save Procedures
         void FrequencySave()
         {
-
-            /*
             //firsttime = true;
             FrmFrequency Frm_Freq = new FrmFrequency();
             if (Frm_Freq.ShowDialog() == DialogResult.OK)
             {
                 DateTime temp_date = new DateTime(Frm_Freq.Year, Frm_Freq.Month, Frm_Freq.Day);
-                Begin_Date = temp_date;
-                End_Date = temp_date;
-                Frequency1 = variables.Frequency01;
-                Frequency_Period = 1;
-
-                q_Command.Parameters.Clear();
-                q_Command.CommandText = "SELECT MAX(frequency_batch) as maxb FROM podetail WHERE po_no = @po_no";
-                q_Command.Parameters.AddWithValue("po_no", CurrPo);
-                using (SqlDataReader Read2 = q_Command.ExecuteReader())
-                {
-                    Read2.Read();
-                    Frequency_Batch = Read2[0].ToInt32() + 1;
-                }
-                i = 0;
-                calcnum = 1;
-                #region//taken out of delphi
-
-                //        if (this.Frequency1 == "Monthly") { calcnum = 1; }
-                //        else if (this.Frequency1 == "Bi-Monthly") { calcnum = 2; }
-                //                                    else if (this.Frequency1 == "Quarterly") { calcnum = 1; }
-                //                                    else if (this.Frequency1 == "Semi-Annually") { calcnum = 6; }
-                //                                    else if (this.Frequency1 == "Yearly") { calcnum = 1; }
-                //                                    else if (this.Frequency1 == "Weekly") { calcnum = 52; }
-                //                                    else if (this.Frequency1 == "Bi-Weekly") { calcnum = 104; }
-                //                                    else { calcnum = 1; }
-                #endregion
-                while (i != (calcnum * variables.period))
+                var Begin_Date = temp_date;
+                var End_Date = temp_date;
+                var Frequency1 = Frm_Freq.Frequency;
+                Detail.FrequencyPeriod = 1;
+                Detail.FrequencyBatch = data.GetFreqBatch(CurrPo);
+                int i = 0;
+                while (i != Frm_Freq.Period)
                 {
                     ProcessDatesAndFrequencyRecords();
                     DeliverDate = Begin_Date.AddDays((double)Vendor.LeadDays);
@@ -5139,23 +5126,6 @@ WHERE PoHeader.PO_No = */
 
                     LastLocUsed = Detail.Location;
 
-                    #region//Removed Delphi
-                    //                                   if (!this.Detail.SplitDetail&& this.eb_Account_No.Text == this.splitacct)
-                    //                                           {
-                    //                                               if (firsttime)
-                    //                                               {
-                    //                                                   splitDetailLine();
-                    //                                                   firsttime = false;
-                    //                                               }
-                    //                                               else
-                    //                                               {
-                    //                                                   autodone = true;
-                    //                                                   splitDetailLine();
-                    //                                                   autodone = false;
-                    //                                               }
-                    //                                           }
-                    #endregion
-
                     if (PoReleasedActiveOrSent())
                     {
                         FillDetailQuery();
@@ -5165,17 +5135,133 @@ WHERE PoHeader.PO_No = */
 
                         if (AutoReceive)
                         {
-                            PoStatus = new EHS.POControl.PoStatus.FormPoStatus(CurrPo.ToDecimal(),
-                                       Detail.ItemCount, "ALL");
+                            PoStatus = new EHS.POControl.PoStatus.FormPoStatus(CurrPo.ToDecimal(), Detail.ItemCount, "ALL");
                             PoStatus.ProcessQuantityRec(0, "ALL", 0, false);
                             //FillDetailQuery();
                         }
                     }
                     Begin_Date = End_Date.AddDays(1);
-                    Frequency_Period += 1;
+                    Detail.FrequencyPeriod += 1;
                     i++;
                 }
-            }*/
+            }
+        }
+
+        public void ProcessDatesAndFrequencyRecords()
+        {
+
+            try
+            {
+                if (this.Frequency1 == "Weekly")
+                {
+                    this.End_Date = this.Begin_Date.AddDays(6.0);
+                }
+                else
+                {
+                    if (this.Frequency1 == "Bi-Weekly")
+                    {
+                        this.End_Date = this.Begin_Date.AddDays(13.0);
+                    }
+                    else
+                    {
+                        if (this.Frequency1 == "Every-4-Weeks")
+                        {
+                            this.End_Date = this.Begin_Date.AddDays(27.0);
+                        }
+                        if (this.Frequency1 == "Every-8-Weeks")
+                        {
+                            this.End_Date = this.Begin_Date.AddDays(55.0);
+                        }
+                        if (this.Frequency1 == "Every-12-Weeks")
+                        {
+                            this.End_Date = this.Begin_Date.AddDays(83.0);
+                        }
+                        //else
+                        //{
+                        //    this.End_Date = this.Begin_Date;
+                        //    if (this.Frequency1 == "Monthly")
+                        //    {
+                        //        NumberOfCalls = 1;
+                        //    }
+                        //    if (this.Frequency1 == "Bi-Monthly")
+                        //    {
+                        //        NumberOfCalls = 2;
+                        //    }
+                        //    if (this.Frequency1 == "Quarterly")
+                        //    {
+                        //        NumberOfCalls = 3;
+                        //    }
+                        //    if (this.Frequency1 == "Semi-Annually")
+                        //    {
+                        //        NumberOfCalls = 6;
+                        //    }
+                        //    if (this.Frequency1 == "Yearly")
+                        //    {
+                        //        NumberOfCalls = 12;
+                        //    }
+                        //    int LoopTotal = 0;
+                        //    while (LoopTotal != NumberOfCalls)
+                        //    {
+                        //        LoopTotal++;
+                        //        this.End_Date = this.IncMonth(this.End_Date, 1);
+                        //    }
+                        //    this.End_Date = this.End_Date.AddDays(-1.0);
+                        //}
+                        else
+                        {
+                            this.End_Date = this.Begin_Date;
+                            if (this.Frequency1 == "Monthly")
+                                End_Date = IncMonth(Begin_Date, 1);
+                            if (this.Frequency1 == "Bi-Monthly")
+                                End_Date = IncMonth(Begin_Date, 2);
+                            if (this.Frequency1 == "Quarterly")
+                                End_Date = IncMonth(Begin_Date, 3);
+                            if (this.Frequency1 == "Semi-Annually")
+                                End_Date = IncMonth(Begin_Date, 6);
+                            if (this.Frequency1 == "Yearly")
+                                End_Date = IncMonth(Begin_Date, 12);
+                            this.End_Date = this.End_Date.AddDays(-1.0);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        public DateTime IncMonth(DateTime dt, int NumberOfMonth)
+        {
+            int Sign;
+            int tempday;
+
+            if (NumberOfMonth >= 0)
+            { Sign = 1; }
+            else
+            { Sign = -1; }
+            int year = dt.Year;
+            int month = dt.Month;
+            int day = dt.Day;
+            year = dt.Year + NumberOfMonth / 12;
+            NumberOfMonth %= 12;
+            month += NumberOfMonth;
+            if (month - 1 > 11)
+            {
+                year += Sign;
+                month += -12 * Sign;
+            }
+            tempday = DateTime.DaysInMonth(year, month);
+            if (tempday < day)
+                day = tempday;
+
+            return DateTime.Parse(string.Concat(new string[]
+            {
+                year.ToString(),
+                "/",
+                month.ToString(),
+                "/",
+                day.ToString()
+            }));
         }
 
         public void UpdateAccount()
@@ -5298,12 +5384,17 @@ WHERE PoHeader.PO_No = */
             catch { }
         }
 
+        bool inenter = false;
         void p_Detail_Enter(object sender, EventArgs e)
         {
             try
             {
+                if (inenter)
+                    return;
+                inenter = true;
                 if (InDetail == false)
                 {
+                   
                     InDetail = true;
                     if (list_Mat == null || list_Mat.Count < 1)
                         list_Mat = data.prefillCombos("Mat", Header.VendorID);
@@ -5321,9 +5412,11 @@ WHERE PoHeader.PO_No = */
                         GetItemMemo();
                     }
                     this.Height = 550;
-                    this.ActiveControl = p_Detail;
+                    if (this.ActiveControl != p_Detail)
+                        ActiveControl = p_Detail;
                 }
                 cmb_Mat.SelectAll();
+                inenter = false;
             }
             catch { }
         }
