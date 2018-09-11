@@ -1148,14 +1148,6 @@ namespace PoEntry
             }
             Close();
             return ret;
-            /*  _Com.CommandText = "SELECT Loc.Mat_Code, Loc.Location, Loc.Patient_Charge_Number, Loc.On_Hand, Loc.Minimum, Loc.Maximum, Loc.Reorder_Point, Loc.Entity, Loc.Account_No, Loc.Type, "
-                   + "Loc.Patient_Cost, Loc.Reorder_Location, Loc.Bin, Loc.Issue_Cost, Loc.On_Order, Loc.Sub_Account, Loc.Average_Cost, Loc.ABC, Loc.Reorder_Quantity, Loc.Stockout_Quantity, "
-                   +"Loc.Last_Activity_Date, Loc.Active, Loc.Memo, Loc.Entry_Date, Loc.Reorder_Override, Loc.Stockless, Loc.Fill_and_Kill, Loc.Patient_Charge, Loc.Overnight, Loc.Vat_Code, "
-                   +"Loc.Exclude_ROQ, Loc.Exclude_ABC, Loc.Substitute_Item, Loc.Count_Code, Loc.Interface_Flag, Loc.Bin2, Loc.Bin3, Loc.Average_Daily_Usage, Loc.DOQ, Loc.Floor_Stock, "
-                   +"Loc.Exclude_OLR, Loc.Alias_Item, Loc.Alias_Description, Loc.Last_Ordered_Date, Loc.Phase_Out, Loc.Additional_Qty_To_Order, Loc.Critical_Item, "
-                   +"Loc.Original_Consignment_Quantity, Loc.Issue_On_Order_Req, Loc.Additional_Qty_To_Order_Memo, Loc.Dont_Update_Issue_Cost, Loc.Entered_By, Loc.Interface_Previous_On_Hand, "
-                   +"Loc.Deactivated_Date, Loc.Last_Counted_Date, Loc.Print_Barcode_On_Receipt, Loc.Print_Barcode_On_Transfer, Loc.Implant, Loc.Max_Counts FROM Loc JOIN "
-                   +"location ON Loc.Location = Location.Location WHERE Loc.mat_code = @mat ORDER BY Loc.location ASC";*/
         }
 
         public string GetDeliverTo(string Department)
@@ -1909,6 +1901,49 @@ namespace PoEntry
             return ret;
         }
 
+        public List<PoDetailSplit> GetPoDetailSplit(decimal po_no, decimal ic)
+        {
+            List<PoDetailSplit> ret = new List<PoDetailSplit>();
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT PONo, ItemCount, Entity, AccountNo, Department,SubAccount, ProfileID, Percentage, ExtendedAmount, VatAmount, VatPercentage, VatCode, id FROM PoDetailSplit WHERE Po_No = @po_no @Item_Count = @Ic";
+            _Com.Parameters.AddWithValue("po_no", po_no);
+            _Com.Parameters.AddWithValue("ic", ic);
+            using (SqlDataReader reader = _Com.ExecuteReader())
+            {
+                while (reader.Read()) {
+                    ret.Add(new PoDetailSplit(reader[0].ToDecimal(), reader[1].ToDecimal(), reader[2].ToNonNullString(), reader[3].ToNonNullString(), reader[4].ToNonNullString(), reader[5].ToNonNullString(),
+                                              reader[6].ToNonNullString(), reader[7].ToDecimal(), reader[8].ToDecimal(), reader[9].ToDecimal(), reader[10].ToDecimal(), reader[11].ToNonNullString(), reader[12].ToInt32()));
+
+                }
+            }
+            Close();
+            return ret;
+        }
+
+        public void Change_Inventory(decimal Amount, int Pos_Neg, string Mat, string Location, string Deliver, string Entity)
+        {
+            if (Amount > 0m)
+            {
+                Open();
+                _Com.Parameters.Clear();
+                _Com.CommandText = "UPDATE Loc SET On_Order = case when (On_Order + @on_order) < 0 then 0 else (On_Order + @on_order) end WHERE Mat_Code = @Mat_Code AND Location = @Location";
+                _Com.Parameters.AddWithValue("Mat_Code", Mat);
+                _Com.Parameters.AddWithValue("Location", Location);
+                _Com.Parameters.AddWithValue("On_Order", (Pos_Neg * Amount));
+                _Com.ExecuteNonQuery();
+                if (GetRsl(Entity, Deliver))
+                {
+                    _Com.Parameters.Clear();
+                    _Com.CommandText = "UPDATE RslDetail set Refill_Expected = case when (Refill_Expected + @Refill_Expected) < 0 then 0 else (Refill_Expected + @Refill_Expected) end ";
+                    _Com.CommandText += "WHERE Mat_Code = @Mat_Code AND RSL = @RSL";
+                    _Com.Parameters.AddWithValue("Mat_Code", Mat);
+                    _Com.Parameters.AddWithValue("RSL", Deliver);
+                    _Com.Parameters.AddWithValue("Refill_Expected", (Amount * Pos_Neg));
+                    _Com.ExecuteNonQuery();
+                }
+            }
+        }
     }
 
 

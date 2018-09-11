@@ -255,6 +255,8 @@ namespace PoEntry
         bool InDetail;
         #endregion
         public bool Append_Conversion;
+        public bool Is_Frequency => ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Frequency;
+        bool Return_Repair =>((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).ReturnRepair; 
         #region//numbers
         public int POENTRY_NOT_ORDERED_MONTHS;
         public decimal holdItem_Count, POENTRY_PRICE_CHECK_AMOUNT, POENTRY_PRICE_CHECK_PERCENT, poentry_dollar_limit, holdPO_Cost;
@@ -5107,16 +5109,23 @@ WHERE PoHeader.PO_No = */
             if (Frm_Freq.ShowDialog() == DialogResult.OK)
             {
                 DateTime temp_date = new DateTime(Frm_Freq.Year, Frm_Freq.Month, Frm_Freq.Day);
-                var Begin_Date = temp_date;
-                var End_Date = temp_date;
-                var Frequency1 = Frm_Freq.Frequency;
+                Detail.BeginDate = temp_date;
+                Detail.EndDate  = temp_date;
+                Detail.Frequency = Frm_Freq.Frequency;
                 Detail.FrequencyPeriod = 1;
                 Detail.FrequencyBatch = data.GetFreqBatch(CurrPo);
                 int i = 0;
                 while (i != Frm_Freq.Period)
                 {
                     ProcessDatesAndFrequencyRecords();
-                    DeliverDate = Begin_Date.AddDays((double)Vendor.LeadDays);
+                    try
+                    {
+                        DeliverDate = Detail.BeginDate.Value.AddDays((double)vendorFrm.Vendor.LeadDays);
+                    }
+                    catch
+                    {
+                        DeliverDate = Detail.BeginDate;
+                    }
                     SaveNewDetail();
 
                     FillDetailQuery();
@@ -5130,17 +5139,17 @@ WHERE PoHeader.PO_No = */
                     {
                         FillDetailQuery();
                         bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                        UpdateFilesForSingleItem(1);
+                        //UpdateFilesForSingleItem(1);
                         //WriteToPoDetailChange('I');
 
                         if (AutoReceive)
                         {
-                            PoStatus = new EHS.POControl.PoStatus.FormPoStatus(CurrPo.ToDecimal(), Detail.ItemCount, "ALL");
+                            PoStatus = new EHS.POControl.PoStatus.FormPoStatus(data._Com.Connection.ConnectionString, CurrPo.ToDecimal(), Detail.ItemCount, "ALL");
                             PoStatus.ProcessQuantityRec(0, "ALL", 0, false);
                             //FillDetailQuery();
                         }
                     }
-                    Begin_Date = End_Date.AddDays(1);
+                    Detail.BeginDate = Detail.EndDate.ToDateTime().AddDays(1);
                     Detail.FrequencyPeriod += 1;
                     i++;
                 }
@@ -5149,84 +5158,58 @@ WHERE PoHeader.PO_No = */
 
         public void ProcessDatesAndFrequencyRecords()
         {
-
-            try
+            switch (Detail.Frequency)
             {
-                if (this.Frequency1 == "Weekly")
-                {
-                    this.End_Date = this.Begin_Date.AddDays(6.0);
-                }
-                else
-                {
-                    if (this.Frequency1 == "Bi-Weekly")
+                case "Weekly":
                     {
-                        this.End_Date = this.Begin_Date.AddDays(13.0);
+                        Detail.EndDate = Detail.BeginDate.Value.AddWeeks(1);
+                        break;
                     }
-                    else
+                case "Bi-Weekly":
                     {
-                        if (this.Frequency1 == "Every-4-Weeks")
-                        {
-                            this.End_Date = this.Begin_Date.AddDays(27.0);
-                        }
-                        if (this.Frequency1 == "Every-8-Weeks")
-                        {
-                            this.End_Date = this.Begin_Date.AddDays(55.0);
-                        }
-                        if (this.Frequency1 == "Every-12-Weeks")
-                        {
-                            this.End_Date = this.Begin_Date.AddDays(83.0);
-                        }
-                        //else
-                        //{
-                        //    this.End_Date = this.Begin_Date;
-                        //    if (this.Frequency1 == "Monthly")
-                        //    {
-                        //        NumberOfCalls = 1;
-                        //    }
-                        //    if (this.Frequency1 == "Bi-Monthly")
-                        //    {
-                        //        NumberOfCalls = 2;
-                        //    }
-                        //    if (this.Frequency1 == "Quarterly")
-                        //    {
-                        //        NumberOfCalls = 3;
-                        //    }
-                        //    if (this.Frequency1 == "Semi-Annually")
-                        //    {
-                        //        NumberOfCalls = 6;
-                        //    }
-                        //    if (this.Frequency1 == "Yearly")
-                        //    {
-                        //        NumberOfCalls = 12;
-                        //    }
-                        //    int LoopTotal = 0;
-                        //    while (LoopTotal != NumberOfCalls)
-                        //    {
-                        //        LoopTotal++;
-                        //        this.End_Date = this.IncMonth(this.End_Date, 1);
-                        //    }
-                        //    this.End_Date = this.End_Date.AddDays(-1.0);
-                        //}
-                        else
-                        {
-                            this.End_Date = this.Begin_Date;
-                            if (this.Frequency1 == "Monthly")
-                                End_Date = IncMonth(Begin_Date, 1);
-                            if (this.Frequency1 == "Bi-Monthly")
-                                End_Date = IncMonth(Begin_Date, 2);
-                            if (this.Frequency1 == "Quarterly")
-                                End_Date = IncMonth(Begin_Date, 3);
-                            if (this.Frequency1 == "Semi-Annually")
-                                End_Date = IncMonth(Begin_Date, 6);
-                            if (this.Frequency1 == "Yearly")
-                                End_Date = IncMonth(Begin_Date, 12);
-                            this.End_Date = this.End_Date.AddDays(-1.0);
-                        }
+                        Detail.EndDate = Detail.BeginDate.Value.AddWeeks(2);
+                        break;
                     }
-                }
-            }
-            catch
-            {
+                case "Every-4-Weeks":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddWeeks(4);
+                        break;
+                    }
+                case "Every-8-Weeks":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddWeeks(8);
+                        break;
+                    }
+                case "Every-12-Weeks":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddWeeks(12);
+                        break;
+                    }
+                case "Monthly":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddMonths(1);
+                        break;
+                    }
+                case "Bi-Monthly":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddMonths(2);
+                        break;
+                    }
+                case "Quarterly":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddMonths(3);
+                        break;
+                    }
+                case "Semi-Annually":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddMonths(6);
+                        break;
+                    }
+                case "Yearly":
+                    {
+                        Detail.EndDate = Detail.BeginDate.Value.AddYears(1);
+                        break;
+                    }
             }
         }
 
@@ -5574,140 +5557,76 @@ WHERE PoHeader.PO_No = */
 
         private void UpdateFiles(int posneg)
         {
-            /*
-            DataTable DetailHold = new DataTable();
             DataTable Hold = new DataTable();
             int i = 0, d = 0;
             decimal QuantityTimesCost = 0m, Quantity = 0m;
+            var year = data.SystemOptionsDictionary["MM_YEAR"].ToInt32();
+            var period = data.SystemOptionsDictionary["MM_PERIOD"].ToInt32();
 
             if (Is_Frequency == false)
             {
-                EhsUtil.Change_VendorPurchase(ref q_Command, CurrEntity, _WVendor.Vendor.VendorID, Fiscal_Year, Fiscal_Period,
-                    eb_Total.Text.ToDecimal() * (decimal)posneg, 'D', 'P');
+                EhsUtil.Change_VendorPurchase(ref data._Com, CurrEntity, CurVendor, year, period, eb_Total.Text.ToDecimal() * (decimal)posneg, 'D', 'P');
             }
 
-            if (this.USE_SUBLEDGER_AMOUNT && Header.ProjectNo != "")
+            if (USE_SUBLEDGER_AMOUNT && Header.ProjectNo != "")
             {
-                EhsUtil.Change_ProjectBudget(Header.ProjectNo, (decimal)this.Fiscal_Year,
-                    (decimal)this.Fiscal_Period, eb_Total.Text.ToDecimal() * (decimal)posneg, 'E');
+                EhsUtil.Change_ProjectBudget(Header.ProjectNo, year.ToDecimal(), period.ToDecimal(), eb_Total.Text.ToDecimal() * (decimal)posneg, 'E');
             }
-
-            this.Changing = true;
-            q_Command.CommandText = "SELECT Mat_Code,Location,Account_No, Profile_Id, Contract, Deliver_To, "
-            + "Nonfile,Qty_Order,Conversion,Vat_Percentage,Unit_Cost,Entity, Item_Count From PoDetail   where PO_No = @Po_No";
-            q_Command.Parameters.AddWithValue("Po_No", CurrPo);
-            using (SqlDataAdapter da = new SqlDataAdapter(q_Command))
+            while (i < bs2.Count)
             {
-                da.Fill(DetailHold);
-            }
-            i = 0;
-            while (i < DetailHold.Rows.Count)
-            {
-                QuantityTimesCost = DetailHold.Rows[i]["Qty_Order"].ToDecimal() * DetailHold.Rows[i]["Unit_Cost"].ToDecimal() * (decimal)posneg;
-                QuantityTimesCost += QuantityTimesCost * DetailHold.Rows[i]["Vat_Percentage"].ToDecimal() / 100;
-                Quantity = DetailHold.Rows[i]["Qty_Order"].ToDecimal() * DetailHold.Rows[i]["Conversion"].ToDecimal() * (decimal)posneg;
+                bs2.Position = i;
+                QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * posneg;
+                QuantityTimesCost += QuantityTimesCost * Detail.VatPercentage / 100;
+                Quantity = Detail.QtyOrder * Detail.Conversion * posneg;
 
-                q_Command.Parameters.Clear();
-                q_Command.CommandText = "SELECT * FROM PoDetailSplit WHERE po_no = @po_no AND item_count = @item_count";
-                q_Command.Parameters.AddWithValue("po_no", CurrPo);
-                q_Command.Parameters.AddWithValue("item_count", DetailHold.Rows[i]["item_count"].ToInt32());
-                using (SqlDataAdapter da = new SqlDataAdapter(q_Command))
+                var split = data.GetPoDetailSplit(Detail.PONo, Detail.ItemCount);
+                int m = 0;
+
+                if (m < split.Count())
                 {
-                    da.Fill(Hold);
+                    PoDetailSplit splitline = split[m];
+
+                    if (Is_Frequency == false)
+                    {
+                        if (Detail.NonFile == false)
+                        {
+                            EhsUtil.Change_ItemBudget(ref data._Com, splitline.Entity, splitline.AccountNo, Detail.ProfileID, Detail.Location, Detail.MatCode, year, period,
+                                                      splitline.ExtendedAmount * posneg + splitline.VatAmount, Quantity * splitline.Percentage / 100m, 'D', 'P', Cross_Account_No);
+                        }
+
+                        EhsUtil.Change_Budget(ref data._Com, splitline.Entity, splitline.AccountNo, Detail.ProfileID, year, period, splitline.ExtendedAmount * posneg + splitline.VatAmount, 'D', 'P', Detail.MatCode, Cross_Account_No);
+                    }
+                    if (Detail.NonFile == false && rsl)
+                        EhsUtil.Change_RSLUsage(ref data._Com, Detail.DeliverTo, Detail.MatCode, Detail.Location, splitline.Entity, splitline.AccountNo, year, period, splitline.ExtendedAmount * posneg + splitline.VatAmount, Quantity * splitline.Percentage / 100m, 'D', 'P');
+                    m++;
+                }
+                else
+                {
+                    if (Is_Frequency == false)
+                    {
+                        if (Detail.NonFile == false)
+                            EhsUtil.Change_ItemBudget(ref data._Com, Detail.Entity, Detail.AccountNo, Detail.ProfileID, Detail.Location, Detail.MatCode, year, period, QuantityTimesCost, Quantity, 'D', 'P', Cross_Account_No);
+
+                        EhsUtil.Change_Budget(ref data._Com, Detail.Entity, Detail.AccountNo, Detail.ProfileID, year, period, QuantityTimesCost, 'D', 'P', Detail.MatCode, Cross_Account_No);
+                    }
+                    if (Detail.NonFile == false && rsl)
+                        EhsUtil.Change_RSLUsage(ref data._Com, Detail.DeliverTo, Detail.MatCode, Detail.Location, Detail.Entity, Detail.AccountNo, year, period, QuantityTimesCost, Quantity, 'D', 'P');
                 }
 
                 if (!this.Is_Frequency)
                 {
-                    if (DetailHold.Rows[i]["NonFile"].ToBoolean() == false)
-                    {
-                        this.EhsUtil.Change_ItemUsage(ref q_Command, DetailHold.Rows[i]["Location"].ToString(),
-                            DetailHold.Rows[i]["Mat_Code"].ToString(), Fiscal_Year, Fiscal_Period, QuantityTimesCost,
-                            Quantity, 'D', 'P');
-
-                        if (Hold.Rows.Count == 0)
-                        {
-                            EhsUtil.Change_ItemBudget(ref q_Command, DetailHold.Rows[i]["Entity"].ToString(),
-                                   DetailHold.Rows[i]["Account_No"].ToString(), DetailHold.Rows[i]["Profile_Id"].ToString(),
-                                   DetailHold.Rows[i]["Location"].ToString(), DetailHold.Rows[i]["Mat_Code"].ToString(),
-                                   Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P', Cross_Account_No);
-                        }
-                        else
-                        {
-                            d = 0;
-                            while (d < Hold.Rows.Count)
-                            {
-                                EhsUtil.Change_ItemBudget(ref q_Command, Hold.Rows[d]["entity"].ToString(),
-                                    Hold.Rows[d]["account_No"].ToString(), DetailHold.Rows[i]["Profile_Id"].ToString(),
-                                    DetailHold.Rows[i]["Location"].ToString(), DetailHold.Rows[i]["Mat_Code"].ToString(),
-                                    Fiscal_Year, Fiscal_Period, (decimal)posneg * (Hold.Rows[d]["Extended_Amount"].ToDecimal() +
-                                    Hold.Rows[d]["Vat_Amount"].ToDecimal()), Quantity * (Hold.Rows[d]["percentage"].ToDecimal()
-                                    / 100m), 'D', 'P', Cross_Account_No);
-                                d++;
-                            }
-                        }
-                    }
-                    if (Hold.Rows.Count == 0)
-                    {
-                        this.EhsUtil.Change_Budget(ref q_Command, CurrEntity, DetailHold.Rows[i]["Account_No"].ToString(),
-                            DetailHold.Rows[i]["Profile_Id"].ToString(), Fiscal_Year, Fiscal_Period, QuantityTimesCost, 'D', 'P',
-                            DetailHold.Rows[i]["Mat_Code"].ToString(), Cross_Account_No);
-                    }
-                    else
-                    {
-                        d = 0;
-                        while (d < Hold.Rows.Count)
-                        {
-                            EhsUtil.Change_Budget(ref q_Command, Hold.Rows[d]["entity"].ToString(),
-                                   Hold.Rows[d]["account_No"].ToString(), DetailHold.Rows[i]["Profile_Id"].ToString(), Fiscal_Year,
-                                   Fiscal_Period, (decimal)posneg * Hold.Rows[d]["Extended_Amount"].ToDecimal() +
-                                   Hold.Rows[d]["Vat_Amount"].ToDecimal(), 'D', 'P', DetailHold.Rows[i]["Mat_Code"].ToString(),
-                                   Cross_Account_No);
-                            d++;
-                        }
-                    }
-
-
+                    if (Detail.NonFile == false)
+                        EhsUtil.Change_ItemUsage(ref data._Com, Detail.Location, Detail.MatCode, data.SystemOptionsDictionary["MM_YEAR"].ToInt32(), data.SystemOptionsDictionary["MM_PERIOD"].ToInt32(), QuantityTimesCost, Quantity, 'D', 'P');
                 }
-                if (Detail.NonFile == false)
-                {
-                    this.Change_Inventory(DetailHold.Rows[i]["Qty_Order"].ToDecimal() *
-                         DetailHold.Rows[i]["Conversion"].ToDecimal(), posneg);
-                    if (this.rsl)
-                    {
-                        if (Hold.Rows.Count == 0)
-                        {
-                            this.EhsUtil.Change_RSLUsage(ref q_Command, DetailHold.Rows[i]["Deliver_To"].ToString(),
-                                DetailHold.Rows[i]["Mat_Code"].ToString(), DetailHold.Rows[i]["Location"].ToString(),
-                                DetailHold.Rows[i]["Entity"].ToString(), DetailHold.Rows[i]["Account_No"].ToString(),
-                                Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-                        }
-                        else
-                        {
-                            d = 0;
-                            while (d < Hold.Rows.Count)
-                            {
-                                this.EhsUtil.Change_RSLUsage(ref q_Command, DetailHold.Rows[i]["Deliver_To"].ToString(),
-                                    DetailHold.Rows[i]["Mat_Code"].ToString(), DetailHold.Rows[i]["Location"].ToString(),
-                                    Hold.Rows[d]["entity"].ToString(), Hold.Rows[d]["account_No"].ToString(), Fiscal_Year,
-                                    Fiscal_Period, (decimal)posneg * (Hold.Rows[d]["Extended_Amount"].ToDecimal() +
-                                    Hold.Rows[d]["Vat_Amount"].ToDecimal()), Quantity * (Hold.Rows[d]["percentage"].ToDecimal()
-                                    / 100m), 'D', 'P');
-                                d++;
-                            }
-                        }
-                    }
-                }
+                if (Detail.NonFile == false && _CurLocationDetail.FillandKill == false)
+                    data.Change_Inventory(Detail.QtyOrder * Detail.Conversion, posneg, Detail.MatCode, Detail.Location, Detail.DeliverTo, Detail.Entity);
                 if (Detail.Contract != "")
                 {
                     if (!this.Return_Repair)
-                    {
-                        EhsUtil.Change_ContractUsage(ref q_Command, DetailHold.Rows[i]["Contract"].ToString(),
-                               DetailHold.Rows[i]["Location"].ToString(), DetailHold.Rows[i]["Mat_Code"].ToString(),
-                               Fiscal_Year, Fiscal_Period, QuantityTimesCost, Quantity, 'D', 'P');
-                    }
+                        EhsUtil.Change_ContractUsage(ref data._Com, Detail.Contract, Detail.Location, Detail.MatCode, year, period, QuantityTimesCost, Quantity, 'D', 'P');
                 }
                 i++;
-            }*/
+            }
         }
 
         void UpdateHeaderTotal()
@@ -5802,60 +5721,8 @@ WHERE PoHeader.PO_No = */
                 this.lbl_L_UD3.Left = 106 - this.lbl_L_UD3.Width;
             }
         }
+      
 
-        /*procedure Tform1.Change_Inventory(Amount: real; Pos_Neg: integer);
-begin
-  if Amount < 0 then exit;
-  with q_Query1 do
-    begin
-      sql.clear;
-      sql.add('select rsl from deliverto');
-      sql.add('where entity = :entity ');
-      sql.add('and deliver_to = :Deliver_To ');
-      parambyname('Deliver_To').asstring := q_PoDetail.fieldbyname('deliver_to').asstring;
-      parambyname('entity').asstring := q_PoDetail.fieldbyname('entity').asstring;
-      active := true;
-      if (eof = false) and (fieldbyname('rsl').asboolean = true) then rsl := true
-      else rsl := false;
-
-      sql.clear;
-      sql.add('select On_Order, Fill_and_Kill from Loc ');
-      sql.add('where Mat_Code = :Mat_Code ');
-      sql.add('and Location = :Location ');
-      ParamByName('Mat_Code').asstring := q_PoDetail.FieldByName('Mat_Code').asstring;
-      ParamByName('Location').asstring := q_PoDetail.FieldByName('Location').asstring;
-      active := true;
-      if (eof = false) and (not rsl) and (FieldByName('Fill_and_Kill').asboolean = true) then exit;//dont update on_order quantities if fill n kill item
-      if eof then MessageDlg('Loc record does not exist for Mat Code ' + q_PoDetail.FieldByName('Mat_Code').asstring
-        +#13+#10+'and Location ' + q_PoDetail.FieldByName('Location').asstring, mtError, [mbOK], 0)
-      else
-        with q_Query2 do
-          begin
-            sql.clear;
-            sql.add('update Loc ');
-            sql.add('set On_Order = case when (on_order + :on_order) < 0 then 0 else (on_order + :on_order) end ');
-            sql.add('where Mat_Code = :Mat_Code ');
-            sql.add('and Location = :Location ');
-            ParamByName('Mat_Code').asstring := q_PoDetail.FieldByName('Mat_Code').asstring;
-            ParamByName('Location').asstring := q_PoDetail.FieldByName('Location').asstring;
-            ParamByName('On_Order').asfloat := (Amount * Pos_Neg);
-            execute;
-
-            if rsl then
-              begin
-                sql.clear;
-                sql.add('update RslDetail ');
-                sql.add('set Refill_Expected = case when (Refill_Expected + :Refill_Expected) < 0 then 0 else (Refill_Expected + :Refill_Expected) end ');
-                sql.add('where Mat_Code = :Mat_Code ');
-                sql.add('and RSL = :RSL ');
-                ParamByName('Mat_Code').asstring := q_PoDetail.FieldByName('Mat_Code').asstring;
-                ParamByName('RSL').asstring := q_PoDetail.FieldByName('Deliver_To').asstring;
-                ParamByName('Refill_Expected').asfloat := (Amount * Pos_Neg);
-                execute;
-              end;
-          end;
-    end;
-end;*/
 
     }
 }
