@@ -115,6 +115,12 @@
     <Compile Include="DetailBreakdown.designer.cs">
       <DependentUpon>DetailBreakdown.cs</DependentUpon>
     </Compile>
+    <Compile Include="EntityChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntityChange.designer.cs">
+      <DependentUpon>EntityChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DetailBreakdown.resx">
       <DependentUpon>DetailBreakdown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntityChange.resx">
+      <DependentUpon>EntityChange.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

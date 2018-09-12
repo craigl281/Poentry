@@ -86,10 +86,7 @@ namespace PoEntry
                 _UsePoGroups = value;
             }
         }
-        bool AutoReceive
-        {
-            get { return ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).AutoReceive; }
-        }
+        bool AutoReceive => ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).AutoReceive;
 
         bool Not_Exceed
         {
@@ -2125,8 +2122,8 @@ end;
                                     FillDetailQuery();
                                     //SetViewing();
                                     bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                                    //UpdateFilesForSingleItem(1);
-                                    //WriteToPoDetailChange("I");
+                                    UpdateFiles(1, true);
+                                    data.WriteToPoDetailChange(Detail, "I");
                                     //UpdatePoHeaderClosed_FillDate_ItemsRecv;
 
                                     ts.Complete();
@@ -2137,7 +2134,7 @@ end;
                                 MessageBox.Show("Error in transaction SDAS trying to save Detail.  Please Contact EHS."
                                           + "\nTransaction was Rolled Back\n" + SDAS.ToString(), "Error", MessageBoxButtons.OK);
                             }
-                            data._Com.Transaction = null;
+                            //data._Com.Transaction = null;
                             data.Close();
                             if (AutoReceive)
                             {
@@ -2157,13 +2154,6 @@ end;
                     //dbgrid1.Rows[row_no + 1].Selected = true;
                     if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency)
                         return;
-                    #region//taken out in delphi
-                    //                           if not q_PoDetail.fieldbyname('split_detail').asboolean and (eb_Account_No.text = splitacct) then
-                    //          begin
-                    //            m_SplitDetailLine1Click(self);
-                    //            exit;
-                    //          end;
-                    #endregion
                     if (data.SystemOptionsDictionary["CAN_UPDATE_LOC_ACCOUNT"].ToBoolean())
                         UpdateAccount();
                     New1();
@@ -2191,147 +2181,116 @@ end;
                     #region//Po  either sent, active, or released
                     if (PoReleasedActiveOrSent())
                     {
-                        #region 
-                        /*
-                        SqlTransaction Trans2;
-                        int y = this.dbgrid1.CurrentCellAddress.Y;
-
-                        Trans2 = sqlConnection1.BeginTransaction("Transaction2");
-                        q_Command.Transaction = Trans2;
+                        holdItem_Count = Detail.ItemCount;
+                        FillDetailQuery();
                         try
                         {
-                            holdItem_Count = Detail.ItemCount;
-                            Changing = true;
-                            //FillDetailQuery();//get current data
-                            //so it only selects the one row. not the first and...
-                            //dbgrid1.Rows[0].Selected = false;
-                            //dbgrid1.Rows[y].Selected = true;
-                            //bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                            Changing = false;
-
-                            #region//Is Frequency and updateflines
-                            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency && UpdateFLines)//updateFlines cannot be true if autoreceive
+                            using (TransactionScope ts = new TransactionScope())
                             {
-                                FillFrequencyQuery();
-                                foreach (Frequency _F in _Freq)
+                                if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency && UpdateFLines)//updateFlines cannot be true if autoreceive
                                 {
-                                    Changing = true;
-                                    bs2.Position = bs2.Find("ItemCount", _F.Item_Count);
-                                    Changing = false;
-                                    if (_F.Qty_on_invoice > 0)
-                                    {
-                                        MessageBox.Show("Line " + _F.Item_Count + " Can't be changed.  It's on an invoice", "Warning", MessageBoxButtons.OK);
-                                        continue;
-                                    }
-                                    if (_F.NonFile == false)
-                                    {
-                                        q_Command.Parameters.Clear();
-                                        q_Command.CommandText = "SELECT On_Hand, Type From Loc WHERE Mat_Code = @Mat_Code AND Location = @Location";
-                                        q_Command.Parameters.AddWithValue("Mat_Code", _F.Mat_Code);
-                                        q_Command.Parameters.AddWithValue("Location", _F.Location);
-                                        using (SqlDataReader Read1 = q_Command.ExecuteReader())
-                                        {
-                                            if (_F.Qty_received > 0)
-                                            {
-                                                Read1.Read();
-                                                if (Read1.HasRows)
-                                                {
-                                                    if ((Read1[1].ToString() != "N") && (Read1[0].ToInt32() <
-                                                        (_F.Qty_received * _F.Conversion)))
-                                                    {
-                                                        MessageBox.Show("In order to make this change we need to un-receive these lines."
-                                                                  + "\nThere is not enough on hand to unreceive this line.  Changes "
-                                                                  + "\nwill not be made for this line or any lines after."
-                                                                  + "\nLine Number: " + _F.Item_Count, "warning", MessageBoxButtons.OK);
-                                                        return;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    try
-                                    {
-                                        WriteToPoDetailChange("U");
-                                        //if (AutoReceive())
-                                        //   receiveline("NEGALL");
-                                        UpdateFilesForSingleItem(-1);
-                                        SaveEditDetail();
+                                    var _Freq = data.GetFrequency(CurrPo, Detail.FrequencyPeriod, Detail.FrequencyBatch);
 
+                                    foreach (Frequency _F in _Freq)
+                                    {
                                         Changing = true;
-                                        //FillDetailQuery();
                                         bs2.Position = bs2.Find("ItemCount", _F.Item_Count);
                                         Changing = false;
-                                        UpdateFilesForSingleItem(1);
-                                        //if (AutoReceive)
-                                        //  receiveline("ALL");
-                                        //UpdatePoHeaderClosed_FillDate_ItemsRecv;
-                                        Trans2.Commit();
-                                    }
-                                    catch (Exception ee)
-                                    {
-                                        System.ArgumentException arg2 = new ArgumentException("Error In Transaction (4) " + ee.ToString());
-                                        throw arg2;
-                                    }
-                                }
-                            }
-                            #endregion
-                            else
-                            {
-                                try
-                                {
-                                    WriteToPoDetailChange("U");
-                                    UpdateFilesForSingleItem(-1);
-                                    SaveEditDetail();
-                                    FillDetailQuery();
-                                    //so it only selects the one row. not the first and...
-                                    dbgrid1.Rows[0].Selected = false;
-                                    dbgrid1.Rows[y].Selected = true;
-                                    Changing = true;
-                                    bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                                    Changing = false;
+                                        if (_F.Qty_on_invoice > 0)
+                                        {
+                                            MessageBox.Show("Line " + _F.Item_Count + " Can't be changed.  It's on an invoice", "Warning", MessageBoxButtons.OK);
+                                            continue;
+                                        }
+                                        if (_F.NonFile == false)
+                                        {
+                                            if (data.GetOnHand(_F.Mat_Code, _F.Location) < (_F.Qty_received * _F.Conversion))
+                                            {
+                                                MessageBox.Show("In order to make this change we need to un-receive these lines."
+                                                                                                  + "\nThere is not enough on hand to unreceive this line.  Changes "
+                                                                                                  + "\nwill not be made for this line or any lines after."
+                                                                                                  + "\nLine Number: " + _F.Item_Count, "warning", MessageBoxButtons.OK);
+                                                return;
+                                            }
+                                        }
+                                        try
+                                        {
+                                            data.WriteToPoDetailChange(Detail, "U");
+                                            if (AutoReceive)
+                                                receiveline("NEGALL");
+                                            UpdateFiles(-1, true);
 
-                                    UpdateFilesForSingleItem(1);
-                                    //UpdatePoHeaderClosed_FillDate_ItemsRecv;
-                                    Trans2.Commit();
+                                            var temp = (List<Ehs.Models.PoDetail>)bs2.DataSource;
+                                            Detail.DeliverDate = temp.Find(r => r.ItemCount == Detail.ItemCount).DeliverDate;
+
+                                            SaveEditDetail();
+
+                                            Changing = true;
+                                            FillDetailQuery();
+                                            bs2.Position = bs2.Find("ItemCount", _F.Item_Count);
+                                            Changing = false;
+                                            UpdateFiles(1, true);
+                                            if (AutoReceive)
+                                              receiveline("ALL");
+                                            //UpdatePoHeaderClosed_FillDate_ItemsRecv;
+                                        }
+                                        catch (Exception ee)
+                                        {
+                                            System.ArgumentException arg2 = new ArgumentException("Error In Transaction (4) " + ee.ToString());
+                                            throw arg2;
+                                        }
+                                    }
                                 }
-                                catch (Exception ep)
+                                else
                                 {
-                                    System.ArgumentException arg3 = new ArgumentException("Error In Transaction (5) " + ep.ToString());
-                                    throw arg3;
+                                    try
+                                    {
+                                        data.WriteToPoDetailChange(Detail, "U");
+                                        UpdateFiles(-1, true);
+                                        SaveEditDetail();
+                                        FillDetailQuery();
+                                        //so it only selects the one row. not the first and...
+                                        //dbgrid1.Rows[0].Selected = false;
+                                        //dbgrid1.Rows[y].Selected = true;
+                                        Changing = true;
+                                        bs2.Position = bs2.Find("ItemCount", holdItem_Count);
+                                        Changing = false;
+                                        UpdateFiles(1, true);
+                                        //UpdatePoHeaderClosed_FillDate_ItemsRecv;
+                                    }
+                                    catch (Exception ep)
+                                    {
+                                        System.ArgumentException arg3 = new ArgumentException("Error In Transaction (5) " + ep.ToString());
+                                        throw arg3;
+                                    }
                                 }
-                            }
-                            if (AutoReceive)
-                            {
-                                PoStatus = new EHS.POControl.PoStatus.FormPoStatus(CurrPo.ToDecimal(), Detail.ItemCount, "ALL");
-                                PoStatus.ProcessQuantityRec(0, "ALL", 0, false);
-                                FillDetailQuery();
-                            }
-                            SetViewing();
-                            //so it only selects the one row. not the first and...
-                            dbgrid1.Rows[0].Selected = false;
-                            dbgrid1.Rows[y].Selected = true;
-                            //  dbgrid1.Rows[row_no].Selected = true;
-                            if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency)
-                                bs2.Position = bs2.Find("ItemCount", Item_Count);
-                            else
+                                if (AutoReceive)
+                                {
+                                    //if ReadSysfile(q_Query1, 'EOD_BATCH_NUMBER', SysfileValue) then
+                                    //frm_PoStatus.EOD_BATCH_NUMBER := SysfileValue;
+                                    PoStatus = new EHS.POControl.PoStatus.FormPoStatus(data._Com.Connection.ConnectionString, CurrPo.ToDecimal(), Detail.ItemCount, "ALL");
+                                    PoStatus.ProcessQuantityRec(0, "ALL", 0, false);
+                                    FillDetailQuery();
+                                }
+                                //SetViewing();
+                                //so it only selects the one row. not the first and...
+                                //dbgrid1.Rows[0].Selected = false;
+                                //dbgrid1.Rows[y].Selected = true;
+                                //  dbgrid1.Rows[row_no].Selected = true;
                                 bs2.Position = bs2.Find("ItemCount", holdItem_Count);
+                                ts.Complete();
+                            }
                         }
                         catch (Exception er)
                         {
-
                             MessageBox.Show("Transaction rolled back " + er.ToString(), "error", MessageBoxButtons.OK);
-                            Trans2.Rollback();
-                        }    */
-                        #endregion
+                        }
                     }
-
-                    #endregion
+                    #endregion  Po either sent, active, or released
                     else
                     {
-                        decimal Item_Count = 0m;
+                        holdItem_Count = Detail.ItemCount;
                         if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency && UpdateFLines)//updateFlines cannot be true if autoreceive
                         {
-                            Item_Count = Detail.ItemCount;
                             var _Freq = data.GetFrequency(CurrPo, Detail.FrequencyPeriod, Detail.FrequencyBatch);
                             FillDetailQuery();
 
@@ -2351,29 +2310,16 @@ end;
                         }
                         else
                         {
-                            holdItem_Count = Detail.ItemCount;
-                            Changing = true;
-
                             SaveEditDetail();
-                            Changing = false;
                             if (data.SystemOptionsDictionary["CAN_UPDATE_LOC_ACCOUNT"].ToBoolean())
                                 UpdateAccount();
                         }
                         //Fixed the jump around which happened with refreshing the grid
                         dbgrid1.Rows[0].Selected = false;
                         dbgrid1.Rows[row_no].Selected = true;
-                        if ((cmb_Po_Type.CurrentItem.Value as ComboBoxPoType).Frequency)
-                            Detail.ItemCount = Item_Count;//bs2.Position = bs2.Find("ItemCount", Item_Count);
-                        else
                             Detail.ItemCount = holdItem_Count;//bs2.Position = bs2.Find("ItemCount", holdItem_Count);
                     }
-                    #region//taken out of delphi
-                    //                    {       if not q_PoDetail.fieldbyname('split_detail').asboolean and (eb_Account_No.text = splitacct) then
-                    //          begin
-                    //            m_SplitDetailLine1Click(self);
-                    //            exit;
-                    //          end;}
-                    #endregion
+
 
                     if (GOTO_NEXT_LINE_EDIT)
                     {
@@ -3237,7 +3183,17 @@ WHERE PoHeader.PO_No = */
 
         private void changeEntityToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            List<ComboBoxEntity> temp = new List<ComboBoxEntity>();
 
+            EntityChange EntityForm;
+
+            EntityForm = new EntityChange(data.GetVendorRestrictedEntities(Header.VendorID) ?? cmb_Entity.Items);
+
+            if (EntityForm.ShowDialog() == DialogResult.Yes)
+            {
+                CurrEntity = EntityForm.result;
+            }
+            data.UpdateEntity(CurrEntity, Header.PONo);
         }
 
         private void editPOInformationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5139,8 +5095,8 @@ WHERE PoHeader.PO_No = */
                     {
                         FillDetailQuery();
                         bs2.Position = bs2.Find("ItemCount", holdItem_Count);
-                        //UpdateFilesForSingleItem(1);
-                        //WriteToPoDetailChange('I');
+                        UpdateFiles(1, true);
+                        data.WriteToPoDetailChange(Detail, "I");
 
                         if (AutoReceive)
                         {
@@ -5555,7 +5511,7 @@ WHERE PoHeader.PO_No = */
         }
         bool answer = false;
 
-        private void UpdateFiles(int posneg)
+        private void UpdateFiles(int posneg, bool single = false)
         {
             DataTable Hold = new DataTable();
             int i = 0, d = 0;
@@ -5563,15 +5519,19 @@ WHERE PoHeader.PO_No = */
             var year = data.SystemOptionsDictionary["MM_YEAR"].ToInt32();
             var period = data.SystemOptionsDictionary["MM_PERIOD"].ToInt32();
 
+            QuantityTimesCost = Detail.QtyOrder * Detail.UnitCost * posneg;
+            QuantityTimesCost += QuantityTimesCost * Detail.VatPercentage / 100;
+            Quantity = Detail.QtyOrder * Detail.Conversion * posneg;
+
             if (Is_Frequency == false)
-            {
-                EhsUtil.Change_VendorPurchase(ref data._Com, CurrEntity, CurVendor, year, period, eb_Total.Text.ToDecimal() * (decimal)posneg, 'D', 'P');
-            }
+                EhsUtil.Change_VendorPurchase(ref data._Com, CurrEntity, CurVendor, year, period, (single) ? QuantityTimesCost : eb_Total.Text.ToDecimal() * (decimal)posneg, 'D', 'P');
 
             if (USE_SUBLEDGER_AMOUNT && Header.ProjectNo != "")
-            {
-                EhsUtil.Change_ProjectBudget(Header.ProjectNo, year.ToDecimal(), period.ToDecimal(), eb_Total.Text.ToDecimal() * (decimal)posneg, 'E');
-            }
+                EhsUtil.Change_ProjectBudget(ref data._Com, Header.ProjectNo, year.ToDecimal(), period.ToDecimal(), (single) ? QuantityTimesCost : (eb_Total.Text.ToDecimal() * (decimal)posneg), 'E');
+
+            if (single)
+                i = bs2.Position;
+
             while (i < bs2.Count)
             {
                 bs2.Position = i;
@@ -5613,19 +5573,17 @@ WHERE PoHeader.PO_No = */
                         EhsUtil.Change_RSLUsage(ref data._Com, Detail.DeliverTo, Detail.MatCode, Detail.Location, Detail.Entity, Detail.AccountNo, year, period, QuantityTimesCost, Quantity, 'D', 'P');
                 }
 
-                if (!this.Is_Frequency)
-                {
-                    if (Detail.NonFile == false)
-                        EhsUtil.Change_ItemUsage(ref data._Com, Detail.Location, Detail.MatCode, data.SystemOptionsDictionary["MM_YEAR"].ToInt32(), data.SystemOptionsDictionary["MM_PERIOD"].ToInt32(), QuantityTimesCost, Quantity, 'D', 'P');
-                }
+                if (Is_Frequency == false && Detail.NonFile == false)
+                    EhsUtil.Change_ItemUsage(ref data._Com, Detail.Location, Detail.MatCode, year, period, QuantityTimesCost, Quantity, 'D', 'P');
+
                 if (Detail.NonFile == false && _CurLocationDetail.FillandKill == false)
                     data.Change_Inventory(Detail.QtyOrder * Detail.Conversion, posneg, Detail.MatCode, Detail.Location, Detail.DeliverTo, Detail.Entity);
-                if (Detail.Contract != "")
-                {
-                    if (!this.Return_Repair)
+
+                if (Detail.Contract != "" && Return_Repair == false)
                         EhsUtil.Change_ContractUsage(ref data._Com, Detail.Contract, Detail.Location, Detail.MatCode, year, period, QuantityTimesCost, Quantity, 'D', 'P');
-                }
-                i++;
+
+                if (single == false)
+                    i++;
             }
         }
 
@@ -5721,8 +5679,26 @@ WHERE PoHeader.PO_No = */
                 this.lbl_L_UD3.Left = 106 - this.lbl_L_UD3.Width;
             }
         }
-      
 
+        public void receiveline(string proct_1)
+        {
+            // bool flag = false;
+            PoStatus = new EHS.POControl.PoStatus.FormPoStatus(data._Com.Connection.ConnectionString, CurrPo.ToDecimal(), Detail.ItemCount, proct_1);
+            try
+            { PoStatus.ShowDialog(); }
+            finally
+            { PoStatus.Close(); PoStatus.Dispose(); }
+            /*
+  frm_PoStatus.Hold1 := q_PoDetail.FieldByName('Po_No').AsInteger;
+  frm_PoStatus.hold2 := q_PoDetail.FieldByName('Item_Count').AsInteger;
+  frm_PoStatus.ProcT := proct_1;
+  frm_PoStatus.ProcessQuantityRec(0,frm_PoStatus.ProcT);
+  frm_PoStatus.Release;
+
+//  FillDetailQuery;
+end;
+            */
+        }
 
     }
 }

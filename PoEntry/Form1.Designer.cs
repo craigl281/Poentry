@@ -478,6 +478,7 @@
             this.addItemToToolStripMenuItem.Name = "addItemToToolStripMenuItem";
             this.addItemToToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.addItemToToolStripMenuItem.Text = "Add Item To Contract";
+            this.addItemToToolStripMenuItem.Visible = false;
             this.addItemToToolStripMenuItem.Click += new System.EventHandler(this.addItemToToolStripMenuItem_Click);
             // 
             // changeDeliverDateToolStripMenuItem

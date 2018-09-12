@@ -1911,7 +1911,8 @@ namespace PoEntry
             _Com.Parameters.AddWithValue("ic", ic);
             using (SqlDataReader reader = _Com.ExecuteReader())
             {
-                while (reader.Read()) {
+                while (reader.Read())
+                {
                     ret.Add(new PoDetailSplit(reader[0].ToDecimal(), reader[1].ToDecimal(), reader[2].ToNonNullString(), reader[3].ToNonNullString(), reader[4].ToNonNullString(), reader[5].ToNonNullString(),
                                               reader[6].ToNonNullString(), reader[7].ToDecimal(), reader[8].ToDecimal(), reader[9].ToDecimal(), reader[10].ToDecimal(), reader[11].ToNonNullString(), reader[12].ToInt32()));
 
@@ -1944,6 +1945,53 @@ namespace PoEntry
                 }
             }
         }
+
+        public decimal GetOnHand(string mat, string loc)
+        {
+            decimal ret = 0m;
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT On_Hand FROM LOC WHERE Mat_Code = @Mat_Code AND Location = @Location AND Type <> 'N'";
+            _Com.Parameters.AddWithValue("Mat_Code", mat);
+            _Com.Parameters.AddWithValue("Location", loc);
+            ret = _Com.ExecuteScalar().ToDecimal();
+            Close();
+            return ret;
+        }
+
+        public List<ComboBoxString> GetVendorRestrictedEntities(string vendor)
+        {
+            List<ComboBoxString> ret;
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT * FROM vendortoentityrestricted join entity on vendortoentityrestricted.entity = entity.entity WHERE vendor_id = @vendorid";
+            _Com.Parameters.AddWithValue("vendorid", vendor);
+            using (SqlDataReader read = _Com.ExecuteReader())
+            {
+                if (read.HasRows)
+                {
+                    ret = new List<ComboBoxString>();
+                    while (read.Read())
+                        ret.Add(new ComboBoxString(read["entity"].ToString(), read["Name"].ToString()));
+                }
+                else
+                    ret = null;
+            }
+            Close();
+            return ret;
+        }
+
+        public void UpdateEntity(string entity, decimal po_no)
+        {
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "UPDATE Poheader SET entity = @entity WHERE Po_No = @Po_No UPDATE PoDetail SET entity = @entity WHERE Po_No = @Po_No";
+            _Com.Parameters.AddWithValue("Po_No", po_no);
+            _Com.Parameters.AddWithValue("entity", entity);
+            _Com.ExecuteNonQuery();
+            Close();
+        }
+
     }
 
 
