@@ -1992,6 +1992,19 @@ namespace PoEntry
             Close();
         }
 
+        public string getIVmemo(string mat, string vendor)
+        {
+            string ret = "";
+            Open();
+            _Com.Parameters.Clear();
+            _Com.CommandText = "SELECT Vendor_Memo FROM ItemVend WHERE Vendor_Id = @Vendor_Id AND Mat_Code = @Mat_Code";
+            _Com.Parameters.AddWithValue("Vendor_Id", vendor);
+            _Com.Parameters.AddWithValue("Mat_Code", mat);
+            ret = _Com.ExecuteScalar().ToNonNullString();
+            Close();
+            return ret;
+        }
+
     }
 
 

@@ -150,14 +150,17 @@
             this.cmb_POGroup = new Ehs.Controls.AutoCompleteTextBox();
             this.lbl_PoGroup = new System.Windows.Forms.Label();
             this.p_Detail = new System.Windows.Forms.TabPage();
+            this.b_Detail_Patient_Memo = new Ehs.Controls.EhsMemoButton();
+            this.b_req_info = new Ehs.Controls.EhsMemoButton();
+            this.b_d_ItemMemo = new Ehs.Controls.EhsMemoButton();
+            this.b_D_Vendor_memo = new Ehs.Controls.EhsMemoButton();
+            this.bs2 = new System.Windows.Forms.BindingSource(this.components);
+            this.b_D_buyer_memo = new Ehs.Controls.EhsMemoButton();
             this.cmb_DetailVatCode = new Ehs.Controls.AutoCompleteTextBox();
             this.eb_Vat2 = new Ehs.Controls.EhsTextBox();
-            this.bs2 = new System.Windows.Forms.BindingSource(this.components);
             this.eb_Quantity2 = new Ehs.Controls.EhsTextBox();
             this.cmb_ProfileId = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_PoClass = new Ehs.Controls.AutoCompleteTextBox();
-            this.b_Detail_Patient_Memo = new System.Windows.Forms.Button();
-            this.b_req_info = new System.Windows.Forms.Button();
             this.cmb_Deliver = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_Act = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_Mat = new Ehs.Controls.AutoCompleteTextBox();
@@ -244,9 +247,6 @@
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.insertLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToCatalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.b_d_ItemMemo = new System.Windows.Forms.Button();
-            this.b_D_Vendor_memo = new System.Windows.Forms.Button();
-            this.b_D_buyer_memo = new System.Windows.Forms.Button();
             this.eb_Unit_Cost2 = new Ehs.Controls.EhsTextBox();
             this.eb_Conversion = new Ehs.Controls.EhsTextBox();
             this.eb_Doctor_Id = new Ehs.Controls.EhsTextBox();
@@ -545,6 +545,7 @@
             this.canceledMemoToolStripMenuItem.Name = "canceledMemoToolStripMenuItem";
             this.canceledMemoToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.canceledMemoToolStripMenuItem.Text = "Canceled Memo";
+            this.canceledMemoToolStripMenuItem.Click += new System.EventHandler(this.canceledMemoToolStripMenuItem_Click);
             // 
             // viewPOInformationToolStripMenuItem
             // 
@@ -1003,7 +1004,6 @@
             this.b_vendor_memo.TabIndex = 15;
             this.b_vendor_memo.Text = "Vendor";
             this.b_vendor_memo.UseVisualStyleBackColor = true;
-            this.b_vendor_memo.Click += new System.EventHandler(this.b_vendor_memo_Click);
             // 
             // b_rec_memo
             // 
@@ -1018,7 +1018,6 @@
             this.b_rec_memo.TabIndex = 13;
             this.b_rec_memo.Text = "Receiver";
             this.b_rec_memo.UseVisualStyleBackColor = true;
-            this.b_rec_memo.Click += new System.EventHandler(this.b_rec_memo_Click);
             // 
             // b_buyer_memo
             // 
@@ -1033,7 +1032,6 @@
             this.b_buyer_memo.TabIndex = 12;
             this.b_buyer_memo.Text = "Buyer";
             this.b_buyer_memo.UseVisualStyleBackColor = true;
-            this.b_buyer_memo.Click += new System.EventHandler(this.b_buyer_memo_Click);
             // 
             // dt_PO_Date
             // 
@@ -1466,22 +1464,22 @@
             // 
             // p_Detail
             // 
+            this.p_Detail.Controls.Add(this.b_Detail_Patient_Memo);
+            this.p_Detail.Controls.Add(this.b_req_info);
+            this.p_Detail.Controls.Add(this.b_d_ItemMemo);
+            this.p_Detail.Controls.Add(this.b_D_Vendor_memo);
+            this.p_Detail.Controls.Add(this.b_D_buyer_memo);
             this.p_Detail.Controls.Add(this.cmb_DetailVatCode);
             this.p_Detail.Controls.Add(this.eb_Vat2);
             this.p_Detail.Controls.Add(this.eb_Quantity2);
             this.p_Detail.Controls.Add(this.cmb_ProfileId);
             this.p_Detail.Controls.Add(this.cmb_PoClass);
-            this.p_Detail.Controls.Add(this.b_Detail_Patient_Memo);
-            this.p_Detail.Controls.Add(this.b_req_info);
             this.p_Detail.Controls.Add(this.cmb_Deliver);
             this.p_Detail.Controls.Add(this.cmb_Act);
             this.p_Detail.Controls.Add(this.cmb_Mat);
             this.p_Detail.Controls.Add(this.cmb_Loc);
             this.p_Detail.Controls.Add(this.cb_autorec);
             this.p_Detail.Controls.Add(this.dbgrid1);
-            this.p_Detail.Controls.Add(this.b_d_ItemMemo);
-            this.p_Detail.Controls.Add(this.b_D_Vendor_memo);
-            this.p_Detail.Controls.Add(this.b_D_buyer_memo);
             this.p_Detail.Controls.Add(this.eb_Unit_Cost2);
             this.p_Detail.Controls.Add(this.eb_Conversion);
             this.p_Detail.Controls.Add(this.eb_Doctor_Id);
@@ -1526,6 +1524,83 @@
             this.p_Detail.Text = "Details";
             this.p_Detail.UseVisualStyleBackColor = true;
             // 
+            // b_Detail_Patient_Memo
+            // 
+            this.b_Detail_Patient_Memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "BuyerMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.b_Detail_Patient_Memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.b_Detail_Patient_Memo.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.b_Detail_Patient_Memo.Location = new System.Drawing.Point(279, 120);
+            this.b_Detail_Patient_Memo.MemoValue = "";
+            this.b_Detail_Patient_Memo.Name = "b_Detail_Patient_Memo";
+            this.b_Detail_Patient_Memo.ReadOnly = false;
+            this.b_Detail_Patient_Memo.Size = new System.Drawing.Size(86, 23);
+            this.b_Detail_Patient_Memo.TabIndex = 93;
+            this.b_Detail_Patient_Memo.Text = "Patient";
+            this.b_Detail_Patient_Memo.UseVisualStyleBackColor = true;
+            // 
+            // b_req_info
+            // 
+            this.b_req_info.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "BuyerMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.b_req_info.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.b_req_info.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.b_req_info.Location = new System.Drawing.Point(214, 120);
+            this.b_req_info.MemoValue = "";
+            this.b_req_info.Name = "b_req_info";
+            this.b_req_info.ReadOnly = false;
+            this.b_req_info.Size = new System.Drawing.Size(86, 23);
+            this.b_req_info.TabIndex = 92;
+            this.b_req_info.Text = "Req Info";
+            this.b_req_info.UseVisualStyleBackColor = true;
+            this.b_req_info.Click += new System.EventHandler(this.b_req_info_Click);
+            // 
+            // b_d_ItemMemo
+            // 
+            this.b_d_ItemMemo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "BuyerMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.b_d_ItemMemo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.b_d_ItemMemo.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.b_d_ItemMemo.Location = new System.Drawing.Point(145, 120);
+            this.b_d_ItemMemo.MemoValue = "";
+            this.b_d_ItemMemo.Name = "b_d_ItemMemo";
+            this.b_d_ItemMemo.ReadOnly = false;
+            this.b_d_ItemMemo.Size = new System.Drawing.Size(86, 23);
+            this.b_d_ItemMemo.TabIndex = 91;
+            this.b_d_ItemMemo.Text = "Item Memo";
+            this.b_d_ItemMemo.UseVisualStyleBackColor = true;
+            // 
+            // b_D_Vendor_memo
+            // 
+            this.b_D_Vendor_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs2, "VendorMemo", true));
+            this.b_D_Vendor_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.b_D_Vendor_memo.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.b_D_Vendor_memo.Location = new System.Drawing.Point(69, 120);
+            this.b_D_Vendor_memo.MemoValue = "";
+            this.b_D_Vendor_memo.Name = "b_D_Vendor_memo";
+            this.b_D_Vendor_memo.ReadOnly = false;
+            this.b_D_Vendor_memo.Size = new System.Drawing.Size(86, 23);
+            this.b_D_Vendor_memo.TabIndex = 90;
+            this.b_D_Vendor_memo.Text = "Vendor Memo";
+            this.b_D_Vendor_memo.UseVisualStyleBackColor = true;
+            // 
+            // bs2
+            // 
+            this.bs2.DataSource = typeof(Ehs.Models.PoDetail);
+            this.bs2.CurrentItemChanged += new System.EventHandler(this.bs2_CurrentItemChanged);
+            this.bs2.PositionChanged += new System.EventHandler(this.bs2_PositionChanged);
+            // 
+            // b_D_buyer_memo
+            // 
+            this.b_D_buyer_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs2, "BuyerMemo", true));
+            this.b_D_buyer_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.b_D_buyer_memo.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.b_D_buyer_memo.Location = new System.Drawing.Point(1, 120);
+            this.b_D_buyer_memo.MemoValue = "";
+            this.b_D_buyer_memo.Name = "b_D_buyer_memo";
+            this.b_D_buyer_memo.ReadOnly = false;
+            this.b_D_buyer_memo.Size = new System.Drawing.Size(79, 23);
+            this.b_D_buyer_memo.TabIndex = 89;
+            this.b_D_buyer_memo.Text = "Buyer Memo";
+            this.b_D_buyer_memo.UseVisualStyleBackColor = true;
+            // 
             // cmb_DetailVatCode
             // 
             this.cmb_DetailVatCode.AllowTypedIn = false;
@@ -1551,12 +1626,6 @@
             this.eb_Vat2.Size = new System.Drawing.Size(90, 20);
             this.eb_Vat2.TabIndex = 82;
             this.eb_Vat2.TabStop = false;
-            // 
-            // bs2
-            // 
-            this.bs2.DataSource = typeof(Ehs.Models.PoDetail);
-            this.bs2.CurrentItemChanged += new System.EventHandler(this.bs2_CurrentItemChanged);
-            this.bs2.PositionChanged += new System.EventHandler(this.bs2_PositionChanged);
             // 
             // eb_Quantity2
             // 
@@ -1602,27 +1671,6 @@
             this.cmb_PoClass.TabIndex = 22;
             this.cmb_PoClass.Validated += new System.EventHandler(this.cmb_PoClass_Validated);
             // 
-            // b_Detail_Patient_Memo
-            // 
-            this.b_Detail_Patient_Memo.Location = new System.Drawing.Point(282, 120);
-            this.b_Detail_Patient_Memo.Name = "b_Detail_Patient_Memo";
-            this.b_Detail_Patient_Memo.Size = new System.Drawing.Size(51, 23);
-            this.b_Detail_Patient_Memo.TabIndex = 54;
-            this.b_Detail_Patient_Memo.Text = "Patient";
-            this.b_Detail_Patient_Memo.UseVisualStyleBackColor = true;
-            this.b_Detail_Patient_Memo.Click += new System.EventHandler(this.b_Detail_Patient_Memo_Click);
-            // 
-            // b_req_info
-            // 
-            this.b_req_info.Location = new System.Drawing.Point(215, 120);
-            this.b_req_info.Name = "b_req_info";
-            this.b_req_info.Size = new System.Drawing.Size(75, 23);
-            this.b_req_info.TabIndex = 53;
-            this.b_req_info.Text = "Req Info";
-            this.b_req_info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.b_req_info.UseVisualStyleBackColor = true;
-            this.b_req_info.Click += new System.EventHandler(this.b_req_info_Click);
-            // 
             // cmb_Deliver
             // 
             this.cmb_Deliver.AllowTypedIn = false;
@@ -1655,6 +1703,7 @@
             this.cmb_Act.PopupWidth = 300;
             this.cmb_Act.Size = new System.Drawing.Size(300, 20);
             this.cmb_Act.TabIndex = 11;
+            this.cmb_Act.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cmb_Act_MouseClick);
             this.cmb_Act.Enter += new System.EventHandler(this.cmb_Act_Enter);
             this.cmb_Act.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_Act_Validating);
             this.cmb_Act.Validated += new System.EventHandler(this.cmb_Act_Validated);
@@ -2309,38 +2358,6 @@
             this.addToCatalogToolStripMenuItem.Text = "Add To Catalog";
             this.addToCatalogToolStripMenuItem.Click += new System.EventHandler(this.addToCatalogToolStripMenuItem_Click);
             // 
-            // b_d_ItemMemo
-            // 
-            this.b_d_ItemMemo.Location = new System.Drawing.Point(148, 120);
-            this.b_d_ItemMemo.Name = "b_d_ItemMemo";
-            this.b_d_ItemMemo.Size = new System.Drawing.Size(74, 23);
-            this.b_d_ItemMemo.TabIndex = 52;
-            this.b_d_ItemMemo.Text = "Item Memo";
-            this.b_d_ItemMemo.UseVisualStyleBackColor = true;
-            this.b_d_ItemMemo.Click += new System.EventHandler(this.b_d_ItemMemo_Click);
-            // 
-            // b_D_Vendor_memo
-            // 
-            this.b_D_Vendor_memo.Location = new System.Drawing.Point(71, 120);
-            this.b_D_Vendor_memo.Name = "b_D_Vendor_memo";
-            this.b_D_Vendor_memo.Size = new System.Drawing.Size(81, 23);
-            this.b_D_Vendor_memo.TabIndex = 51;
-            this.b_D_Vendor_memo.Text = "Vendor Memo";
-            this.b_D_Vendor_memo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.b_D_Vendor_memo.UseVisualStyleBackColor = true;
-            this.b_D_Vendor_memo.Click += new System.EventHandler(this.b_D_Vendor_memo_Click);
-            // 
-            // b_D_buyer_memo
-            // 
-            this.b_D_buyer_memo.Location = new System.Drawing.Point(2, 120);
-            this.b_D_buyer_memo.Name = "b_D_buyer_memo";
-            this.b_D_buyer_memo.Size = new System.Drawing.Size(80, 23);
-            this.b_D_buyer_memo.TabIndex = 42;
-            this.b_D_buyer_memo.Text = "Buyer Memo";
-            this.b_D_buyer_memo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.b_D_buyer_memo.UseVisualStyleBackColor = true;
-            this.b_D_buyer_memo.Click += new System.EventHandler(this.b_D_buyer_memo_Click);
-            // 
             // eb_Unit_Cost2
             // 
             this.eb_Unit_Cost2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs2, "UnitCost", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -2884,17 +2901,12 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lbl_PO_Date;
         private System.Windows.Forms.TabPage p_Detail;
-        private System.Windows.Forms.Button b_Detail_Patient_Memo;
-        private System.Windows.Forms.Button b_req_info;
         private Ehs.Controls.AutoCompleteTextBox cmb_Deliver;
         private Ehs.Controls.AutoCompleteTextBox cmb_Act;
         private Ehs.Controls.AutoCompleteTextBox cmb_Mat;
         private Ehs.Controls.AutoCompleteTextBox cmb_Loc;
         private System.Windows.Forms.CheckBox cb_autorec;
         private Ehs.Controls.DragOrderedDataGridView dbgrid1;
-        private System.Windows.Forms.Button b_d_ItemMemo;
-        private System.Windows.Forms.Button b_D_Vendor_memo;
-        private System.Windows.Forms.Button b_D_buyer_memo;
         private Ehs.Controls.EhsTextBox eb_Vat2;
         private Ehs.Controls.EhsTextBox eb_Unit_Cost2;
         private Ehs.Controls.EhsTextBox eb_Conversion;
@@ -3034,6 +3046,11 @@
         private System.Windows.Forms.ToolStripMenuItem insertLineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToCatalogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem canceledMemoToolStripMenuItem;
+        private Ehs.Controls.EhsMemoButton b_Detail_Patient_Memo;
+        private Ehs.Controls.EhsMemoButton b_req_info;
+        private Ehs.Controls.EhsMemoButton b_d_ItemMemo;
+        private Ehs.Controls.EhsMemoButton b_D_Vendor_memo;
+        private Ehs.Controls.EhsMemoButton b_D_buyer_memo;
     }
 }
 

@@ -50,7 +50,6 @@ namespace PoEntry
         Ehs.Models.PoDetailController _PDC;
         Ehs.Models.PoHeaderController _PHC;
         public IMF _IMF;
-        List<ItemMemo> _ItemMemo = new List<ItemMemo>();
         #endregion
 
         #region Datetime
@@ -271,11 +270,7 @@ namespace PoEntry
 
         public string splitacct, StorePO, Patient_Id, DetailPatientMemo, Patient_Name, Serial_No;
 
-
-
-        private string _IM;
-
-
+        string _IM;
 
         public string Item_Memo
         {
@@ -1868,6 +1863,7 @@ Changing := false;
             }
             eb_Conversion.Text = "1";
             Changing = false;
+            ismanualrun = false;
             //if (cmb_Mat.ReadOnly == false)
             //    Mat_Enter();
         }
@@ -3220,6 +3216,10 @@ WHERE PoHeader.PO_No = */
         {
 
         }
+        private void canceledMemoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             data.Open();
@@ -4094,49 +4094,47 @@ WHERE PoHeader.PO_No = */
                 cmb_Act.SelectAll();
                 return;
             }
-            else
+            if (data.SystemOptionsDictionary["ENTER_DEPT_USE_LOC_SUB"].ToBoolean() && (m_addItems.Checked == false) && (_CurLocationDetail?.Type == "N"))
             {
-                if (data.SystemOptionsDictionary["ENTER_DEPT_USE_LOC_SUB"].ToBoolean() && (m_addItems.Checked == false) && (_CurLocationDetail?.Type == "N"))
+                b_Dept.Visible = true;
+                if (cmb_Act.Text.Trim() == "")
                 {
-                    b_Dept.Visible = true;
-                    if (cmb_Act.Text.Trim() == "")
+                    b_Dept.Focus();
+                    if (Detail.Department.Trim() == "")
+                        Detail.Department = data.Lookup("Dept", false, CurrEntity);
+                    Detail.SubAccount = _CurLocationDetail.SubAccount;
+                    CurAct = Detail.Department + data.SystemOptionsDictionary["ACCOUNT_NO_DELIMITER"].ToNonNullString() + Detail.SubAccount;
+                    if (null == CurAct)
                     {
-                        b_Dept.Focus();
-                        if (Detail.Department.Trim() == "")
-                            Detail.Department = data.Lookup("Dept", false, CurrEntity);
-                        Detail.SubAccount = _CurLocationDetail.SubAccount;
-                        CurAct = Detail.Department + data.SystemOptionsDictionary["ACCOUNT_NO_DELIMITER"].ToNonNullString() + Detail.SubAccount;
-                        if (null == CurAct)
-                        {
-                            cmb_Act.Text = Detail.Department + data.SystemOptionsDictionary["ACCOUNT_NO_DELIMITER"].ToNonNullString();
-                            cmb_Act.Focus();
-                            cmb_Act.SelectionStart = cmb_Act.TextLength;
-                            return;
-                        }
-                        else
-                        {
-                            SetDetailFocus();//                            SendKeys.Send("{TAB}");
-                        }
+                        cmb_Act.Text = Detail.Department + data.SystemOptionsDictionary["ACCOUNT_NO_DELIMITER"].ToNonNullString();
+                        cmb_Act.Focus();
+                        cmb_Act.SelectionStart = cmb_Act.TextLength;
+                        return;
                     }
-                    return;
-                }
-                if (Detail.NonFile == false)
-                    CurAct = _CurLocationDetail.AccountNo;
-                if (_CurLocationDetail?.Type != "S")
-                {
-                    if (data.SystemOptionsDictionary["USE_LAST_ACCT_FOR_EVERYTHING_BUT_STOCK"].ToBoolean() && bs2.Count > 1)
+                    else
                     {
-                        CurAct = (splitacct != ((PoDetail)bs2[bs2.Position - 1]).AccountNo) ? ((PoDetail)bs2[bs2.Position - 1]).AccountNo : "";
+                        SetDetailFocus();//                            SendKeys.Send("{TAB}");
                     }
                 }
-                if (CurAct != null)
+                return;
+            }
+            if (Detail.NonFile == false)
+                CurAct = _CurLocationDetail.AccountNo;
+            if (_CurLocationDetail?.Type != "S")
+            {
+                if (data.SystemOptionsDictionary["USE_LAST_ACCT_FOR_EVERYTHING_BUT_STOCK"].ToBoolean() && bs2.Count > 1)
                 {
-                    //Detail.Department = (cmb_Act.CurrentItem.Value as AccountNo).Department;
-                    //Detail.SubAccount = (cmb_Act.CurrentItem.Value as AccountNo).SubAccount;
-                    SetDetailFocus();
+                    CurAct = (splitacct != ((PoDetail)bs2[bs2.Position - 1]).AccountNo) ? ((PoDetail)bs2[bs2.Position - 1]).AccountNo : "";
                 }
             }
+            if (CurAct != null)
+            {
+                //Detail.Department = (cmb_Act.CurrentItem.Value as AccountNo).Department;
+                //Detail.SubAccount = (cmb_Act.CurrentItem.Value as AccountNo).SubAccount;
+                SetDetailFocus();
+            }
         }
+
         private void cmb_Deliver_Enter(object sender, EventArgs e)
         {
             //if (CurAct == null)
@@ -4623,6 +4621,9 @@ WHERE PoHeader.PO_No = */
                     ///please add me
                 }
             }
+
+            Header.Prepay = ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Prepay;
+
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).ServiceContract)
                 eb_Nonfile_Contract.Focus();
             ismanualrun = false;
@@ -4680,7 +4681,6 @@ WHERE PoHeader.PO_No = */
                 return;
 
             GetItemMemo();
-
 
             FillDetailsWithMatCode("");
             Detail.MatCode = CurMat;
@@ -4765,6 +4765,9 @@ WHERE PoHeader.PO_No = */
             Detail.Location = CurLoc;
             SetDetailFocus();
         }
+
+
+
         private void cmb_Act_Validated(object sender, EventArgs e)
         {
             Detail.AccountNo = CurAct;
@@ -4843,14 +4846,8 @@ WHERE PoHeader.PO_No = */
                 return;
             if (Detail.MatCode == "")
                 return;
-            try
-            {
-                Item_Memo = _ItemMemo[_ItemMemo.FindIndex(item => item.Mat_Code == CurMat)].Memo.ToNonNullString();
-            }
-            catch
-            {
-                Item_Memo = "";
-            }
+            Item_Memo = data.getIVmemo(Detail.MatCode, Detail.VendorID);
+            b_d_ItemMemo.MemoValue = Item_Memo;
         }
 
         private void FillDetailsWithMatCode(string UOP)
@@ -4929,20 +4926,7 @@ WHERE PoHeader.PO_No = */
         {
 
         }
-        private void b_buyer_memo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void b_rec_memo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void b_vendor_memo_Click(object sender, EventArgs e)
-        {
-
-        }
+        
         string testing = "";
         private void b_pat_memo_Click(object sender, EventArgs e)
         {
@@ -4966,30 +4950,7 @@ WHERE PoHeader.PO_No = */
         {
             Detail.Department = data.Lookup("Dept", false, CurrEntity);
         }
-        private void b_D_buyer_memo_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void b_D_Vendor_memo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void b_d_ItemMemo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void b_req_info_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void b_Detail_Patient_Memo_Click(object sender, EventArgs e)
-        {
-
-        }
         #endregion detail
         #endregion buttons
 
@@ -5355,6 +5316,7 @@ WHERE PoHeader.PO_No = */
                         ActiveControl = p_Detail;
                 }
                 cmb_Mat.SelectAll();
+                ismanualrun = false;
                 inenter = false;
             }
             catch { }
@@ -5396,6 +5358,10 @@ WHERE PoHeader.PO_No = */
             Changing = false;
         }
         #endregion
+        private void cmb_Act_MouseClick(object sender, MouseEventArgs e)
+        {
+            ismanualrun = true;
+        }
 
         bool CheckHeader()
         {
@@ -5700,18 +5666,26 @@ end;
             */
         }
 
-    }
-}
+        private void b_req_info_Click(object sender, EventArgs e)
+        {/*
+            string temp = "";
 
-class ItemMemo
-{
-    public string Mat_Code;
-    public string Memo;
+            q_Command.Parameters.Clear();
+            q_Command.CommandText = "SELECT username, system_date FROM ReqHeader WHERE Req_No = @Req_No";
+            q_Command.Parameters.AddWithValue("Req_No", Detail.ReqNo);
+            using (SqlDataReader Read = q_Command.ExecuteReader())
+            {
+                if (Read.HasRows)
+                {
+                    Read.Read();
+                    temp = "Req was Activated by " + Read[0].ToNonNullString() + " on " + Read[1].ToNonNullString();
+                }
+            }
+            Ehs.Forms.Memo memo9 = new Ehs.Forms.Memo(temp, SqlUsername, false);
+            memo9.ShowDialog();*/
+        }
 
-    public ItemMemo(string Mat_Code, string Memo)
-    {
-        this.Mat_Code = Mat_Code;
-        this.Memo = Memo;
+
     }
 }
 

@@ -45,7 +45,6 @@
             this.cmb_vendor = new Ehs.Controls.AutoCompleteTextBox();
             this.Pnl_Vendor = new Ehs.Controls.EhsPanel();
             this.button1 = new System.Windows.Forms.Button();
-            this.eb_V_Memo = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
             this.cmb_Terms_Code = new Ehs.Controls.AutoCompleteTextBox();
             this.eb_FOB = new Ehs.Controls.EhsTextBox();
@@ -57,6 +56,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.eb_v_memo = new Ehs.Controls.EhsMemoButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.Pnl_Vendor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -183,6 +183,7 @@
             // Pnl_Vendor
             // 
             this.Pnl_Vendor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_Vendor.Controls.Add(this.eb_v_memo);
             this.Pnl_Vendor.Controls.Add(this.button1);
             this.Pnl_Vendor.Controls.Add(this.txt_vendor_email);
             this.Pnl_Vendor.Controls.Add(this.txt_vendor_city);
@@ -195,7 +196,6 @@
             this.Pnl_Vendor.Controls.Add(this.txt_vendor_address1);
             this.Pnl_Vendor.Controls.Add(this.txt_vendor_attention);
             this.Pnl_Vendor.Controls.Add(this.cmb_vendor);
-            this.Pnl_Vendor.Controls.Add(this.eb_V_Memo);
             this.Pnl_Vendor.Controls.Add(this.label25);
             this.Pnl_Vendor.Controls.Add(this.cmb_Terms_Code);
             this.Pnl_Vendor.Controls.Add(this.eb_FOB);
@@ -221,15 +221,6 @@
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // eb_V_Memo
-            // 
-            this.eb_V_Memo.Location = new System.Drawing.Point(548, 100);
-            this.eb_V_Memo.Name = "eb_V_Memo";
-            this.eb_V_Memo.Size = new System.Drawing.Size(109, 23);
-            this.eb_V_Memo.TabIndex = 36;
-            this.eb_V_Memo.Text = "Vendor Memo";
-            this.eb_V_Memo.UseVisualStyleBackColor = true;
             // 
             // label25
             // 
@@ -327,6 +318,20 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // eb_v_memo
+            // 
+            this.eb_v_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bindingSource1, "Memo", true));
+            this.eb_v_memo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.eb_v_memo.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.eb_v_memo.Location = new System.Drawing.Point(570, 103);
+            this.eb_v_memo.MemoValue = "";
+            this.eb_v_memo.Name = "eb_v_memo";
+            this.eb_v_memo.ReadOnly = false;
+            this.eb_v_memo.Size = new System.Drawing.Size(60, 23);
+            this.eb_v_memo.TabIndex = 114;
+            this.eb_v_memo.Text = "Vendor";
+            this.eb_v_memo.UseVisualStyleBackColor = true;
+            // 
             // FrmVendor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,7 +365,6 @@
         private Ehs.Controls.EhsTextBox txt_vendor_address2;
         private Ehs.Controls.EhsTextBox txt_vendor_address1;
         private Ehs.Controls.EhsTextBox txt_vendor_attention;
-        private System.Windows.Forms.Button eb_V_Memo;
         private System.Windows.Forms.Label label25;
         private Ehs.Controls.AutoCompleteTextBox cmb_Terms_Code;
         private Ehs.Controls.EhsTextBox eb_FOB;
@@ -375,5 +379,6 @@
         public Ehs.Controls.EhsTextBox eb_VMShip_Account;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.BindingSource bindingSource1;
+        private Ehs.Controls.EhsMemoButton eb_v_memo;
     }
 }

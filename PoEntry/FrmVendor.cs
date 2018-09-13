@@ -36,17 +36,17 @@ namespace PoEntry
             {
                 if (value)
                 {
-                    eb_V_Memo.Text.ToUpper();
-                    eb_V_Memo.Font = new Font(Font, FontStyle.Bold);
-                    eb_V_Memo.ForeColor = Color.Red;
-                    eb_V_Memo.Visible = true;
+                    eb_v_memo.Text.ToUpper();
+                    eb_v_memo.Font = new Font(Font, FontStyle.Bold);
+                    eb_v_memo.ForeColor = Color.Red;
+                    eb_v_memo.Visible = true;
                 }
                 else
                 {
-                    eb_V_Memo.Text.ToLower();
-                    eb_V_Memo.Font = new Font(Font, FontStyle.Regular);
-                    eb_V_Memo.ForeColor = SystemColors.ControlText;
-                    eb_V_Memo.Visible = false;
+                    eb_v_memo.Text.ToLower();
+                    eb_v_memo.Font = new Font(Font, FontStyle.Regular);
+                    eb_v_memo.ForeColor = SystemColors.ControlText;
+                    eb_v_memo.Visible = false;
                 }
             }
         }
