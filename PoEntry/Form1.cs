@@ -95,10 +95,7 @@ namespace PoEntry
         {
             get { return ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).ProfileId; }
         }
-        bool Not_Exceed_Header
-        {
-            get { return ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).NotExceedHeader; }
-        }
+        bool Not_Exceed_Header=> ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).NotExceedHeader; 
 
         bool HeaderBuyerMemoColor
         {
@@ -1132,7 +1129,7 @@ namespace PoEntry
         #region Vendor
         private void cmb_vendor_DoubleClick(object sender, EventArgs e)
         {
-
+            NewVendorFrm();
         }
 
         FrmVendor vendorFrm;
@@ -1480,14 +1477,12 @@ Changing := false;
             this.eb_PO_Number.ReadOnly = state;
             this.cmb_Mat.ReadOnly = false;
             this.cmb_Loc.ReadOnly = !state;
-
             this.cmb_Act.ReadOnly = !state;
-
             od_DeliverDate.Enabled = state;
             cmb_PoClass.ReadOnly = !state;
             this.cmb_Deliver.ReadOnly = !state;
             cmb_ProfileId.ReadOnly = !state;
-            this.eb_Doctor_Id.Enabled = true;
+            eb_Doctor_Id.ReadOnly = false;
             this.cmb_Purchase.ReadOnly = !state;
             this.cmb_Loc.ReadOnly = !state;
             this.cb_Accrue.Enabled = state;
@@ -1543,12 +1538,12 @@ Changing := false;
                 }
             }
 
-            this.eb_Unit_Cost2.ReadOnly = !state;
-            this.eb_Quantity2.ReadOnly = !state;
-            this.eb_Conversion.ReadOnly = !state;
-            this.cb_Substitute_Item.Enabled = state;
-            if (this.cb_Substitute_Item.Checked)
-                this.cb_Substitute_Item.Enabled = false;
+            eb_Unit_Cost2.ReadOnly = !state;
+            eb_Quantity2.ReadOnly = !state;
+            eb_Conversion.ReadOnly = !state;
+            cb_Substitute_Item.Enabled = state;
+            if (cb_Substitute_Item.Checked)
+                cb_Substitute_Item.Enabled = false;
 
             this.Changing = false;
         }
@@ -2143,7 +2138,7 @@ end;
                             SaveNewDetail();
                     }
                     FillDetailQuery();
-                    //SetViewing();
+                    SetViewing();
                     bs2.Position = bs2.Find("ItemCount", holdItem_Count);
                     //Fixed the jump around which happened with refreshing the grid
                     // dbgrid1.Rows[0].Selected = false;
@@ -3128,9 +3123,16 @@ WHERE PoHeader.PO_No = */
         {
             ReportDocument cryRpt = new ReportDocument();
             EHS.Report.Util RptUtil;
-            cryRpt.Load(data.SystemOptionsDictionary["EXE_PATH"] + Report_Name);
-            RptUtil = new EHS.Report.Util(cryRpt, data._Com.Connection);
-            cryRpt.ToPrinter("{PoHeader.PO_No} = " + Header.PONo.ToString());
+            try
+            {
+                cryRpt.Load(data.SystemOptionsDictionary["EXE_PATH"] + Report_Name);
+                RptUtil = new EHS.Report.Util(cryRpt, data._Com.Connection);
+                cryRpt.ToPrinter("{PoHeader.PO_No} = " + Header.PONo.ToString());
+            }
+            catch(Exception err)
+            {
+                MessageBox.Show("Error in Printing: " + err.ToString());
+            }
         }
 
         private void resequenceLineNumbersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3241,8 +3243,10 @@ WHERE PoHeader.PO_No = */
 
         private void about1_Click(object sender, EventArgs e)
         {
+            data.Open();
             Ehs.Forms.EHSAbout a = new Ehs.Forms.EHSAbout(data._Com.Connection);
             a.ShowDialog();
+            data.Close();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -3952,16 +3956,7 @@ WHERE PoHeader.PO_No = */
                 }
                 if (CurrPoType == null)
                     CurrPoType = data.SystemOptionsDictionary["DEFAULT_PO_TYPE"].ToNonNullString();
-            }
-            if (CurrPoType != null)
-            {
-                SendKeys.Send("{TAB}");
-                return;
-            }
-            else
-            {
                 ismanualrun = true;
-                cmb_Po_Type.SelectAll();
             }
         }
 
@@ -4618,14 +4613,27 @@ WHERE PoHeader.PO_No = */
                 if (MessageBox.Show("This PO Type is set to Notify AP and you have not entered a Memo.\n Would you"
               + "like to enter one now?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    ///please add me
+                    btn_Notify.Visible = true;
+                    btn_Notify.Focus();
+                    data.Open();
+                    btn_Notify.Connection = data._Com.Connection;
+                    btn_Notify.PerformClick();
+                    data.Close();
                 }
             }
 
             Header.Prepay = ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Prepay;
 
+            if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).SubLedger)
+                cmb_Project.Focus();
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).ServiceContract)
                 eb_Nonfile_Contract.Focus();
+            if(Not_Exceed_Header)
+            {
+                lbl_Not_Total.Visible = true;
+                eb_Not_Total.Visible = true;
+            }
+
             ismanualrun = false;
         }
         private void cmb_Ship_To_Validated(object sender, EventArgs e)
@@ -4765,9 +4773,6 @@ WHERE PoHeader.PO_No = */
             Detail.Location = CurLoc;
             SetDetailFocus();
         }
-
-
-
         private void cmb_Act_Validated(object sender, EventArgs e)
         {
             Detail.AccountNo = CurAct;
@@ -4922,10 +4927,6 @@ WHERE PoHeader.PO_No = */
 
         #region Buttons
         #region Header
-        private void btn_Notify_Click(object sender, EventArgs e)
-        {
-
-        }
         
         string testing = "";
         private void b_pat_memo_Click(object sender, EventArgs e)
@@ -5045,9 +5046,9 @@ WHERE PoHeader.PO_No = */
                     }
                     SaveNewDetail();
 
-                    FillDetailQuery();
+                    //FillDetailQuery();
                     Changing = true;
-                    bs2.Position = bs2.Find("ItemCount", holdItem_Count);
+                    //bs2.Position = bs2.Find("ItemCount", holdItem_Count);
                     Changing = false;
 
                     LastLocUsed = Detail.Location;
@@ -5066,7 +5067,7 @@ WHERE PoHeader.PO_No = */
                             //FillDetailQuery();
                         }
                     }
-                    Detail.BeginDate = Detail.EndDate.ToDateTime().AddDays(1);
+                    Detail.BeginDate = Detail.EndDate.ToDateTime();//.AddDays(1);
                     Detail.FrequencyPeriod += 1;
                     i++;
                 }

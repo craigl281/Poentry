@@ -93,13 +93,13 @@
             this.btn_olr = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.p_Header = new System.Windows.Forms.TabPage();
+            this.btn_Notify = new Ehs.Controls.EhsMemoButton();
+            this.bs1 = new System.Windows.Forms.BindingSource(this.components);
             this.cmb_vendor = new Ehs.Controls.AutoCompleteTextBox();
-            this.btn_Notify = new System.Windows.Forms.Button();
             this.cmb_Po_Type = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_Entity = new Ehs.Controls.AutoCompleteTextBox();
             this.cmb_Project = new Ehs.Controls.AutoCompleteTextBox();
             this.b_pat_memo = new Ehs.Controls.EhsMemoButton();
-            this.bs1 = new System.Windows.Forms.BindingSource(this.components);
             this.b_vendor_memo = new Ehs.Controls.EhsMemoButton();
             this.b_rec_memo = new Ehs.Controls.EhsMemoButton();
             this.b_buyer_memo = new Ehs.Controls.EhsMemoButton();
@@ -826,8 +826,8 @@
             // 
             // p_Header
             // 
-            this.p_Header.Controls.Add(this.cmb_vendor);
             this.p_Header.Controls.Add(this.btn_Notify);
+            this.p_Header.Controls.Add(this.cmb_vendor);
             this.p_Header.Controls.Add(this.cmb_Po_Type);
             this.p_Header.Controls.Add(this.cmb_Entity);
             this.p_Header.Controls.Add(this.cmb_Project);
@@ -889,6 +889,25 @@
             this.p_Header.Text = "Header";
             this.p_Header.UseVisualStyleBackColor = true;
             // 
+            // btn_Notify
+            // 
+            this.btn_Notify.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "NotifyAPMemo", true));
+            this.btn_Notify.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Notify.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_Notify.Location = new System.Drawing.Point(358, 43);
+            this.btn_Notify.MemoValue = "";
+            this.btn_Notify.Name = "btn_Notify";
+            this.btn_Notify.ReadOnly = false;
+            this.btn_Notify.Size = new System.Drawing.Size(60, 23);
+            this.btn_Notify.TabIndex = 96;
+            this.btn_Notify.Text = "Notify";
+            this.btn_Notify.UseVisualStyleBackColor = true;
+            // 
+            // bs1
+            // 
+            this.bs1.DataSource = typeof(Ehs.Models.PoHeader);
+            this.bs1.CurrentItemChanged += new System.EventHandler(this.bs1_CurrentItemChanged);
+            // 
             // cmb_vendor
             // 
             this.cmb_vendor.AllowTypedIn = true;
@@ -907,16 +926,6 @@
             this.cmb_vendor.Click += new System.EventHandler(this.cmb_vendor_Click);
             this.cmb_vendor.DoubleClick += new System.EventHandler(this.cmb_vendor_DoubleClick);
             this.cmb_vendor.Enter += new System.EventHandler(this.cmb_vendor_Enter);
-            // 
-            // btn_Notify
-            // 
-            this.btn_Notify.Location = new System.Drawing.Point(355, 44);
-            this.btn_Notify.Name = "btn_Notify";
-            this.btn_Notify.Size = new System.Drawing.Size(75, 23);
-            this.btn_Notify.TabIndex = 95;
-            this.btn_Notify.Text = "Notify";
-            this.btn_Notify.UseVisualStyleBackColor = true;
-            this.btn_Notify.Click += new System.EventHandler(this.btn_Notify_Click);
             // 
             // cmb_Po_Type
             // 
@@ -986,11 +995,6 @@
             this.b_pat_memo.Visible = false;
             this.b_pat_memo.Click += new System.EventHandler(this.b_pat_memo_Click);
             // 
-            // bs1
-            // 
-            this.bs1.DataSource = typeof(Ehs.Models.PoHeader);
-            this.bs1.CurrentItemChanged += new System.EventHandler(this.bs1_CurrentItemChanged);
-            // 
             // b_vendor_memo
             // 
             this.b_vendor_memo.DataBindings.Add(new System.Windows.Forms.Binding("MemoValue", this.bs1, "VendorMemo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -1056,6 +1060,7 @@
             // 
             // eb_Not_Total
             // 
+            this.eb_Not_Total.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bs1, "NotExceedTotal", true));
             this.eb_Not_Total.Enabled = false;
             this.eb_Not_Total.Location = new System.Drawing.Point(544, 25);
             this.eb_Not_Total.Name = "eb_Not_Total";
@@ -1868,7 +1873,7 @@
             this.dbgrid1.RowHeadersWidth = 10;
             this.dbgrid1.RowTemplate.Height = 15;
             this.dbgrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dbgrid1.Size = new System.Drawing.Size(876, 276);
+            this.dbgrid1.Size = new System.Drawing.Size(876, 94);
             this.dbgrid1.TabIndex = 64;
             // 
             // pONoDataGridViewTextBoxColumn
@@ -3035,7 +3040,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn lineQtyDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lineTaxDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lineTotalDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button btn_Notify;
         public System.Windows.Forms.CheckBox cb_2ndDay;
         public System.Windows.Forms.CheckBox cb_Substitute_Item;
         public Ehs.Controls.ViewMode viewMode1;
@@ -3051,6 +3055,7 @@
         private Ehs.Controls.EhsMemoButton b_d_ItemMemo;
         private Ehs.Controls.EhsMemoButton b_D_Vendor_memo;
         private Ehs.Controls.EhsMemoButton b_D_buyer_memo;
+        private Ehs.Controls.EhsMemoButton btn_Notify;
     }
 }
 
