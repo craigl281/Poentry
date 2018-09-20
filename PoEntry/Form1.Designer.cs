@@ -993,7 +993,6 @@
             this.b_pat_memo.Text = "Patient";
             this.b_pat_memo.UseVisualStyleBackColor = true;
             this.b_pat_memo.Visible = false;
-            this.b_pat_memo.Click += new System.EventHandler(this.b_pat_memo_Click);
             // 
             // b_vendor_memo
             // 
@@ -1075,7 +1074,7 @@
             this.eb_Nonfile_Contract.Location = new System.Drawing.Point(550, 205);
             this.eb_Nonfile_Contract.Name = "eb_Nonfile_Contract";
             this.eb_Nonfile_Contract.Size = new System.Drawing.Size(230, 20);
-            this.eb_Nonfile_Contract.TabIndex = 41;
+            this.eb_Nonfile_Contract.TabIndex = 19;
             this.eb_Nonfile_Contract.Visible = false;
             this.eb_Nonfile_Contract.Validating += new System.ComponentModel.CancelEventHandler(this.eb_Nonfile_Contract_Validating);
             // 

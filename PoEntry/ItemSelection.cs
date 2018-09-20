@@ -28,12 +28,12 @@ namespace PoEntry
         }
         public string CurMfgCat
         {
-            get => cmb_MfgCatalog.CurrentItem.Key;
+            get => cmb_MfgCatalog.CurrentItem?.Key ?? "";
             set => cmb_MfgCatalog.CurrentItem = (cmb_MfgCatalog.Items.Exists(r => r.Key == value)) ? cmb_MfgCatalog.Items.Find(r => r.Key == value) : null;
         }
         public string CurMfg
         {
-            get => (cmb_Mfg_Name.CurrentItem == null) ? null : cmb_Mfg_Name.CurrentItem.Key;
+            get => cmb_Mfg_Name.CurrentItem?.Key ?? "";
             set => cmb_Mfg_Name.CurrentItem = (cmb_Mfg_Name.Items.Exists(r => r.Key == value)) ? cmb_Mfg_Name.Items.Find(r => r.Key == value) : null;
         }
 
@@ -231,8 +231,8 @@ namespace PoEntry
                     else
                         orig.CurMat = CurMat;
                     orig.Detail.VendorCatalog = CurVendorCat;
-                    orig.Detail.MFGCatalog = CurMfgCat ?? "";
-                    orig.Detail.MFGName = CurMfg ?? "";
+                    orig.Detail.MFGCatalog = CurMfgCat;
+                    orig.Detail.MFGName = CurMfg;
                 }
             }
             catch

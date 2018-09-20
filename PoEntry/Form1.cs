@@ -1851,7 +1851,7 @@ Changing := false;
             }
             if (this.eb_Nonfile_Contract.Text.Trim() != "")
             {
-                m_CreateNonFileClick();
+                //m_CreateNonFileClick();
                 this.Changing = true;
                 cmb_Mat.ReadOnly = true;
                 this.Changing = false;
@@ -4263,6 +4263,7 @@ WHERE PoHeader.PO_No = */
             {
                 errorProvider1.SetError(cmb_Project, "You must enter a Sub Ledger Number");
                 e.Cancel = true;
+                return;
             }
             errorProvider1.Clear();
         }
@@ -4287,6 +4288,7 @@ WHERE PoHeader.PO_No = */
                 {
                     errorProvider1.SetError(eb_Nonfile_Contract, "You must enter a Service Contract when using this PO Type");
                     e.Cancel = true;
+                    return;
                 }
             }
             errorProvider1.Clear();
@@ -4607,6 +4609,7 @@ WHERE PoHeader.PO_No = */
         private void cmb_Po_Type_Validated(object sender, EventArgs e)
         {
             Header.POType = CurrPoType;
+            Header.Prepay = ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Prepay;
 
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).NotifyAP && Header.NotifyAPMemo == "")
             {
@@ -4621,13 +4624,14 @@ WHERE PoHeader.PO_No = */
                     data.Close();
                 }
             }
-
-            Header.Prepay = ((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).Prepay;
-
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).SubLedger)
                 cmb_Project.Focus();
             if (((ComboBoxPoType)cmb_Po_Type.CurrentItem.Value).ServiceContract)
+            {
+                lbl_Nonfile_Contract.Visible = true;
+                eb_Nonfile_Contract.Visible = true;
                 eb_Nonfile_Contract.Focus();
+            }
             if(Not_Exceed_Header)
             {
                 lbl_Not_Total.Visible = true;
@@ -4928,14 +4932,8 @@ WHERE PoHeader.PO_No = */
         #region Buttons
         #region Header
         
-        string testing = "";
-        private void b_pat_memo_Click(object sender, EventArgs e)
-        {
-            testing = Header.PatientMemo;
-        }
         #endregion header
         #region Detail
-
 
         private void b_Dept_Leave(object sender, EventArgs e)
         {
@@ -5258,8 +5256,6 @@ WHERE PoHeader.PO_No = */
             }*/
         }
         #endregion save
-
-        
 
 
         private void bs2_PositionChanged(object sender, EventArgs e)
